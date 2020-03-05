@@ -16,27 +16,57 @@
     <Filter Include="Header Files\delta-includes">
       <UniqueIdentifier>{da0515bf-2ba6-41b7-862b-d048a192b7f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game-objects">
+      <UniqueIdentifier>{aaa9b4de-8cf7-4ef9-abd2-5a09e0bfdc83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game-objects">
+      <UniqueIdentifier>{7293c1dd-2285-4414-9a92-5f8fd74f54a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\world">
+      <UniqueIdentifier>{88928656-e5b0-4abd-adac-ba7bb77e5a09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world">
+      <UniqueIdentifier>{733fc92a-54bc-40ff-ab1c-f11bd59f5c4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\template_application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\os_utilities.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game_object.cpp">
+      <Filter>Source Files\game-objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ant_world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\player.cpp">
+      <Filter>Source Files\game-objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
       <Filter>Header Files\delta-includes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\template_application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\os_utilities.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\game_object.h">
+      <Filter>Header Files\game-objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ant_world.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\player.h">
+      <Filter>Header Files\game-objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-#include "../include/template_application.h"
+#include "../include/ant_world.h"
 
 #include <iostream>
 
@@ -7,7 +7,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     (void)lpCmdLine;
     (void)hPrevInstance;
 
-    TemplateApplication app;
+    aw::AntWorld app;
     app.Initialize((void *)&hInstance, ysContextObject::DIRECTX11);
     app.Run();
 
