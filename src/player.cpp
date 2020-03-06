@@ -36,5 +36,5 @@ void aw::Player::render() {
     int color[] = { 0xf1, 0xc4, 0x0f };
     ysMatrix translation = ysMath::TranslationTransform(m_position);
     m_world->getEngine().SetObjectTransform(translation);
-    m_world->getEngine().DrawBox(color, 2.5f, 2.5f);
+    m_world->getEngine().DrawBox(color, 2.5f, 2.5f, (int)Layer::Player);
 }

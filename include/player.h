@@ -1,11 +1,11 @@
 #ifndef ANT_WORLD_PLAYER_H
 #define ANT_WORLD_PLAYER_H
 
-#include "game_object.h"
+#include "insect.h"
 
 namespace aw {
 
-    class Player : public GameObject {
+    class Player : public Insect {
     public:
         Player();
         ~Player();

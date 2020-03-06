@@ -1,13 +1,14 @@
 #include "../include/world.h"
 
 #include "../include/player.h"
+#include "../include/leaf.h"
 
 aw::World::World() {
-    
+    /* void */
 }
 
 aw::World::~World() {
-
+    /* void */
 }
 
 void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
@@ -41,6 +42,7 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
 }
 
 void aw::World::initialSpawn() {
+    spawn<Leaf>();
     spawn<Player>();
 }
 

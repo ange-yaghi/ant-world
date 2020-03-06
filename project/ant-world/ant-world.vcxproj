@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\game_object.cpp" />
+    <ClCompile Include="..\..\src\insect.cpp" />
+    <ClCompile Include="..\..\src\leaf.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\os_utilities.cpp" />
     <ClCompile Include="..\..\src\ant_world.cpp" />
@@ -29,6 +31,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h" />
     <ClInclude Include="..\..\include\game_object.h" />
+    <ClInclude Include="..\..\include\insect.h" />
+    <ClInclude Include="..\..\include\leaf.h" />
     <ClInclude Include="..\..\include\os_utilities.h" />
     <ClInclude Include="..\..\include\ant_world.h" />
     <ClInclude Include="..\..\include\player.h" />

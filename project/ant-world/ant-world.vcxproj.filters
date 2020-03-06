@@ -48,6 +48,12 @@
     <ClCompile Include="..\..\src\player.cpp">
       <Filter>Source Files\game-objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\insect.cpp">
+      <Filter>Source Files\game-objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\leaf.cpp">
+      <Filter>Source Files\game-objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
@@ -66,6 +72,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\player.h">
+      <Filter>Header Files\game-objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\insect.h">
+      <Filter>Header Files\game-objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\leaf.h">
       <Filter>Header Files\game-objects</Filter>
     </ClInclude>
   </ItemGroup>
