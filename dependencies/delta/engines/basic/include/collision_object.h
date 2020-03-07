@@ -10,34 +10,34 @@ namespace dbasic {
     class RigidBody;
     class CollisionObject : public ysObject {
     public:
-        enum COLLISION_OBJECT_MODE {
-            COLLISION_OBJECT_MODE_SENSOR = 0x1,
+        enum class Mode {
+            Sensor = 0x1,
 
-            COLLISION_OBJECT_MODE_COLLISION_FINE = 0x2,
-            COLLISION_OBJECT_MODE_COLLISION_COARSE = 0x4,
+            Fine = 0x2,
+            Coarse = 0x4,
 
-            COLLISION_OBJECT_MODE_UNDEFINED,
+            Undefined,
         };
 
-        enum COLLISION_OBJECT_TYPE {
-            COLLISION_OBJECT_TYPE_BOX,
-            COLLISION_OBJECT_TYPE_CIRCLE,
+        enum class Type {
+            Box,
+            Circle,
 
-            COLLISION_OBJECT_TYPE_UNDEFINED
+            Undefined
         };
 
     public:
         CollisionObject();
-        CollisionObject(COLLISION_OBJECT_TYPE type);
+        CollisionObject(Type type);
         virtual ~CollisionObject();
 
-        inline COLLISION_OBJECT_TYPE GetType() const { return m_type; }
+        inline Type GetType() const { return m_type; }
 
         BoxPrimitive *GetAsBox() { return static_cast<BoxPrimitive *>(m_primitiveHandle); }
         CirclePrimitive *GetAsCircle() { return static_cast<CirclePrimitive *>(m_primitiveHandle); }
 
-        COLLISION_OBJECT_MODE GetMode() const { return m_mode; }
-        void SetMode(COLLISION_OBJECT_MODE mode) { m_mode = mode; }
+        Mode GetMode() const { return m_mode; }
+        void SetMode(Mode mode) { m_mode = mode; }
 
         void SetParent(RigidBody *parent) { m_parent = parent; }
         RigidBody *GetParent() const { return m_parent; }
@@ -74,15 +74,15 @@ namespace dbasic {
         unsigned int m_collisionLayerMask;
 
     private:
-        COLLISION_OBJECT_TYPE m_type;
-        COLLISION_OBJECT_MODE m_mode;
+        Type m_type;
+        Mode m_mode;
 
         unsigned int m_msg;
 
         RigidBody *m_parent;
     };
 
-    template <typename Type, CollisionObject::COLLISION_OBJECT_TYPE typeID>
+    template <typename Type, CollisionObject::Type typeID>
     class CollisionObjectSpecialized : public CollisionObject {
     public:
         CollisionObjectSpecialized() : CollisionObject(typeID) {

@@ -10,6 +10,7 @@ namespace aw {
         Player();
         ~Player();
 
+        virtual void initialize();
         virtual void process();
         virtual void render();
     };

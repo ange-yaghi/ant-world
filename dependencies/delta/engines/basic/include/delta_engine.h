@@ -25,9 +25,9 @@ namespace dbasic {
     public:
         static const int MAX_LAYERS = 256;
 
-        enum DRAW_TARGET {
-            DRAW_TARGET_GUI,
-            DRAW_TARGET_MAIN
+        enum DrawTarget {
+            Gui,
+            Main
         };
 
     public:
@@ -36,6 +36,7 @@ namespace dbasic {
 
         // Physics Interface
         MassSpringSystem PhysicsSystem;
+        RigidBodySystem RBSystem;
 
         ysError CreateGameWindow(const char *title, void *instance, ysContextObject::DEVICE_API API, const char *shaderDirectory = "../DeltaEngineTullahoma/Shaders/", bool depthBuffer = true);
         ysError StartFrame();
@@ -80,7 +81,7 @@ namespace dbasic {
 
         ysDevice *GetDevice() { return m_device; }
 
-        void SetDrawTarget(DRAW_TARGET target) { m_currentTarget = target; }
+        void SetDrawTarget(DrawTarget target) { m_currentTarget = target; }
 
         int GetScreenWidth();
         int GetScreenHeight();
@@ -146,7 +147,7 @@ namespace dbasic {
 
         bool m_initialized;
 
-        DRAW_TARGET m_currentTarget;
+        DrawTarget m_currentTarget;
 
         // Timing
         ysTimingSystem *m_timingSystem;
@@ -165,7 +166,7 @@ namespace dbasic {
         // Drawing queues
         ysExpandingArray<DrawCall, 256> m_drawQueue[MAX_LAYERS];
         ysExpandingArray<DrawCall, 256> m_drawQueueGui[MAX_LAYERS];
-        ysError ExecuteDrawQueue(DRAW_TARGET target);
+        ysError ExecuteDrawQueue(DrawTarget target);
     };
 
 } /* namesapce dbasic */

@@ -60,6 +60,8 @@ void aw::World::frameTick() {
     cleanObjectList();
     spawnObjects();
 
+    m_engine.RBSystem.Update(m_engine.GetFrameLength());
+
     process();
     render();
 
@@ -95,6 +97,7 @@ void aw::World::process() {
 void aw::World::spawnObjects() {
     while (!m_spawnQueue.empty()) {
         GameObject *u = m_spawnQueue.front(); m_spawnQueue.pop();
+        u->initialize();
         m_gameObjects.push_back(u);
     }
 }

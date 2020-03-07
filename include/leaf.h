@@ -10,6 +10,8 @@ namespace aw {
         Leaf();
         ~Leaf();
 
+        virtual void initialize();
+
         virtual void render();
         virtual void process();
     };

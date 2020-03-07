@@ -20,9 +20,12 @@ namespace aw {
         GameObject();
         ~GameObject();
 
+        dbasic::RigidBody RigidBody;
+
         void setWorld(World *world) { m_world = world; }
         World *getWorld() const { return m_world; }
 
+        virtual void initialize();
         virtual void render();
         virtual void process();
 
@@ -36,11 +39,7 @@ namespace aw {
         void setCanBeCarried(bool canBeCarried) { m_canBeCarried = canBeCarried; }
 
     protected:
-        World *m_world;
-
-        ysVector m_position;
-        ysVector m_velocity;
-        ysVector m_heading;
+        World *m_world; 
 
     private:
         bool m_canBeCarried;

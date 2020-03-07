@@ -51,6 +51,7 @@ namespace aw {
     protected:
         dbasic::DeltaEngine m_engine;
         dbasic::AssetManager m_assetManager;
+        dbasic::RigidBodySystem m_rigidBodySystem;
     };
 
 } /* namespace aw */

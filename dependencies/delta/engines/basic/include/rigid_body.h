@@ -14,9 +14,9 @@ namespace dbasic {
         friend RigidBodySystem;
 
     public:
-        enum RIGID_BODY_HINT {
-            HINT_STATIC,
-            HINT_DYNAMIC,
+        enum class RigidBodyHint {
+            Static,
+            Dynamic,
         };
 
         struct GridCell {
@@ -81,8 +81,8 @@ namespace dbasic {
 
         bool IsRegistered() const { return m_registered; }
 
-        void SetHint(RIGID_BODY_HINT hint) { m_hint = hint; }
-        RIGID_BODY_HINT GetHint() const { return m_hint; }
+        void SetHint(RigidBodyHint hint) { m_hint = hint; }
+        RigidBodyHint GetHint() const { return m_hint; }
 
         void AddGridCell(int x, int y);
         void ClearGridCells() { m_gridCells.Clear(); }
@@ -139,7 +139,7 @@ namespace dbasic {
 
         ysExpandingArray<GridCell, 4> m_gridCells;
 
-        RIGID_BODY_HINT m_hint;
+        RigidBodyHint m_hint;
 
         void *m_owner;
     };
