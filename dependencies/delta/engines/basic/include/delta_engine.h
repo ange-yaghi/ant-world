@@ -7,10 +7,10 @@
 #include "shader_controls.h"
 #include "animation.h"
 
-#include "rigid_body_system.h"
+#include "../../../physics/include/mass_spring_system.h"
+#include "../../../physics/include/rigid_body_system.h"
 
 #include "model_asset.h"
-#include "mass_spring_system.h"
 #include "console.h"
 
 namespace dbasic {
@@ -35,8 +35,8 @@ namespace dbasic {
         ~DeltaEngine();
 
         // Physics Interface
-        MassSpringSystem PhysicsSystem;
-        RigidBodySystem RBSystem;
+        dphysics::MassSpringSystem PhysicsSystem;
+        dphysics::RigidBodySystem RBSystem;
 
         ysError CreateGameWindow(const char *title, void *instance, ysContextObject::DEVICE_API API, const char *shaderDirectory = "../DeltaEngineTullahoma/Shaders/", bool depthBuffer = true);
         ysError StartFrame();

@@ -10,12 +10,20 @@ namespace aw {
         Insect();
         ~Insect();
 
-        bool isCarryingItem() const { return m_carryItem == nullptr; }
+        bool isCarryingItem() const { return m_carryItem != nullptr; }
         void carry(GameObject *object);
         void drop();
 
+        void setCarryLocation(const ysVector &carryLocation) { m_carryLocation = carryLocation; }
+        ysVector getCarryLocation() const { return m_carryLocation; }
+
+        void setDropLocation(const ysVector &dropLocation) { m_dropLocation = dropLocation; }
+        ysVector getDropLocation() const { return m_dropLocation; }
+
     protected:
         GameObject *m_carryItem;
+        ysVector m_carryLocation;
+        ysVector m_dropLocation;
     };
 
 } /* namespace aw */

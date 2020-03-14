@@ -20,7 +20,7 @@ namespace aw {
         GameObject();
         ~GameObject();
 
-        dbasic::RigidBody RigidBody;
+        dphysics::RigidBody RigidBody;
 
         void setWorld(World *world) { m_world = world; }
         World *getWorld() const { return m_world; }

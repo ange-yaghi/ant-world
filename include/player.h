@@ -13,6 +13,10 @@ namespace aw {
         virtual void initialize();
         virtual void process();
         virtual void render();
+
+    protected:
+        virtual void grab();
+        virtual void drop();
     };
 
 } /* namespace aw */

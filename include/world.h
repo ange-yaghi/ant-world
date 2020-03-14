@@ -11,6 +11,8 @@
 
 namespace aw {
 
+    class Player;
+
     class World {
     public:
         World();
@@ -51,7 +53,9 @@ namespace aw {
     protected:
         dbasic::DeltaEngine m_engine;
         dbasic::AssetManager m_assetManager;
-        dbasic::RigidBodySystem m_rigidBodySystem;
+        dphysics::RigidBodySystem m_rigidBodySystem;
+
+        Player *m_player;
     };
 
 } /* namespace aw */

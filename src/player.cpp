@@ -12,18 +12,21 @@ aw::Player::~Player() {
 
 void aw::Player::initialize() {
     Insect::initialize();
-    RigidBody.SetHint(dbasic::RigidBody::RigidBodyHint::Dynamic);
-    RigidBody.SetInverseMass(0.5f);
+    RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
+    RigidBody.SetInverseMass(1.0f);
+    RigidBody.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));
+    RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
 
-    dbasic::CollisionObject *bounds;
-    //RigidBody.CollisionGeometry.NewBoxObject(&bounds);
-    //bounds->SetMode(dbasic::CollisionObject::Mode::Fine);
-    //bounds->GetAsBox()->HalfHeight = 2.5f / 2;
-    //bounds->GetAsBox()->HalfWidth = 2.5f / 2;
-    //bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
-    //bounds->GetAsBox()->Position = ysMath::Constants::Zero;
-    RigidBody.CollisionGeometry.NewCircleObject(&bounds);
-    bounds->GetAsCircle()->RadiusSquared = 1.25 * 1.25;
+    dphysics::CollisionObject *bounds;
+    RigidBody.CollisionGeometry.NewBoxObject(&bounds);
+    bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
+    bounds->GetAsBox()->HalfHeight = 2.5f / 2;
+    bounds->GetAsBox()->HalfWidth = 2.5f / 2;
+    bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
+    bounds->GetAsBox()->Position = ysMath::Constants::Zero;
+    //RigidBody.CollisionGeometry.NewCircleObject(&bounds);
+    //bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
+    //bounds->GetAsCircle()->RadiusSquared = 1.25 * 1.25;
 }
 
 void aw::Player::process() {
@@ -45,9 +48,31 @@ void aw::Player::process() {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::YAxis));
     }
 
+    if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_SPACE)) {
+        if (isCarryingItem()) drop();
+        else grab();
+    }
+
     RigidBody.SetVelocity(ysMath::Mul(heading, velocity));
 
     GameObject::process();
+}
+
+void aw::Player::grab() {
+    int collisionCount = RigidBody.GetCollisionCount();
+    for (int i = 0; i < collisionCount; ++i) {
+        dphysics::Collision *col = RigidBody.GetCollision(i);
+        dphysics::RigidBody *body = col->m_body1 == &RigidBody
+            ? col->m_body2
+            : col->m_body1;
+
+        carry((GameObject *)body->GetOwner());
+        break;
+    }
+}
+
+void aw::Player::drop() {
+    Insect::drop();
 }
 
 void aw::Player::render() {
@@ -55,6 +80,6 @@ void aw::Player::render() {
     ysVector position = RigidBody.GetPosition();
 
     ysMatrix translation = ysMath::TranslationTransform(position);
-    m_world->getEngine().SetObjectTransform(translation);
+    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
     m_world->getEngine().DrawBox(color, 2.5f, 2.5f, (int)Layer::Player);
 }

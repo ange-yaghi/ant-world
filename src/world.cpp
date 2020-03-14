@@ -42,8 +42,13 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
 }
 
 void aw::World::initialSpawn() {
-    spawn<Leaf>();
-    spawn<Player>();
+    Leaf *leaf1 = spawn<Leaf>();
+    leaf1->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
+
+    Leaf *leaf2 = spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
+
+    m_player = spawn<Player>();
 }
 
 void aw::World::run() {
@@ -80,7 +85,9 @@ m_engine.DrawImage(m_demoTexture, 0, (float)m_demoTexture->GetWidth() / m_demoTe
 */
 
 void aw::World::render() {
-    m_engine.SetCameraPosition(0.0f, 0.0f);
+    ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
+
+    m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
     m_engine.SetCameraAltitude(10.0f);
 
     for (GameObject *obj : m_gameObjects) {
