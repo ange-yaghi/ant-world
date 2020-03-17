@@ -20,6 +20,8 @@ namespace aw {
         void setDropLocation(const ysVector &dropLocation) { m_dropLocation = dropLocation; }
         ysVector getDropLocation() const { return m_dropLocation; }
 
+        virtual void initialize();
+
     protected:
         GameObject *m_carryItem;
         ysVector m_carryLocation;

@@ -32,3 +32,8 @@ void aw::Insect::drop() {
 
     m_carryItem = nullptr;
 }
+
+void aw::Insect::initialize() {
+    GameObject::initialize();
+    addTag(Tag::Insect);
+}

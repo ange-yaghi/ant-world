@@ -2,9 +2,10 @@
 
 #include "../include/player.h"
 #include "../include/leaf.h"
+#include "../include/hole.h"
 
 aw::World::World() {
-    /* void */
+    m_mainRealm = nullptr;
 }
 
 aw::World::~World() {
@@ -42,13 +43,18 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
 }
 
 void aw::World::initialSpawn() {
-    Leaf *leaf1 = spawn<Leaf>();
+    m_mainRealm = newRealm<Realm>();
+
+    Leaf *leaf1 = m_mainRealm->spawn<Leaf>();
     leaf1->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
 
-    Leaf *leaf2 = spawn<Leaf>();
+    Leaf *leaf2 = m_mainRealm->spawn<Leaf>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
-    m_player = spawn<Player>();
+    Hole *hole = m_mainRealm->spawn<Hole>();
+    hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
+
+    m_player = m_mainRealm->spawn<Player>();
 }
 
 void aw::World::run() {
@@ -61,11 +67,6 @@ void aw::World::run() {
 
 void aw::World::frameTick() {
     m_engine.StartFrame();
-
-    cleanObjectList();
-    spawnObjects();
-
-    m_engine.RBSystem.Update(m_engine.GetFrameLength());
 
     process();
     render();
@@ -90,42 +91,9 @@ void aw::World::render() {
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
     m_engine.SetCameraAltitude(10.0f);
 
-    for (GameObject *obj : m_gameObjects) {
-        obj->render();
-    }
+    m_mainRealm->render();
 }
 
 void aw::World::process() {
-    for (GameObject *obj : m_gameObjects) {
-        obj->process();
-    }
-}
-
-void aw::World::spawnObjects() {
-    while (!m_spawnQueue.empty()) {
-        GameObject *u = m_spawnQueue.front(); m_spawnQueue.pop();
-        u->initialize();
-        m_gameObjects.push_back(u);
-    }
-}
-
-void aw::World::addToSpawnQueue(GameObject *object) {
-    m_spawnQueue.push(object);
-}
-
-void aw::World::cleanObjectList() {
-    int N = m_gameObjects.size();
-    int writeIndex = 0;
-    for (int i = 0; i < N; ++i) {
-        if (m_gameObjects[i]->getDeletionFlag()) {
-            destroyObject(m_gameObjects[i]);
-        }
-        else {
-            m_gameObjects[writeIndex++] = m_gameObjects[i];
-        }
-    }
-}
-
-void aw::World::destroyObject(GameObject *object) {
-    _aligned_free((void *)object);
+    m_mainRealm->process();
 }

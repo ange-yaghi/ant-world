@@ -8,6 +8,9 @@ aw::GameObject::GameObject() {
 
     m_beingCarried = false;
     m_canBeCarried = false;
+
+    m_tags = std::vector<bool>((int)Tag::Count, false);
+    m_realmRecordIndex = -1;
 }
 
 aw::GameObject::~GameObject() {
@@ -19,7 +22,6 @@ void aw::GameObject::process() {
 }
 
 void aw::GameObject::initialize() {
-    m_world->getEngine().RBSystem.RegisterRigidBody(&RigidBody);
     RigidBody.SetOwner((void *)this);
 }
 

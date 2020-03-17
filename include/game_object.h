@@ -3,9 +3,12 @@
 
 #include "delta.h"
 
+#include <vector>
+
 namespace aw {
 
     class World;
+    class Realm;
 
     class GameObject {
     public:
@@ -13,7 +16,15 @@ namespace aw {
             Player,
             Mob,
             Items,
-            Ground            
+            Holes,
+            Ground
+        };
+
+        enum class Tag {
+            Hole,
+            Insect,
+            Player,
+            Count
         };
 
     public:
@@ -35,11 +46,22 @@ namespace aw {
         void setBeingCarried(bool carried) { m_beingCarried = carried; }
         bool canBeCarried() const { return m_canBeCarried; }
 
+        bool hasTag(Tag tag) const { return m_tags[(int)tag]; }
+        void addTag(Tag tag) { m_tags[(int)tag] = true; }
+        void removeTag(Tag tag) { m_tags[(int)tag] = false; }
+
+        int getRealmRecordIndex() const { return m_realmRecordIndex; }
+        void setRealmRecordIndex(int index) { m_realmRecordIndex = index; }
+
+        void setRealm(Realm *realm) { m_realm = realm; }
+        Realm *getRealm() const { return m_realm; }
+
     protected:
         void setCanBeCarried(bool canBeCarried) { m_canBeCarried = canBeCarried; }
 
     protected:
-        World *m_world; 
+        World *m_world;
+        Realm *m_realm;
 
     private:
         bool m_canBeCarried;
@@ -47,6 +69,12 @@ namespace aw {
 
     private:
         bool m_deletionFlag;
+
+    private:
+        std::vector<bool> m_tags;
+
+    private:
+        int m_realmRecordIndex;
     };
 
 } /* namespace aw */

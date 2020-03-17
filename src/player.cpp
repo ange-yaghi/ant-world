@@ -12,6 +12,8 @@ aw::Player::~Player() {
 
 void aw::Player::initialize() {
     Insect::initialize();
+    addTag(Tag::Player);
+
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
     RigidBody.SetInverseMass(1.0f);
     RigidBody.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));

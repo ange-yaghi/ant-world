@@ -2,6 +2,7 @@
 #define ANT_WORLD_WORLD_H
 
 #include "game_object.h"
+#include "realm.h"
 
 #include "delta.h"
 
@@ -26,34 +27,26 @@ namespace aw {
         dbasic::DeltaEngine &getEngine() { return m_engine; }
         dbasic::AssetManager &getAssetManager() { return m_assetManager; }
 
-        template <typename T> 
-        T *spawn() {
+        void render();
+        void process();
+
+        template <typename T>
+        T *newRealm() {
             void *buffer = _aligned_malloc(sizeof(T), 16);
             T *newObject = new (buffer) T;
             newObject->setWorld(this);
-            addToSpawnQueue(newObject);
 
             return newObject;
         }
 
     protected:
-        void addToSpawnQueue(GameObject *object);
-        void cleanObjectList();
-        void destroyObject(GameObject *object);
+        std::vector<Realm *> m_realms;
 
-        void render();
-        void process();
-
-        void spawnObjects();
-
-    protected:
-        std::queue<GameObject *> m_spawnQueue;
-        std::vector<GameObject *> m_gameObjects;
+        Realm *m_mainRealm;
 
     protected:
         dbasic::DeltaEngine m_engine;
         dbasic::AssetManager m_assetManager;
-        dphysics::RigidBodySystem m_rigidBodySystem;
 
         Player *m_player;
     };
