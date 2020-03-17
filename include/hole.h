@@ -17,7 +17,7 @@ namespace aw {
         virtual void render();
 
         Realm *getTargetRealm() { return m_targetRealm; }
-        virtual void generate();
+        virtual Realm *generateRealm();
 
     protected:
         Realm *m_targetRealm;

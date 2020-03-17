@@ -17,6 +17,9 @@ namespace aw {
     protected:
         virtual void grab();
         virtual void drop();
+
+        virtual void enterHole();
+        virtual void exitHole();
     };
 
 } /* namespace aw */

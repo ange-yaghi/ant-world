@@ -21,6 +21,8 @@ namespace aw {
         void registerGameObject(GameObject *object);
         void unregisterGameObject(GameObject *object);
 
+        void updateRealms();
+
         void process();
         void render();
 
@@ -36,6 +38,7 @@ namespace aw {
             void *buffer = _aligned_malloc(sizeof(T), 16);
             T *newObject = new (buffer) T;
             newObject->setWorld(m_world);
+            newObject->setRealm(this);
             addToSpawnQueue(newObject);
 
             return newObject;

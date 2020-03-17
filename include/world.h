@@ -36,10 +36,14 @@ namespace aw {
             T *newObject = new (buffer) T;
             newObject->setWorld(this);
 
+            m_realms.push_back(newObject);
+
             return newObject;
         }
 
     protected:
+        void updateRealms();
+
         std::vector<Realm *> m_realms;
 
         Realm *m_mainRealm;

@@ -1,6 +1,7 @@
 #include "../include/player.h"
 
 #include "../include/world.h"
+#include "../include/hole.h"
 
 aw::Player::Player() {
     /* void */
@@ -26,6 +27,11 @@ void aw::Player::initialize() {
     bounds->GetAsBox()->HalfWidth = 2.5f / 2;
     bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
     bounds->GetAsBox()->Position = ysMath::Constants::Zero;
+
+    dphysics::CollisionObject *sensor;
+    RigidBody.CollisionGeometry.NewCircleObject(&sensor);
+    sensor->SetMode(dphysics::CollisionObject::Mode::Sensor);
+    sensor->GetAsCircle()->RadiusSquared = 2.5f * 2.5f;
     //RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     //bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     //bounds->GetAsCircle()->RadiusSquared = 1.25 * 1.25;
@@ -55,6 +61,10 @@ void aw::Player::process() {
         else grab();
     }
 
+    if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_I)) {
+        enterHole();
+    }
+
     RigidBody.SetVelocity(ysMath::Mul(heading, velocity));
 
     GameObject::process();
@@ -75,6 +85,32 @@ void aw::Player::grab() {
 
 void aw::Player::drop() {
     Insect::drop();
+}
+
+void aw::Player::enterHole() {
+    int collisions = RigidBody.GetCollisionCount();
+    for (int i = 0; i < collisions; ++i) {
+        dphysics::Collision* col = RigidBody.GetCollision(i);
+        dphysics::RigidBody* body = col->m_body1 == &RigidBody
+            ? col->m_body2
+            : col->m_body1;
+
+        GameObject *object = (GameObject*)body->GetOwner();
+        if (object->hasTag(Tag::Hole)) {
+            Hole* hole = reinterpret_cast<Hole *>(object);
+            Realm *targetRealm = hole->getTargetRealm();
+
+            if (targetRealm == nullptr) {
+                targetRealm = hole->generateRealm();
+            }
+
+            changeRealm(targetRealm);
+        }
+    }
+}
+
+void aw::Player::exitHole() {
+
 }
 
 void aw::Player::render() {

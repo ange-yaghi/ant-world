@@ -4,6 +4,7 @@
 
 aw::Hole::Hole() {
     m_realm = nullptr;
+    m_targetRealm = nullptr;
 }
 
 aw::Hole::~Hole() {
@@ -11,6 +12,8 @@ aw::Hole::~Hole() {
 }
 
 void aw::Hole::initialize() {
+    GameObject::initialize();
+
     setCanBeCarried(false);
     addTag(Tag::Hole);
 
@@ -37,6 +40,7 @@ void aw::Hole::process() {
 
 }
 
-void aw::Hole::generate() {
+aw::Realm *aw::Hole::generateRealm() {
     m_targetRealm = m_world->newRealm<Realm>();
+    return m_targetRealm;
 }

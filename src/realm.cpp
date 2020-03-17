@@ -12,6 +12,7 @@ aw::Realm::~Realm() {
 }
 
 void aw::Realm::registerGameObject(GameObject *object) {
+    object->setRealm(this);
     object->setRealmRecordIndex(m_gameObjects.size());
     m_gameObjects.push_back(object);
 
@@ -58,6 +59,22 @@ void aw::Realm::spawnObjects() {
 
 dbasic::DeltaEngine &aw::Realm::getEngine() {
     return m_world->getEngine();
+}
+
+void aw::Realm::updateRealms() {
+    int N = m_gameObjects.size();
+    for (int i = 0; i < N; ++i) {
+        if (m_gameObjects[i]->getNewRealm() != nullptr) {
+            Realm *newRealm = m_gameObjects[i]->getNewRealm();
+            m_gameObjects[i]->changeRealm(nullptr);
+
+            unregisterGameObject(m_gameObjects[i]);
+            newRealm->registerGameObject(m_gameObjects[i]);
+
+            --i;
+            N = m_gameObjects.size();
+        }
+    }
 }
 
 void aw::Realm::addToSpawnQueue(GameObject *object) {

@@ -56,12 +56,16 @@ namespace aw {
         void setRealm(Realm *realm) { m_realm = realm; }
         Realm *getRealm() const { return m_realm; }
 
+        void changeRealm(Realm *newRealm) { m_newRealm = newRealm; }
+        Realm *getNewRealm() const { return m_newRealm; }
+
     protected:
         void setCanBeCarried(bool canBeCarried) { m_canBeCarried = canBeCarried; }
 
     protected:
         World *m_world;
         Realm *m_realm;
+        Realm* m_newRealm;
 
     private:
         bool m_canBeCarried;

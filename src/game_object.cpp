@@ -11,6 +11,9 @@ aw::GameObject::GameObject() {
 
     m_tags = std::vector<bool>((int)Tag::Count, false);
     m_realmRecordIndex = -1;
+
+    m_realm = nullptr;
+    m_newRealm = nullptr;
 }
 
 aw::GameObject::~GameObject() {

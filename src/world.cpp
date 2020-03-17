@@ -68,6 +68,8 @@ void aw::World::run() {
 void aw::World::frameTick() {
     m_engine.StartFrame();
 
+    updateRealms();
+
     process();
     render();
 
@@ -91,9 +93,15 @@ void aw::World::render() {
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
     m_engine.SetCameraAltitude(10.0f);
 
-    m_mainRealm->render();
+    m_player->getRealm()->render();
 }
 
 void aw::World::process() {
-    m_mainRealm->process();
+    m_player->getRealm()->process();
+}
+
+void aw::World::updateRealms() {
+    for (Realm *realm : m_realms) {
+        realm->updateRealms();
+    }
 }
