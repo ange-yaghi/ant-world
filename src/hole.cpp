@@ -42,5 +42,6 @@ void aw::Hole::process() {
 
 aw::Realm *aw::Hole::generateRealm() {
     m_targetRealm = m_world->newRealm<Realm>();
+    m_targetRealm->setExitPortal(this);
     return m_targetRealm;
 }

@@ -10,6 +10,7 @@ namespace aw {
 
     class GameObject;
     class World;
+    class Hole;
 
     class Realm {
     public:
@@ -44,6 +45,9 @@ namespace aw {
             return newObject;
         }
 
+        void setExitPortal(Hole *portal) { m_exitPortal = portal; }
+        Hole *getExitPortal() const { return m_exitPortal; }
+
     protected:
         void addToSpawnQueue(GameObject *object);
         void cleanObjectList();
@@ -55,6 +59,7 @@ namespace aw {
 
     protected:
         World *m_world;
+        Hole *m_exitPortal;
     };
 
 } /* namespace aw */

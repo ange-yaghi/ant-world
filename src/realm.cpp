@@ -4,7 +4,8 @@
 #include "../include/world.h"
 
 aw::Realm::Realm() {
-    /* void */
+    m_exitPortal = nullptr;
+    m_world = nullptr;
 }
 
 aw::Realm::~Realm() {

@@ -65,6 +65,10 @@ void aw::Player::process() {
         enterHole();
     }
 
+    if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_O)) {
+        exitHole();
+    }
+
     RigidBody.SetVelocity(ysMath::Mul(heading, velocity));
 
     GameObject::process();
@@ -110,7 +114,12 @@ void aw::Player::enterHole() {
 }
 
 void aw::Player::exitHole() {
-
+    Realm *currentRealm = getRealm();
+    Hole *exitPortal = currentRealm->getExitPortal();
+    
+    if (exitPortal == nullptr) return;
+    
+    changeRealm(exitPortal->getRealm());
 }
 
 void aw::Player::render() {
