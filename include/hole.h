@@ -16,6 +16,9 @@ namespace aw {
         virtual void process();
         virtual void render();
 
+        virtual void onEnter(GameObject *object);
+        virtual void onExit(GameObject *object);
+
         Realm *getTargetRealm() { return m_targetRealm; }
         virtual Realm *generateRealm();
 

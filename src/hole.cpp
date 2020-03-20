@@ -14,7 +14,6 @@ aw::Hole::~Hole() {
 void aw::Hole::initialize() {
     GameObject::initialize();
 
-    setCanBeCarried(false);
     addTag(Tag::Hole);
 
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
@@ -36,8 +35,16 @@ void aw::Hole::render() {
     m_world->getEngine().DrawBox(color, 5.0f, 5.0f, (int)Layer::Holes);
 }
 
-void aw::Hole::process() {
+void aw::Hole::onEnter(GameObject *object) {
+    object->RigidBody.SetPosition(ysMath::Constants::Zero);
+}
 
+void aw::Hole::onExit(GameObject *object) {
+    object->RigidBody.SetPosition(RigidBody.GetPosition());
+}
+
+void aw::Hole::process() {
+    /* void */
 }
 
 aw::Realm *aw::Hole::generateRealm() {

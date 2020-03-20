@@ -2,6 +2,7 @@
 
 #include "../include/game_object.h"
 #include "../include/world.h"
+#include "../include/hole.h"
 
 aw::Realm::Realm() {
     m_exitPortal = nullptr;
@@ -54,7 +55,6 @@ void aw::Realm::spawnObjects() {
         GameObject *u = m_spawnQueue.front(); m_spawnQueue.pop();
         u->initialize();
         registerGameObject(u);
-        m_gameObjects.push_back(u);
     }
 }
 
@@ -66,11 +66,24 @@ void aw::Realm::updateRealms() {
     int N = m_gameObjects.size();
     for (int i = 0; i < N; ++i) {
         if (m_gameObjects[i]->getNewRealm() != nullptr) {
-            Realm *newRealm = m_gameObjects[i]->getNewRealm();
-            m_gameObjects[i]->changeRealm(nullptr);
+            GameObject *object = m_gameObjects[i];
+            Realm *newRealm = object->getNewRealm();
+            object->changeRealm(nullptr);
 
-            unregisterGameObject(m_gameObjects[i]);
-            newRealm->registerGameObject(m_gameObjects[i]);
+            unregisterGameObject(object);
+            newRealm->registerGameObject(object);
+
+            Hole *lastPortal = object->getLastPortal();
+            object->setLastPortal(nullptr);
+
+            if (lastPortal != nullptr) {
+                if (newRealm == lastPortal->getTargetRealm()) {
+                    lastPortal->onEnter(object);
+                }
+                else if (newRealm == lastPortal->getRealm()) {
+                    lastPortal->onExit(object);
+                }
+            }
 
             --i;
             N = m_gameObjects.size();

@@ -37,3 +37,11 @@ void aw::Insect::initialize() {
     GameObject::initialize();
     addTag(Tag::Insect);
 }
+
+void aw::Insect::changeRealm(Realm *newRealm) {
+    GameObject::changeRealm(newRealm);
+
+    if (isCarryingItem()) {
+        m_carryItem->changeRealm(newRealm);
+    }
+}

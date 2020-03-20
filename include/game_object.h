@@ -9,6 +9,7 @@ namespace aw {
 
     class World;
     class Realm;
+    class Hole;
 
     class GameObject {
     public:
@@ -24,6 +25,7 @@ namespace aw {
             Hole,
             Insect,
             Player,
+            Carryable,
             Count
         };
 
@@ -44,7 +46,7 @@ namespace aw {
         void setDeletionFlag() { m_deletionFlag = true; }
 
         void setBeingCarried(bool carried) { m_beingCarried = carried; }
-        bool canBeCarried() const { return m_canBeCarried; }
+        bool isBeingCarried() const { return m_beingCarried; }
 
         bool hasTag(Tag tag) const { return m_tags[(int)tag]; }
         void addTag(Tag tag) { m_tags[(int)tag] = true; }
@@ -56,19 +58,19 @@ namespace aw {
         void setRealm(Realm *realm) { m_realm = realm; }
         Realm *getRealm() const { return m_realm; }
 
-        void changeRealm(Realm *newRealm) { m_newRealm = newRealm; }
+        virtual void changeRealm(Realm *newRealm) { m_newRealm = newRealm; }
         Realm *getNewRealm() const { return m_newRealm; }
 
-    protected:
-        void setCanBeCarried(bool canBeCarried) { m_canBeCarried = canBeCarried; }
+        Hole *getLastPortal() { return m_lastPortal; }
+        void setLastPortal(Hole *hole) { m_lastPortal = hole; }
 
     protected:
         World *m_world;
         Realm *m_realm;
-        Realm* m_newRealm;
+        Realm *m_newRealm;
+        Hole *m_lastPortal;
 
     private:
-        bool m_canBeCarried;
         bool m_beingCarried;
 
     private:

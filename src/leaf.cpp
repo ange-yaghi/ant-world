@@ -3,7 +3,7 @@
 #include "../include/world.h"
 
 aw::Leaf::Leaf() {
-    setCanBeCarried(true);
+    addTag(Tag::Carryable);
 }
 
 aw::Leaf::~Leaf() {

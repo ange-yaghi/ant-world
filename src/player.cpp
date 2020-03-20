@@ -82,8 +82,11 @@ void aw::Player::grab() {
             ? col->m_body2
             : col->m_body1;
 
-        carry((GameObject *)body->GetOwner());
-        break;
+        GameObject *object = reinterpret_cast<GameObject *>(body->GetOwner());
+        if (object->hasTag(Tag::Carryable) && !object->isBeingCarried()) {
+            carry(object);
+            break;
+        }
     }
 }
 
@@ -109,6 +112,7 @@ void aw::Player::enterHole() {
             }
 
             changeRealm(targetRealm);
+            setLastPortal(hole);
         }
     }
 }
@@ -120,6 +124,7 @@ void aw::Player::exitHole() {
     if (exitPortal == nullptr) return;
     
     changeRealm(exitPortal->getRealm());
+    setLastPortal(exitPortal);
 }
 
 void aw::Player::render() {

@@ -7,13 +7,13 @@ aw::GameObject::GameObject() {
     m_deletionFlag = false;
 
     m_beingCarried = false;
-    m_canBeCarried = false;
 
     m_tags = std::vector<bool>((int)Tag::Count, false);
     m_realmRecordIndex = -1;
 
     m_realm = nullptr;
     m_newRealm = nullptr;
+    m_lastPortal = nullptr;
 }
 
 aw::GameObject::~GameObject() {
