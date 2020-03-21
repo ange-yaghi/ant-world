@@ -1,6 +1,8 @@
 #ifndef ANT_WORLD_GAME_OBJECT_H
 #define ANT_WORLD_GAME_OBJECT_H
 
+#include "../include/aabb.h"
+
 #include "delta.h"
 
 #include <vector>
@@ -63,6 +65,17 @@ namespace aw {
 
         Hole *getLastPortal() { return m_lastPortal; }
         void setLastPortal(Hole *hole) { m_lastPortal = hole; }
+
+        void clearPathfinderBounds() { m_pathfinderBounds.clear(); }
+        void updatePathfinderBounds();
+        void addPathfinderBound(const AABB &bounds);
+        virtual void addPathfinderBounds();
+
+        int getPathfinderBoundCount() { return (int)m_pathfinderBounds.size(); }
+        AABB &getPathfinderBound(int index) { return m_pathfinderBounds[index]; }
+
+    protected:
+        std::vector<AABB> m_pathfinderBounds;
 
     protected:
         World *m_world;

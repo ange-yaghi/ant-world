@@ -28,6 +28,18 @@
     <Filter Include="Source Files\world">
       <UniqueIdentifier>{733fc92a-54bc-40ff-ab1c-f11bd59f5c4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ai">
+      <UniqueIdentifier>{3e23d9fc-f3b7-495e-9346-b4292842639c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ai">
+      <UniqueIdentifier>{adc0a760-50c9-4458-af65-75c93e1bf2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pathfinder">
+      <UniqueIdentifier>{bfdd8c28-d790-44da-aea3-5f8fb7bf6aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\pathfinder">
+      <UniqueIdentifier>{a6aff917-c9d2-41c2-9ba2-94ff3a29fa1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -60,6 +72,15 @@
     <ClCompile Include="..\..\src\realm.cpp">
       <Filter>Source Files\world</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ai_state.cpp">
+      <Filter>Source Files\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ai_state_machine.cpp">
+      <Filter>Source Files\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\pathfinder.cpp">
+      <Filter>Source Files\pathfinder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
@@ -91,6 +112,18 @@
     </ClInclude>
     <ClInclude Include="..\..\include\realm.h">
       <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ai_state_machine.h">
+      <Filter>Header Files\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ai_state.h">
+      <Filter>Header Files\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\pathfinder.h">
+      <Filter>Header Files\pathfinder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\aabb.h">
+      <Filter>Header Files\pathfinder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\ai_state.cpp" />
+    <ClCompile Include="..\..\src\ai_state_machine.cpp" />
     <ClCompile Include="..\..\src\game_object.cpp" />
     <ClCompile Include="..\..\src\hole.cpp" />
     <ClCompile Include="..\..\src\insect.cpp" />
@@ -26,11 +28,15 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\os_utilities.cpp" />
     <ClCompile Include="..\..\src\ant_world.cpp" />
+    <ClCompile Include="..\..\src\pathfinder.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\realm.cpp" />
     <ClCompile Include="..\..\src\world.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\aabb.h" />
+    <ClInclude Include="..\..\include\ai_state.h" />
+    <ClInclude Include="..\..\include\ai_state_machine.h" />
     <ClInclude Include="..\..\include\delta.h" />
     <ClInclude Include="..\..\include\game_object.h" />
     <ClInclude Include="..\..\include\hole.h" />
@@ -38,6 +44,7 @@
     <ClInclude Include="..\..\include\leaf.h" />
     <ClInclude Include="..\..\include\os_utilities.h" />
     <ClInclude Include="..\..\include\ant_world.h" />
+    <ClInclude Include="..\..\include\pathfinder.h" />
     <ClInclude Include="..\..\include\player.h" />
     <ClInclude Include="..\..\include\realm.h" />
     <ClInclude Include="..\..\include\world.h" />
