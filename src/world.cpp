@@ -3,6 +3,7 @@
 #include "../include/player.h"
 #include "../include/leaf.h"
 #include "../include/hole.h"
+#include "../include/npc_ant.h"
 
 aw::World::World() {
     m_mainRealm = nullptr;
@@ -53,6 +54,30 @@ void aw::World::initialSpawn() {
 
     Hole *hole = m_mainRealm->spawn<Hole>();
     hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
+
+    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
+
+    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(-2.0f, -5.0f, 0.0f, 0.0f));
+
+    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(-3.0f, -5.0f, 0.0f, 0.0f));
+
+    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(1.0f, -5.0f, 0.0f, 0.0f));
+
+    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(2.0f, -5.0f, 0.0f, 0.0f));
+
+    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(3.0f, -5.0f, 0.0f, 0.0f));
+
+    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2->RigidBody.SetPosition(ysMath::LoadVector(4.0f, -5.0f, 0.0f, 0.0f));
+
+    NpcAnt *npc = m_mainRealm->spawn<NpcAnt>();
+    npc->RigidBody.SetPosition(ysMath::LoadVector(0.0f, -10.0f, 0.0f, 0.0f));
 
     m_player = m_mainRealm->spawn<Player>();
 }

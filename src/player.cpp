@@ -18,7 +18,7 @@ void aw::Player::initialize() {
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
     RigidBody.SetInverseMass(1.0f);
     RigidBody.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));
-    RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
+    //RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
 
     dphysics::CollisionObject *bounds;
     RigidBody.CollisionGeometry.NewBoxObject(&bounds);
@@ -129,9 +129,6 @@ void aw::Player::exitHole() {
 
 void aw::Player::render() {
     int color[] = { 0xf1, 0xc4, 0x0f };
-    ysVector position = RigidBody.GetPosition();
-
-    ysMatrix translation = ysMath::TranslationTransform(position);
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
     m_world->getEngine().DrawBox(color, 2.5f, 2.5f, (int)Layer::Player);
 }

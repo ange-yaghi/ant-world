@@ -15,7 +15,7 @@ aw::Realm::~Realm() {
 
 void aw::Realm::registerGameObject(GameObject *object) {
     object->setRealm(this);
-    object->setRealmRecordIndex(m_gameObjects.size());
+    object->setRealmRecordIndex((int)m_gameObjects.size());
     m_gameObjects.push_back(object);
 
     PhysicsSystem.RegisterRigidBody(&object->RigidBody);
@@ -40,6 +40,7 @@ void aw::Realm::process() {
     PhysicsSystem.Update(getEngine().GetFrameLength() / 2);
 
     for (GameObject *g : m_gameObjects) {
+        g->updatePathfinderBounds();
         g->process();
     }
 }
@@ -54,6 +55,7 @@ void aw::Realm::spawnObjects() {
     while (!m_spawnQueue.empty()) {
         GameObject *u = m_spawnQueue.front(); m_spawnQueue.pop();
         u->initialize();
+        u->addPathfinderBounds();
         registerGameObject(u);
     }
 }
@@ -63,7 +65,7 @@ dbasic::DeltaEngine &aw::Realm::getEngine() {
 }
 
 void aw::Realm::updateRealms() {
-    int N = m_gameObjects.size();
+    int N = (int)m_gameObjects.size();
     for (int i = 0; i < N; ++i) {
         if (m_gameObjects[i]->getNewRealm() != nullptr) {
             GameObject *object = m_gameObjects[i];
@@ -86,7 +88,7 @@ void aw::Realm::updateRealms() {
             }
 
             --i;
-            N = m_gameObjects.size();
+            N = (int)m_gameObjects.size();
         }
     }
 }
@@ -96,7 +98,7 @@ void aw::Realm::addToSpawnQueue(GameObject *object) {
 }
 
 void aw::Realm::cleanObjectList() {
-    int N = m_gameObjects.size();
+    int N = (int)m_gameObjects.size();
     int writeIndex = 0;
     for (int i = 0; i < N; ++i) {
         if (m_gameObjects[i]->getDeletionFlag()) {
