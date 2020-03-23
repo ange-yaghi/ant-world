@@ -27,22 +27,46 @@ namespace aw {
         float getGridUnit() const { return m_gridUnit; }
         int getGridWidth() const { return m_gridWidth; }
 
-        void pathfind(const ysVector &destination, std::vector<ysVector> &path) const;
-
         int getObstacleCount() const { return (int)m_obstacles.size(); }
         bool findObstacle(GameObject *obstacle);
         void addObstacle(GameObject *obstacle);
         void clearObstacles();
         void refreshGrid();
 
+        bool update(const ysVector &currentLocation, bool collisionDetected, bool newObstacle, ysVector *nextTarget);
+
+        void clearPath();
+        int getPathLength() const { return (int)m_path.size(); }
+        int getCurrentPathIndex() const { return m_pathIndex; }
+        ysVector getWaypoint(int index) { return getLocation(m_path[index]); }
+
+        bool isEvading() const { return m_evading; }
+
+    protected:
+        bool evade(std::vector<int> &path) const;
+        bool pathfind(const ysVector &destination, std::vector<int> &path) const;
+
+    protected:
+        int encode(int x, int y) const { return x + y * m_gridWidth; };
+        void decode(int d, int &x, int &y) const { x = (d % m_gridWidth); y = d / m_gridWidth; };
+
+        ysVector getLocation(int encodedIndex) const;
+
     protected:
         std::vector<GameObject *> m_obstacles;
 
-        std::vector<std::vector<bool>> m_grid;
+        bool **m_grid;
         float m_gridUnit;
         int m_gridWidth;
 
         ysVector m_origin;
+        ysVector m_destination;
+
+    protected:
+        std::vector<int> m_path;
+        int m_pathIndex;
+
+        bool m_evading;
     };
 
 } /* namespace aw */

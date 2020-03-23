@@ -5,6 +5,8 @@
 
 #include "pathfinder.h"
 
+#include <vector>
+
 namespace aw {
 
     class NpcAnt : public Insect {
@@ -16,8 +18,14 @@ namespace aw {
         virtual void process();
         virtual void render();
 
+        void setDestination(const ysVector &destination);
+        ysVector getDestination() const;
+
     protected:
         Pathfinder m_pathfinder;
+        int m_currentPathIndex;
+
+        ysVector m_destination;
 
         dphysics::CollisionObject *m_sightLine;
     };

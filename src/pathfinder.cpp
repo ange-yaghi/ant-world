@@ -9,6 +9,9 @@ aw::Pathfinder::Pathfinder() {
     m_gridWidth = 0;
     m_gridUnit = 0;
     m_origin = ysMath::Constants::Zero;
+    m_destination = ysMath::Constants::Zero;
+    m_pathIndex = 0;
+    m_evading = false;
 }
 
 aw::Pathfinder::~Pathfinder() {
@@ -19,7 +22,10 @@ void aw::Pathfinder::initialize(float gridUnit, int gridWidth) {
     m_gridUnit = gridUnit;
     m_gridWidth = gridWidth;
 
-    m_grid = std::vector<std::vector<bool>>(m_gridWidth, std::vector<bool>(m_gridWidth));
+    m_grid = new bool *[m_gridWidth];
+    for (int i = 0; i < m_gridWidth; ++i) {
+        m_grid[i] = new bool[m_gridWidth];
+    }
 }
 
 void aw::Pathfinder::translate(const ysVector &v, int &gridX, int &gridY, bool clampOutput) const {
@@ -46,21 +52,21 @@ ysVector aw::Pathfinder::getLocation(int gridX, int gridY) const {
     return ysMath::Add(offset, m_origin);
 }
 
-void aw::Pathfinder::pathfind(const ysVector &destination, std::vector<ysVector> &path) const {
+void aw::Pathfinder::clearPath() {
+    m_pathIndex = 0;
+    m_path.clear();
+}
+
+bool aw::Pathfinder::evade(std::vector<int> &path) const {
     int N = m_gridWidth;
     int N_nodes = N * N;
     std::vector<int> prev(N_nodes, -1);
 
-    auto encode = [](int x, int y, int N) { return x + y * N; };
-    auto decode = [](int d, int &x, int &y, int N) { x = (d % N); y = d / N; };
-
     int sx, sy, s;
-    translate(destination, sx, sy);
-    s = encode(sx, sy, N);
+    translate(m_origin, sx, sy);
+    s = encode(sx, sy);
 
-    int dx, dy, d;
-    translate(m_origin, dx, dy);
-    d = encode(dx, dy, N);
+    int d = -1;
 
     std::queue<int> Q;
     Q.push(s);
@@ -71,10 +77,13 @@ void aw::Pathfinder::pathfind(const ysVector &destination, std::vector<ysVector>
         if (u == d) break;
 
         int ux, uy;
-        decode(u, ux, uy, N);
+        decode(u, ux, uy);
 
-        // Dead end due to obstruction
-        if (m_grid[uy][ux]) continue;
+        // Early Exit
+        if (!m_grid[uy][ux]) {
+            d = u;
+            break;
+        }
 
         for (int i = -1; i <= 1; ++i) {
             for (int j = -1; j <= 1; ++j) {
@@ -85,7 +94,7 @@ void aw::Pathfinder::pathfind(const ysVector &destination, std::vector<ysVector>
                 int vy = uy + j;
 
                 if (vx >= 0 && vx < N && vy >= 0 && vy < N) {
-                    int v = encode(vx, vy, N);
+                    int v = encode(vx, vy);
                     if (prev[v] == -1) {
                         prev[v] = u;
                         Q.push(v);
@@ -95,14 +104,89 @@ void aw::Pathfinder::pathfind(const ysVector &destination, std::vector<ysVector>
         }
     }
 
-    if (prev[d] == -1) return;
+    if (d == -1) return false;
 
-    for (int i = d; i != -2; i = prev[i]) {
-        int x, y;
-        decode(i, x, y, N);
-
-        path.push_back(getLocation(x, y));
+    for (int i = d; i != s; i = prev[i]) {
+        path.push_back(i);
     }
+
+    return true;
+}
+
+bool aw::Pathfinder::pathfind(const ysVector &destination, std::vector<int> &path) const {
+    int N = m_gridWidth;
+    int N_nodes = N * N;
+    std::vector<int> prev(N_nodes, -1);
+
+    int sx, sy, s;
+    translate(m_origin, sx, sy);
+    s = encode(sx, sy);
+
+    int dx, dy, d;
+    translate(m_destination, dx, dy);
+    d = encode(dx, dy);
+
+    std::queue<int> Q;
+    Q.push(s);
+    prev[s] = -2;
+
+    int closestToDestination = -1;
+    int smallestDistanceFromDestination = INT_MAX;
+
+    while (!Q.empty()) {
+        int u = Q.front(); Q.pop();
+        if (u == d) break;
+
+        int ux, uy;
+        decode(u, ux, uy);
+
+        // Dead end due to obstruction
+        if (m_grid[uy][ux]) continue;
+
+        int distance = std::abs(dx - ux) + std::abs(dy - uy);
+        if (distance < smallestDistanceFromDestination) {
+            smallestDistanceFromDestination = distance;
+            closestToDestination = u;
+        }
+
+        for (int i = -1; i <= 1; ++i) {
+            for (int j = -1; j <= 1; ++j) {
+                if (i == 0 && j == 0) continue;
+                if (i != 0 && j != 0) continue;
+
+                int vx = ux + i;
+                int vy = uy + j;
+
+                if (vx >= 0 && vx < N && vy >= 0 && vy < N) {
+                    int v = encode(vx, vy);
+                    if (prev[v] == -1) {
+                        prev[v] = u;
+                        Q.push(v);
+                    }
+                }
+            }
+        }
+    }
+
+    if (prev[d] == -1 && closestToDestination == -1) return false;
+
+    int newDestination = (prev[d] == -1)
+        ? closestToDestination
+        : d;
+
+    for (int i = newDestination; i != -2; i = prev[i]) {
+        path.push_back(i);
+    }
+
+    std::reverse(path.begin(), path.end());
+
+    return true;
+}
+
+ysVector aw::Pathfinder::getLocation(int encodedIndex) const {
+    int tx, ty;
+    decode(encodedIndex, tx, ty);
+    return getLocation(tx, ty);
 }
 
 bool aw::Pathfinder::findObstacle(GameObject *obstacle) {
@@ -164,6 +248,61 @@ void aw::Pathfinder::refreshGrid() {
                 }
             }
         }
+    }
+}
+
+bool aw::Pathfinder::update(const ysVector &currentLocation, bool collisionDetected, bool newObstacle, ysVector *nextTarget) {
+    refreshGrid();
+
+    int lx, ly;
+    translate(currentLocation, lx, ly);
+
+    bool evasiveAction = m_grid[ly][lx] || collisionDetected;
+
+    if (!evasiveAction && (m_pathIndex == getPathLength() || newObstacle)) {
+        ysVector delta = ysMath::Sub(currentLocation, m_destination);
+        float mag = ysMath::GetScalar(ysMath::MagnitudeSquared3(delta));
+
+        if (mag > 0.01f) {
+            clearPath();
+
+            setOrigin(currentLocation);
+            refreshGrid();
+            pathfind(m_destination, m_path);
+        }
+    }
+
+    if (evasiveAction) {
+        clearPath();
+
+        setOrigin(currentLocation);
+        refreshGrid();
+        evade(m_path);
+
+        m_evading = true;
+    }
+
+    if (m_pathIndex < getPathLength()) {
+        int target = m_path[m_pathIndex];
+        int current;
+        int cx, cy;
+        translate(currentLocation, cx, cy);
+        current = encode(cx, cy);
+
+        if (current == target) {
+            ++m_pathIndex;
+        }
+    }
+
+    if (m_pathIndex < getPathLength()) {
+        *nextTarget = getLocation(m_path[m_pathIndex]);
+        return true;
+    }
+    else {
+        m_evading = false;
+
+        clearPath();
+        return false;
     }
 }
 
