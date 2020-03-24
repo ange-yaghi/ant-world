@@ -3,6 +3,8 @@
 #include "../include/world.h"
 #include "../include/hole.h"
 
+#include <sstream>
+
 aw::Player::Player() {
     /* void */
 }
@@ -131,4 +133,17 @@ void aw::Player::render() {
     int color[] = { 0xf1, 0xc4, 0x0f };
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
     m_world->getEngine().DrawBox(color, 2.5f, 2.5f, (int)Layer::Player);
+
+    dbasic::Console *console = m_world->getEngine().GetConsole();
+    console->Clear();
+    console->MoveToLocation(dbasic::GuiPoint(1, 2));
+    console->SetFontForeColor(0, 0, 0, 1.0f);
+    console->SetFontBackColor(0, 0, 0, 0.0f);
+
+    std::stringstream msg;
+    ysVector position = RigidBody.GetWorldPosition();
+    msg << "Pos " << ysMath::GetX(position) << "/" << ysMath::GetY(position) << "\n";
+    msg << "FPS " << m_world->getEngine().GetAverageFramerate();
+    console->DrawGeneralText(msg.str().c_str());
+    //console->UpdateDisplay();
 }

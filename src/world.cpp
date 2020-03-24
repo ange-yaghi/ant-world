@@ -79,6 +79,12 @@ void aw::World::initialSpawn() {
     NpcAnt *npc = m_mainRealm->spawn<NpcAnt>();
     npc->RigidBody.SetPosition(ysMath::LoadVector(0.0f, -10.0f, 0.0f, 0.0f));
 
+    npc = m_mainRealm->spawn<NpcAnt>();
+    npc->RigidBody.SetPosition(ysMath::LoadVector(-10.0f, 0.0f, 0.0f, 0.0f));
+
+    npc = m_mainRealm->spawn<NpcAnt>();
+    npc->RigidBody.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0f, 0.0f));
+
     m_player = m_mainRealm->spawn<Player>();
 }
 

@@ -19,7 +19,7 @@ void aw::NpcAnt::initialize() {
 
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
     RigidBody.SetInverseMass(1.0f);
-    RigidBody.SetPosition(ysMath::LoadVector(0.0f, -10.0f, 0.0f));
+    //RigidBody.SetPosition(ysMath::LoadVector(0.0f, -10.0f, 0.0f));
     //RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
 
     dphysics::CollisionObject *bounds;
