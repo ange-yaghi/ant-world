@@ -1,7 +1,7 @@
 #include "../include/world.h"
 
 #include "../include/player.h"
-#include "../include/leaf.h"
+#include "../include/crum.h"
 #include "../include/hole.h"
 #include "../include/npc_ant.h"
 
@@ -46,34 +46,34 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
 void aw::World::initialSpawn() {
     m_mainRealm = newRealm<Realm>();
 
-    Leaf *leaf1 = m_mainRealm->spawn<Leaf>();
+    Crum *leaf1 = m_mainRealm->spawn<Crum>();
     leaf1->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
 
-    Leaf *leaf2 = m_mainRealm->spawn<Leaf>();
+    Crum *leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
     Hole *hole = m_mainRealm->spawn<Hole>();
     hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(-2.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(-3.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(1.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(2.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(3.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Leaf>();
+    leaf2 = m_mainRealm->spawn<Crum>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(4.0f, -5.0f, 0.0f, 0.0f));
 
     NpcAnt *npc = m_mainRealm->spawn<NpcAnt>();

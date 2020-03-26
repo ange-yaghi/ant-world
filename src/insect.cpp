@@ -16,6 +16,8 @@ void aw::Insect::carry(GameObject *object) {
     object->setBeingCarried(true);
     RigidBody.AddChild(&object->RigidBody);
     object->RigidBody.SetPosition(getCarryLocation());
+
+    object->incrementReferenceCount();
 }
 
 void aw::Insect::drop() {
@@ -30,6 +32,7 @@ void aw::Insect::drop() {
     droppedBody.SetPosition(position);
     droppedBody.SetOrientation(orientation);
 
+    m_carryItem->decrementReferenceCount();
     m_carryItem = nullptr;
 }
 
@@ -44,4 +47,8 @@ void aw::Insect::changeRealm(Realm *newRealm) {
     if (isCarryingItem()) {
         m_carryItem->changeRealm(newRealm);
     }
+}
+
+void aw::Insect::process() {
+    GameObject::process();
 }

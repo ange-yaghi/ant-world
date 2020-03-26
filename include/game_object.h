@@ -28,6 +28,7 @@ namespace aw {
             Insect,
             Player,
             Carryable,
+            Edible,
             Count
         };
 
@@ -74,8 +75,18 @@ namespace aw {
         int getPathfinderBoundCount() { return (int)m_pathfinderBounds.size(); }
         AABB &getPathfinderBound(int index) { return m_pathfinderBounds[index]; }
 
+        float getNutritionalValue() const { return m_nutritionalValue; }
+        void setNutritionalValue(float value) { m_nutritionalValue = value; }
+
+        void incrementReferenceCount() { ++m_referenceCount; }
+        void decrementReferenceCount() { --m_referenceCount; }
+        int getReferenceCount() const { return m_referenceCount; }
+
     protected:
         std::vector<AABB> m_pathfinderBounds;
+
+    protected:
+        int m_referenceCount;
 
     protected:
         World *m_world;
@@ -94,6 +105,9 @@ namespace aw {
 
     private:
         int m_realmRecordIndex;
+
+    private:
+        float m_nutritionalValue;
     };
 
 } /* namespace aw */

@@ -56,10 +56,7 @@ void aw::NpcAnt::process() {
             hitSomething = true;
         }
 
-        if (!m_pathfinder.findObstacle(object)) {
-            m_pathfinder.addObstacle(object);
-            newObstacle = true;
-        }
+        newObstacle = m_pathfinder.addObstacle(object);
     }
 
     ysVector position = RigidBody.GetWorldPosition();
@@ -86,7 +83,7 @@ void aw::NpcAnt::render() {
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
     m_world->getEngine().DrawBox(color, 2.5f, 2.5f, (int)Layer::Mob);
 
-    int pathFinderColor[] = { 0x0, 0x0, 0x0 };
+    int pathFinderColor[] = { 0x00, 0x00, 0x00 };
     int pathFinderGrey[] = { 0xAA, 0xAA, 0xAA };
     int pathFinderPink[] = { 255, 192, 203 };
     m_world->getEngine().SetObjectTransform(ysMath::TranslationTransform(m_destination));

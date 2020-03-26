@@ -24,6 +24,8 @@ namespace aw {
 
         virtual void changeRealm(Realm *newRealm);
 
+        virtual void process();
+
     protected:
         GameObject *m_carryItem;
         ysVector m_carryLocation;

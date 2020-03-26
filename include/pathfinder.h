@@ -29,7 +29,8 @@ namespace aw {
 
         int getObstacleCount() const { return (int)m_obstacles.size(); }
         bool findObstacle(GameObject *obstacle);
-        void addObstacle(GameObject *obstacle);
+        bool isInRange(GameObject *obstacle);
+        bool addObstacle(GameObject *obstacle);
         void clearObstacles();
         void refreshGrid();
 
@@ -45,6 +46,8 @@ namespace aw {
     protected:
         bool evade(std::vector<int> &path) const;
         bool pathfind(const ysVector &destination, std::vector<int> &path) const;
+
+        void removeObstacle(int index);
 
     protected:
         int encode(int x, int y) const { return x + y * m_gridWidth; };

@@ -48,6 +48,9 @@ namespace aw {
         void setExitPortal(Hole *portal) { m_exitPortal = portal; }
         Hole *getExitPortal() const { return m_exitPortal; }
 
+        int getAliveObjectCount() const { return (int)m_gameObjects.size(); }
+        int getDeadObjectCount() const { return (int)m_deadObjects.size(); }
+
     protected:
         void addToSpawnQueue(GameObject *object);
         void cleanObjectList();
@@ -56,6 +59,7 @@ namespace aw {
     protected:
         std::queue<GameObject *> m_spawnQueue;
         std::vector<GameObject *> m_gameObjects;
+        std::vector<GameObject *> m_deadObjects;
 
     protected:
         World *m_world;

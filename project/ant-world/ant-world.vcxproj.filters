@@ -69,9 +69,6 @@
     <ClCompile Include="..\..\src\insect.cpp">
       <Filter>Source Files\game-objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\leaf.cpp">
-      <Filter>Source Files\game-objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\hole.cpp">
       <Filter>Source Files\game-objects</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\npc_ant.cpp">
       <Filter>Source Files\game-objects\npc-ant</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\crum.cpp">
+      <Filter>Source Files\game-objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,9 +113,6 @@
     <ClInclude Include="..\..\include\insect.h">
       <Filter>Header Files\game-objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\leaf.h">
-      <Filter>Header Files\game-objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\hole.h">
       <Filter>Header Files\game-objects</Filter>
     </ClInclude>
@@ -136,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\npc_ant.h">
       <Filter>Header Files\game-objects\npc-ant</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\crum.h">
+      <Filter>Header Files\game-objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

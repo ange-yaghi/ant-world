@@ -14,12 +14,18 @@ namespace aw {
         virtual void process();
         virtual void render();
 
+        void updateEnergy(float dt);
+
     protected:
         virtual void grab();
         virtual void drop();
+        virtual void eat();
 
         virtual void enterHole();
         virtual void exitHole();
+
+    protected:
+        float m_energy;
     };
 
 } /* namespace aw */

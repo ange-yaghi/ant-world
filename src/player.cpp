@@ -6,7 +6,7 @@
 #include <sstream>
 
 aw::Player::Player() {
-    /* void */
+    m_energy = 0.0f;
 }
 
 aw::Player::~Player() {
@@ -37,9 +37,13 @@ void aw::Player::initialize() {
     //RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     //bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     //bounds->GetAsCircle()->RadiusSquared = 1.25 * 1.25;
+
+    m_energy = 10.0f;
 }
 
 void aw::Player::process() {
+    Insect::process();
+
     ysVector heading = ysMath::Constants::Zero;
     ysVector velocity = ysMath::LoadScalar(5.0f);
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_LEFT)) {
@@ -71,9 +75,13 @@ void aw::Player::process() {
         exitHole();
     }
 
+    if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_E)) {
+        eat();
+    }
+
     RigidBody.SetVelocity(ysMath::Mul(heading, velocity));
 
-    GameObject::process();
+    updateEnergy(m_world->getEngine().GetFrameLength());
 }
 
 void aw::Player::grab() {
@@ -94,6 +102,18 @@ void aw::Player::grab() {
 
 void aw::Player::drop() {
     Insect::drop();
+}
+
+void aw::Player::eat() {
+    if (!isCarryingItem()) return;
+
+    GameObject *carriedObject = m_carryItem;
+    if (!carriedObject->hasTag(Tag::Edible)) return;
+
+    m_energy += carriedObject->getNutritionalValue();
+
+    carriedObject->setDeletionFlag();
+    drop();
 }
 
 void aw::Player::enterHole() {
@@ -143,7 +163,13 @@ void aw::Player::render() {
     std::stringstream msg;
     ysVector position = RigidBody.GetWorldPosition();
     msg << "Pos " << ysMath::GetX(position) << "/" << ysMath::GetY(position) << "\n";
-    msg << "FPS " << m_world->getEngine().GetAverageFramerate();
+    msg << "FPS " << m_world->getEngine().GetAverageFramerate() << "\n";
+    msg << "Energy: " << m_energy << "\n";
+    msg << "AO/DO: " << m_realm->getAliveObjectCount() << "/" << m_realm->getDeadObjectCount() << "\n";
     console->DrawGeneralText(msg.str().c_str());
     //console->UpdateDisplay();
+}
+
+void aw::Player::updateEnergy(float dt) {
+    m_energy -= 0.01f * dt;
 }

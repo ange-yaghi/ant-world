@@ -183,6 +183,12 @@ bool aw::Pathfinder::pathfind(const ysVector &destination, std::vector<int> &pat
     return true;
 }
 
+void aw::Pathfinder::removeObstacle(int index) {
+    m_obstacles[index]->decrementReferenceCount();
+    m_obstacles[index] = m_obstacles.back();
+    m_obstacles.pop_back();
+}
+
 ysVector aw::Pathfinder::getLocation(int encodedIndex) const {
     int tx, ty;
     decode(encodedIndex, tx, ty);
@@ -201,11 +207,48 @@ bool aw::Pathfinder::findObstacle(GameObject *obstacle) {
     return found;
 }
 
-void aw::Pathfinder::addObstacle(GameObject *obstacle) {
+bool aw::Pathfinder::isInRange(GameObject *obstacle) {
+    int bounds = obstacle->getPathfinderBoundCount();
+    for (int i = 0; i < bounds; ++i) {
+        int minX, minY;
+        int maxX, maxY;
+
+        ysVector minPoint = ysMath::Sub(
+            obstacle->getPathfinderBound(i).minPoint,
+            ysMath::LoadVector(2.5f / 2, 2.5f / 2));
+        ysVector maxPoint = ysMath::Add(
+            obstacle->getPathfinderBound(i).maxPoint,
+            ysMath::LoadVector(2.5f / 2, 2.5f / 2));
+
+        translate(minPoint, minX, minY, false);
+        translate(maxPoint, maxX, maxY, false);
+
+        if (minX >= m_gridWidth) continue;
+        if (maxX < 0) continue;
+        if (minY >= m_gridWidth) continue;
+        if (maxY < 0) continue;
+
+        return true;
+    }
+
+    return false;
+}
+
+bool aw::Pathfinder::addObstacle(GameObject *obstacle) {
+    if (findObstacle(obstacle)) return false;
+    if (!isInRange(obstacle)) return false;
+
+    obstacle->incrementReferenceCount();
     m_obstacles.push_back(obstacle);
+
+    return true;
 }
 
 void aw::Pathfinder::clearObstacles() {
+    for (GameObject *obstacle : m_obstacles) {
+        obstacle->decrementReferenceCount();
+    }
+
     m_obstacles.clear();
 }
 
@@ -216,7 +259,16 @@ void aw::Pathfinder::refreshGrid() {
         }
     }
 
-    for (GameObject *object: m_obstacles) {
+    int N = getObstacleCount();
+    for (int i = 0; i < N; ++i) {
+        GameObject *object = m_obstacles[i];
+        if (object->getDeletionFlag()) {
+            removeObstacle(i);
+            --i; --N;
+            continue;
+        }
+
+        bool inRange = false;
         int bounds = object->getPathfinderBoundCount();
         for (int i = 0; i < bounds; ++i) {
             int minX, minY;
@@ -245,8 +297,14 @@ void aw::Pathfinder::refreshGrid() {
             for (int x = minX; x <= maxX; ++x) {
                 for (int y = minY; y <= maxY; ++y) {
                     m_grid[y][x] = true;
+                    inRange = true;
                 }
             }
+        }
+
+        if (!inRange) {
+            removeObstacle(i);
+            --i; --N;
         }
     }
 }

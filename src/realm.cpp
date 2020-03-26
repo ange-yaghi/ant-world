@@ -40,6 +40,8 @@ void aw::Realm::process() {
     PhysicsSystem.Update(getEngine().GetFrameLength() / 2);
 
     for (GameObject *g : m_gameObjects) {
+        if (g->getDeletionFlag()) continue;
+
         g->updatePathfinderBounds();
         g->process();
     }
@@ -47,6 +49,8 @@ void aw::Realm::process() {
 
 void aw::Realm::render() {
     for (GameObject *g : m_gameObjects) {
+        if (g->getDeletionFlag()) continue;
+
         g->render();
     }
 }
@@ -99,13 +103,27 @@ void aw::Realm::addToSpawnQueue(GameObject *object) {
 
 void aw::Realm::cleanObjectList() {
     int N = (int)m_gameObjects.size();
-    int writeIndex = 0;
     for (int i = 0; i < N; ++i) {
         if (m_gameObjects[i]->getDeletionFlag()) {
-            destroyObject(m_gameObjects[i]);
+            m_deadObjects.push_back(m_gameObjects[i]);
+            unregisterGameObject(m_gameObjects[i]);
+
+            --i; --N;
+        }
+    }
+
+    int N_dead = (int)m_deadObjects.size();
+    for (int i = 0; i < N_dead; ++i) {
+        if (m_deadObjects[i]->getReferenceCount() == 0) {
+            destroyObject(m_deadObjects[i]);
+
+            m_deadObjects[i] = m_deadObjects.back();
+            m_deadObjects.pop_back();
+
+            --i; --N_dead;
         }
         else {
-            m_gameObjects[writeIndex++] = m_gameObjects[i];
+            int a = 0;
         }
     }
 }

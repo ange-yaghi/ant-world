@@ -23,7 +23,6 @@ namespace aw {
 
     protected:
         Pathfinder m_pathfinder;
-        int m_currentPathIndex;
 
         ysVector m_destination;
 

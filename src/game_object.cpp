@@ -14,6 +14,8 @@ aw::GameObject::GameObject() {
     m_realm = nullptr;
     m_newRealm = nullptr;
     m_lastPortal = nullptr;
+
+    m_referenceCount = 0;
 }
 
 aw::GameObject::~GameObject() {
