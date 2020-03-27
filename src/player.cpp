@@ -167,7 +167,6 @@ void aw::Player::render() {
     msg << "Energy: " << m_energy << "\n";
     msg << "AO/DO: " << m_realm->getAliveObjectCount() << "/" << m_realm->getDeadObjectCount() << "\n";
     console->DrawGeneralText(msg.str().c_str());
-    //console->UpdateDisplay();
 }
 
 void aw::Player::updateEnergy(float dt) {

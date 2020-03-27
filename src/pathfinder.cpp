@@ -12,6 +12,7 @@ aw::Pathfinder::Pathfinder() {
     m_destination = ysMath::Constants::Zero;
     m_pathIndex = 0;
     m_evading = false;
+    m_grid = nullptr;
 }
 
 aw::Pathfinder::~Pathfinder() {
@@ -289,6 +290,8 @@ void aw::Pathfinder::refreshGrid() {
             if (minY >= m_gridWidth) continue;
             if (maxY < 0) continue;
 
+            inRange = true;
+
             minX = clamp(minX, 0, m_gridWidth - 1);
             maxX = clamp(maxX, 0, m_gridWidth - 1);
             minY = clamp(minY, 0, m_gridWidth - 1);
@@ -297,7 +300,6 @@ void aw::Pathfinder::refreshGrid() {
             for (int x = minX; x <= maxX; ++x) {
                 for (int y = minY; y <= maxY; ++y) {
                     m_grid[y][x] = true;
-                    inRange = true;
                 }
             }
         }

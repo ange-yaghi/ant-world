@@ -26,6 +26,7 @@
     <ClCompile Include="..\..\src\insect.cpp" />
     <ClCompile Include="..\..\src\crum.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\math.cpp" />
     <ClCompile Include="..\..\src\npc_ant.cpp" />
     <ClCompile Include="..\..\src\os_utilities.cpp" />
     <ClCompile Include="..\..\src\ant_world.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="..\..\include\hole.h" />
     <ClInclude Include="..\..\include\insect.h" />
     <ClInclude Include="..\..\include\crum.h" />
+    <ClInclude Include="..\..\include\math.h" />
     <ClInclude Include="..\..\include\npc_ant.h" />
     <ClInclude Include="..\..\include\os_utilities.h" />
     <ClInclude Include="..\..\include\ant_world.h" />
