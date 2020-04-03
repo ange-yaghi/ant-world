@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\ai_state.cpp" />
     <ClCompile Include="..\..\src\ai_state_machine.cpp" />
+    <ClCompile Include="..\..\src\asset_loader.cpp" />
     <ClCompile Include="..\..\src\game_object.cpp" />
     <ClCompile Include="..\..\src\hole.cpp" />
     <ClCompile Include="..\..\src\insect.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="..\..\include\aabb.h" />
     <ClInclude Include="..\..\include\ai_state.h" />
     <ClInclude Include="..\..\include\ai_state_machine.h" />
+    <ClInclude Include="..\..\include\asset_loader.h" />
     <ClInclude Include="..\..\include\delta.h" />
     <ClInclude Include="..\..\include\game_object.h" />
     <ClInclude Include="..\..\include\hole.h" />

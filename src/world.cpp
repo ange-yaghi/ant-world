@@ -30,6 +30,8 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
         confFile.close();
     }
 
+    m_assetPath = dbasic::Path(assetPath);
+
     m_engine.GetConsole()->SetDefaultFontDirectory(enginePath + "/fonts/");
 
     m_engine.CreateGameWindow(
@@ -41,6 +43,8 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
     m_engine.SetClearColor(0x34, 0x98, 0xdb);
 
     m_assetManager.SetEngine(&m_engine);
+
+    AssetLoader::loadAllAssets(dbasic::Path(assetPath), &m_assetManager);
 }
 
 void aw::World::initialSpawn() {
@@ -122,7 +126,7 @@ void aw::World::render() {
     ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
 
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
-    m_engine.SetCameraAltitude(10.0f);
+    m_engine.SetCameraAltitude(30.0f);
 
     m_player->getRealm()->render();
 }

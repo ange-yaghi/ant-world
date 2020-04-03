@@ -3,6 +3,7 @@
 
 #include "game_object.h"
 #include "realm.h"
+#include "asset_loader.h"
 
 #include "delta.h"
 
@@ -51,6 +52,8 @@ namespace aw {
     protected:
         dbasic::DeltaEngine m_engine;
         dbasic::AssetManager m_assetManager;
+
+        dbasic::Path m_assetPath;
 
         Player *m_player;
     };
