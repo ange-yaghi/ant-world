@@ -24,8 +24,44 @@ namespace aw {
         virtual void enterHole();
         virtual void exitHole();
 
+        void updateMotion();
+        void updateAnimation();
+
+    protected:
+        ysAnimationActionBinding
+            m_animBlink,
+            m_animIdle,
+            m_animWalk,
+            m_faceUp,
+            m_faceDown,
+            m_faceLeft,
+            m_faceRight;
+
+        dbasic::RenderSkeleton *m_renderSkeleton;
+
+        ysAnimationChannel *m_legsChannel;
+        ysAnimationChannel *m_antennaChannel;
+        ysAnimationChannel *m_eyelidChannel;
+        ysAnimationChannel *m_bodyRotationChannel;
+
     protected:
         float m_energy;
+
+        // Assets ----
+    public:
+        static void configureAssets(dbasic::AssetManager *am);
+
+    protected:
+        static ysAnimationAction
+            *AnimBlink,
+            *AnimIdle,
+            *AnimWalk,
+            *PoseFaceUp,
+            *PoseFaceDown,
+            *PoseFaceRight,
+            *PoseFaceLeft;
+
+        static dbasic::SceneObjectAsset *CharacterRoot;
     };
 
 } /* namespace aw */

@@ -46,12 +46,21 @@
     <Filter Include="Source Files\game-objects\npc-ant">
       <UniqueIdentifier>{2c2b8e53-0063-435d-8399-cd0584b6dc87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\utilities">
+      <UniqueIdentifier>{9f34e7b9-f95f-41d8-9aac-62bf3f6dad67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utilities">
+      <UniqueIdentifier>{459c88c2-c526-4d08-ae72-66aada74ef1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\assets">
+      <UniqueIdentifier>{dd07e6a2-5ab5-4052-88b2-eda0f468775c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\assets">
+      <UniqueIdentifier>{024fa366-950d-4197-8f6d-6327cf763520}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\os_utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\world.cpp">
@@ -90,13 +99,19 @@
     <ClCompile Include="..\..\src\crum.cpp">
       <Filter>Source Files\game-objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\math.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\os_utilities.cpp">
+      <Filter>Source Files\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\asset_loader.cpp">
+      <Filter>Source Files\assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
       <Filter>Header Files\delta-includes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\os_utilities.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\game_object.h">
       <Filter>Header Files\game-objects</Filter>
@@ -136,6 +151,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\crum.h">
       <Filter>Header Files\game-objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\os_utilities.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\asset_loader.h">
+      <Filter>Header Files\assets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

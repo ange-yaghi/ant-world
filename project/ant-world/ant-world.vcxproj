@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\ai_state.cpp" />
     <ClCompile Include="..\..\src\ai_state_machine.cpp" />
+    <ClCompile Include="..\..\src\asset_loader.cpp" />
     <ClCompile Include="..\..\src\game_object.cpp" />
     <ClCompile Include="..\..\src\hole.cpp" />
     <ClCompile Include="..\..\src\insect.cpp" />
     <ClCompile Include="..\..\src\crum.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\math.cpp" />
     <ClCompile Include="..\..\src\npc_ant.cpp" />
     <ClCompile Include="..\..\src\os_utilities.cpp" />
     <ClCompile Include="..\..\src\ant_world.cpp" />
@@ -38,11 +40,13 @@
     <ClInclude Include="..\..\include\aabb.h" />
     <ClInclude Include="..\..\include\ai_state.h" />
     <ClInclude Include="..\..\include\ai_state_machine.h" />
+    <ClInclude Include="..\..\include\asset_loader.h" />
     <ClInclude Include="..\..\include\delta.h" />
     <ClInclude Include="..\..\include\game_object.h" />
     <ClInclude Include="..\..\include\hole.h" />
     <ClInclude Include="..\..\include\insect.h" />
     <ClInclude Include="..\..\include\crum.h" />
+    <ClInclude Include="..\..\include\math.h" />
     <ClInclude Include="..\..\include\npc_ant.h" />
     <ClInclude Include="..\..\include\os_utilities.h" />
     <ClInclude Include="..\..\include\ant_world.h" />

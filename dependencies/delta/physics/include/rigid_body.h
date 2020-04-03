@@ -32,7 +32,7 @@ namespace dphysics {
         CollisionGeometry CollisionGeometry;
 
         void Integrate(float timeStep);
-        void UpdateDerivedData();
+        void UpdateDerivedData(bool force = false);
 
         ysQuaternion GetOrientation() const { return m_orientation; }
 
@@ -45,6 +45,8 @@ namespace dphysics {
 
         void SetPosition(const ysVector &v) { m_position = v; m_derivedValid = false; }
         void SetVelocity(const ysVector &v) { m_velocity = v; }
+        ysVector GetVelocity() const { return m_velocity; }
+
         void SetAngularVelocity(const ysVector &v) { m_angularVelocity = v; }
 
         ysMatrix GetTransform() const { return m_transform; }

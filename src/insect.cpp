@@ -3,7 +3,7 @@
 aw::Insect::Insect() {
     m_carryItem = nullptr;
 
-    m_carryLocation = ysMath::LoadVector(1.0f, 0.0f, 0.0f, 1.0f);
+    m_carryPoint = nullptr;
     m_dropLocation = ysMath::LoadVector(2.0f, 0.0f, 0.0f, 1.0f);
 }
 
@@ -12,22 +12,26 @@ aw::Insect::~Insect() {
 }
 
 void aw::Insect::carry(GameObject *object) {
+    if (m_carryPoint == nullptr) return;
+
     m_carryItem = object;
     object->setBeingCarried(true);
-    RigidBody.AddChild(&object->RigidBody);
-    object->RigidBody.SetPosition(getCarryLocation());
+    m_carryPoint->AddChild(&object->RigidBody);
+    object->RigidBody.SetPosition(ysMath::Constants::Zero);
 
     object->incrementReferenceCount();
 }
 
 void aw::Insect::drop() {
+    if (m_carryPoint == nullptr) return;
+
     m_carryItem->setBeingCarried(false);
 
     dphysics::RigidBody &droppedBody = m_carryItem->RigidBody;
 
     ysVector position = RigidBody.GetGlobalSpace(getDropLocation());
     ysQuaternion orientation = droppedBody.GetWorldOrientation();
-    RigidBody.RemoveChild(&droppedBody);
+    m_carryPoint->RemoveChild(&droppedBody);
 
     droppedBody.SetPosition(position);
     droppedBody.SetOrientation(orientation);
