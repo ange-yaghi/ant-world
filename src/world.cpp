@@ -41,7 +41,7 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
         api,
         (enginePath + "/shaders/").c_str());
 
-    m_engine.SetClearColor(0x34, 0x98, 0xdb);
+    m_engine.SetClearColor(0xf4, 0xa4, 0x60);
 
     m_assetManager.SetEngine(&m_engine);
 
@@ -51,47 +51,53 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
 void aw::World::initialSpawn() {
     m_mainRealm = newRealm<Realm>();
 
-    Food *leaf1 = m_mainRealm->spawn<Food>();
-    leaf1->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
+    //Food *leaf1 = m_mainRealm->spawn<Food>();
+    //leaf1->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
 
-    Food *leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
+    //Food *leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
     Cookie *cookie = m_mainRealm->spawn<Cookie>();
-    cookie->RigidBody.SetPosition(ysMath::LoadVector(10.0f, -2.0f, 0.0f, 0.0f));
+    cookie->RigidBody.SetPosition(ysMath::LoadVector(5.0f, -2.0f, 0.0f, 0.0f));
 
-    Hole *hole = m_mainRealm->spawn<Hole>();
-    hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
+    cookie = m_mainRealm->spawn<Cookie>();
+    cookie->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
+    cookie = m_mainRealm->spawn<Cookie>();
+    cookie->RigidBody.SetPosition(ysMath::LoadVector(-4.0f, 3.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(-2.0f, -5.0f, 0.0f, 0.0f));
+    //Hole *hole = m_mainRealm->spawn<Hole>();
+    //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(-3.0f, -5.0f, 0.0f, 0.0f));
+    //leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(1.0f, -5.0f, 0.0f, 0.0f));
+    //leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(-2.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(2.0f, -5.0f, 0.0f, 0.0f));
+    //leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(-3.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(3.0f, -5.0f, 0.0f, 0.0f));
+    //leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(1.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Food>();
-    leaf2->RigidBody.SetPosition(ysMath::LoadVector(4.0f, -5.0f, 0.0f, 0.0f));
+    //leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(2.0f, -5.0f, 0.0f, 0.0f));
 
-    NpcAnt *npc = m_mainRealm->spawn<NpcAnt>();
-    npc->RigidBody.SetPosition(ysMath::LoadVector(0.0f, -10.0f, 0.0f, 0.0f));
+    //leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(3.0f, -5.0f, 0.0f, 0.0f));
 
-    npc = m_mainRealm->spawn<NpcAnt>();
-    npc->RigidBody.SetPosition(ysMath::LoadVector(-10.0f, 0.0f, 0.0f, 0.0f));
+    //leaf2 = m_mainRealm->spawn<Food>();
+    //leaf2->RigidBody.SetPosition(ysMath::LoadVector(4.0f, -5.0f, 0.0f, 0.0f));
 
-    npc = m_mainRealm->spawn<NpcAnt>();
-    npc->RigidBody.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0f, 0.0f));
+    //NpcAnt *npc = m_mainRealm->spawn<NpcAnt>();
+    //npc->RigidBody.SetPosition(ysMath::LoadVector(0.0f, -10.0f, 0.0f, 0.0f));
+
+    //npc = m_mainRealm->spawn<NpcAnt>();
+    //npc->RigidBody.SetPosition(ysMath::LoadVector(-10.0f, 0.0f, 0.0f, 0.0f));
+
+    //npc = m_mainRealm->spawn<NpcAnt>();
+    //npc->RigidBody.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0f, 0.0f));
 
     m_player = m_mainRealm->spawn<Player>();
 }
