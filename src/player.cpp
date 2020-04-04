@@ -2,6 +2,7 @@
 
 #include "../include/world.h"
 #include "../include/hole.h"
+#include "../include/math.h"
 
 #include <sstream>
 
@@ -36,8 +37,8 @@ void aw::Player::initialize() {
     dphysics::CollisionObject *bounds;
     RigidBody.CollisionGeometry.NewBoxObject(&bounds);
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
-    bounds->GetAsBox()->HalfHeight = 2.0f;
-    bounds->GetAsBox()->HalfWidth = 2.0f;
+    bounds->GetAsBox()->HalfHeight = 1.5f;
+    bounds->GetAsBox()->HalfWidth = 1.5f;
     bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
     bounds->GetAsBox()->Position = ysMath::Constants::Zero;
 
@@ -75,6 +76,11 @@ void aw::Player::initialize() {
 }
 
 void aw::Player::grab() {
+    constexpr float MouthTolerance = 0.0f;
+
+    ysVector mouthLocation = getCarryPoint()->GetWorldPosition();
+    mouthLocation = ysMath::Mask(mouthLocation, ysMath::Constants::MaskOffZ);
+
     int collisionCount = RigidBody.GetCollisionCount();
     for (int i = 0; i < collisionCount; ++i) {
         dphysics::Collision *col = RigidBody.GetCollision(i);
@@ -84,8 +90,11 @@ void aw::Player::grab() {
 
         GameObject *object = reinterpret_cast<GameObject *>(body->GetOwner());
         if (object->hasTag(Tag::Carryable) && !object->isBeingCarried()) {
-            carry(object);
-            break;
+            ysVector position = object->getPickupPointWorld();
+            if (inRange(mouthLocation, position, object->getPickupRadius() + MouthTolerance)) {
+                carry(object);
+                break;
+            }
         }
     }
 }
@@ -142,45 +151,21 @@ void aw::Player::exitHole() {
 void aw::Player::updateMotion() {
     ysVector heading = ysMath::Constants::Zero;
     ysVector velocity = ysMath::LoadScalar(5.0f);
-    dbasic::RenderNode *probe = m_renderSkeleton->GetNode("Root");
      
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_LEFT)) {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::XAxis));
-        //RigidBody.SetOrientation(ysMath::LoadQuaternion(3 * ysMath::Constants::PI / 2.0f, ysMath::Constants::ZAxis));
-        ysQuaternion a = ysMath::LoadQuaternion(ysMath::Constants::PI / 2.0f, ysMath::Constants::ZAxis);
-        //RigidBody.SetAngularVelocity(ysMath::LoadVector(0.0f, 0.0f, -2.0f));
-        ysAnimationChannel::ActionSettings settings;
-        settings.FadeIn = 20.0f;
-        if (m_bodyRotationChannel->GetCurrentAction() != &m_faceLeft) {
-            m_bodyRotationChannel->AddSegment(&m_faceLeft, settings);
-        }
     }
 
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_RIGHT)) {
         heading = ysMath::Add(heading, ysMath::Constants::XAxis);
-        //RigidBody.SetOrientation(ysMath::LoadQuaternion(ysMath::Constants::PI / 2.0f, ysMath::Constants::ZAxis));
-        //RigidBody.SetAngularVelocity(ysMath::LoadVector(0.0f, 0.0f, 2.0f));
-        ysAnimationChannel::ActionSettings settings;
-        settings.FadeIn = 20.0f;
-        m_bodyRotationChannel->AddSegment(&m_faceRight, settings);
     }
 
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_UP)) {
         heading = ysMath::Add(heading, ysMath::Constants::YAxis);
-        //RigidBody.SetOrientation(ysMath::Constants::QuatIdentity);
-        //velocity = ysMath::LoadScalar(5.0f);
-        ysAnimationChannel::ActionSettings settings;
-        settings.FadeIn = 20.0f;
-        m_bodyRotationChannel->AddSegment(&m_faceUp, settings);
     }
 
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_DOWN)) {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::YAxis));
-        //RigidBody.SetOrientation(ysMath::LoadQuaternion(ysMath::Constants::PI, ysMath::Constants::ZAxis));
-        //velocity = ysMath::LoadScalar(5.0f);
-        ysAnimationChannel::ActionSettings settings;
-        settings.FadeIn = 20.0f;
-        m_bodyRotationChannel->AddSegment(&m_faceDown, settings);
     }
 
     //ysVector vel = RigidBody.GetGlobalSpace(ysMath::Mul(ysMath::Constants::YAxis, velocity));
@@ -189,8 +174,39 @@ void aw::Player::updateMotion() {
 
 void aw::Player::updateAnimation() {
     float velocity = ysMath::GetScalar(ysMath::Magnitude(RigidBody.GetVelocity()));
-    float unitVelocity = 5.0f;
+    float unitVelocity = 4.0f;
     float relVelocity = velocity / unitVelocity;
+
+    float x = ysMath::GetX(RigidBody.GetVelocity());
+    float y = ysMath::GetY(RigidBody.GetVelocity());
+
+    ysAnimationChannel::ActionSettings rotationSettings;
+    rotationSettings.FadeIn = 7.0f;
+    rotationSettings.Speed = 0.0f;
+
+    ysAnimationActionBinding *newOrientation = nullptr;
+    if (std::abs(x) > std::abs(y)) {
+        if (x < 0) {
+            newOrientation = &m_faceLeft;
+        }
+        else if (x > 0) {
+            newOrientation = &m_faceRight;
+        }
+    }
+    else {
+        if (y < 0) {
+            newOrientation = &m_faceDown;
+        }
+        else if (y > 0) {
+            newOrientation = &m_faceUp;
+        }
+    }
+
+    if (newOrientation != nullptr) {
+        if (m_bodyRotationChannel->GetCurrentAction() != newOrientation) {
+            m_bodyRotationChannel->AddSegment(newOrientation, rotationSettings);
+        }
+    }
     
     if (relVelocity < 0.001f) {
         ysAnimationChannel::ActionSettings s;
@@ -277,7 +293,7 @@ void aw::Player::process() {
 void aw::Player::render() {
     int color[] = { 0xf1, 0xc4, 0x0f };
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
-    //m_world->getEngine().DrawBox(color, 2.5f, 2.5f, (int)Layer::Player);
+    //m_world->getEngine().DrawBox(color, 5.0f, 5.0f, (int)Layer::Player);
 
     m_world->getEngine().DrawRenderSkeleton(m_renderSkeleton, 1.0f, (int)Layer::Player);
 

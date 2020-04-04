@@ -1,9 +1,10 @@
 #include "../include/world.h"
 
 #include "../include/player.h"
-#include "../include/crum.h"
+#include "../include/food.h"
 #include "../include/hole.h"
 #include "../include/npc_ant.h"
+#include "../include/cookie.h"
 
 aw::World::World() {
     m_mainRealm = nullptr;
@@ -50,34 +51,37 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
 void aw::World::initialSpawn() {
     m_mainRealm = newRealm<Realm>();
 
-    Crum *leaf1 = m_mainRealm->spawn<Crum>();
+    Food *leaf1 = m_mainRealm->spawn<Food>();
     leaf1->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
 
-    Crum *leaf2 = m_mainRealm->spawn<Crum>();
+    Food *leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
+
+    Cookie *cookie = m_mainRealm->spawn<Cookie>();
+    cookie->RigidBody.SetPosition(ysMath::LoadVector(10.0f, -2.0f, 0.0f, 0.0f));
 
     Hole *hole = m_mainRealm->spawn<Hole>();
     hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Crum>();
+    leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Crum>();
+    leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(-2.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Crum>();
+    leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(-3.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Crum>();
+    leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(1.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Crum>();
+    leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(2.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Crum>();
+    leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(3.0f, -5.0f, 0.0f, 0.0f));
 
-    leaf2 = m_mainRealm->spawn<Crum>();
+    leaf2 = m_mainRealm->spawn<Food>();
     leaf2->RigidBody.SetPosition(ysMath::LoadVector(4.0f, -5.0f, 0.0f, 0.0f));
 
     NpcAnt *npc = m_mainRealm->spawn<NpcAnt>();

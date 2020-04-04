@@ -58,6 +58,9 @@
     <Filter Include="Source Files\assets">
       <UniqueIdentifier>{024fa366-950d-4197-8f6d-6327cf763520}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\game-objects\food">
+      <UniqueIdentifier>{a28a74ae-aa99-496a-9e8c-4272db1b8329}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -96,9 +99,6 @@
     <ClCompile Include="..\..\src\npc_ant.cpp">
       <Filter>Source Files\game-objects\npc-ant</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\crum.cpp">
-      <Filter>Source Files\game-objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\math.cpp">
       <Filter>Source Files\utilities</Filter>
     </ClCompile>
@@ -107,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\asset_loader.cpp">
       <Filter>Source Files\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\food.cpp">
+      <Filter>Source Files\game-objects\food</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cookie.cpp">
+      <Filter>Source Files\game-objects\food</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +155,6 @@
     <ClInclude Include="..\..\include\npc_ant.h">
       <Filter>Header Files\game-objects\npc-ant</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\crum.h">
-      <Filter>Header Files\game-objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\math.h">
       <Filter>Header Files\utilities</Filter>
     </ClInclude>
@@ -160,6 +163,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\asset_loader.h">
       <Filter>Header Files\assets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\food.h">
+      <Filter>Header Files\game-objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\cookie.h">
+      <Filter>Header Files\game-objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

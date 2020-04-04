@@ -11,6 +11,7 @@ namespace aw {
         ~AssetLoader();
 
         static void createAllMaterials(dbasic::AssetManager *am);
+        static void loadAllTextures(const dbasic::Path &assetPath, dbasic::AssetManager *am);
         static void loadAllAssets(const dbasic::Path &assetPath, dbasic::AssetManager *am);
 
     protected:

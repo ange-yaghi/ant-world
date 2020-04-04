@@ -1,5 +1,6 @@
 #include "../include/asset_loader.h"
 
+#include "../include/cookie.h"
 #include "../include/player.h"
 
 aw::AssetLoader::AssetLoader() {
@@ -28,17 +29,23 @@ void aw::AssetLoader::createAllMaterials(dbasic::AssetManager *am) {
     highlight->SetDiffuseColor(ysVector4(1.0f, 1.0f, 1.0f, 1.0f - 0.941667f));
 }
 
+void aw::AssetLoader::loadAllTextures(const dbasic::Path &assetPath, dbasic::AssetManager *am) {
+    am->LoadTexture(getPath("food/Cookie_ChocChip.png", assetPath).c_str(), "Cookie");
+}
+
 void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::AssetManager *am) {
+    loadAllTextures(assetPath, am);
     createAllMaterials(am);
 
-    am->CompileInterchangeFile(getPath("characters/ant/ant_rigged", assetPath).c_str(), 1.0f, true);
-    am->LoadSceneFile(getPath("characters/ant/ant_rigged", assetPath).c_str());
+    am->CompileInterchangeFile(getPath("characters/ant/ant_rigged_2", assetPath).c_str(), 1.0f, true);
+    am->LoadSceneFile(getPath("characters/ant/ant_rigged_2", assetPath).c_str());
 
     am->LoadAnimationFile(getPath("characters/ant/ant_rigged.dimo", assetPath).c_str());
 
     am->ResolveNodeHierarchy();
 
     Player::configureAssets(am);
+    Cookie::configureAssets(am);
 }
 
 std::string aw::AssetLoader::getPath(const char *path, const dbasic::Path &assetPath) {

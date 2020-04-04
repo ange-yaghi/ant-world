@@ -82,6 +82,9 @@ namespace aw {
         void decrementReferenceCount() { --m_referenceCount; }
         int getReferenceCount() const { return m_referenceCount; }
 
+        virtual ysVector getPickupPointWorld() const { return RigidBody.GetWorldPosition(); }
+        virtual float getPickupRadius() const { return 0.0f; }
+
     protected:
         std::vector<AABB> m_pathfinderBounds;
 
