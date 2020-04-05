@@ -18,13 +18,13 @@ void aw::Cookie::initialize() {
     setNutritionalValue(1.0f);
 
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
-    RigidBody.SetInverseMass(10.0f);
+    RigidBody.SetInverseMass(1.0f);
     //RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
 
     dphysics::CollisionObject *bounds;
     RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
-    bounds->GetAsCircle()->RadiusSquared = 0.75f * 0.75f;
+    bounds->GetAsCircle()->RadiusSquared = 0.9f * 0.9f;
 
     dphysics::CollisionObject *sensor;
     RigidBody.CollisionGeometry.NewCircleObject(&sensor);

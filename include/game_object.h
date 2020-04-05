@@ -16,11 +16,11 @@ namespace aw {
     class GameObject {
     public:
         enum class Layer {
-            Player,
-            Mob,
-            Items,
+            Ground,
             Holes,
-            Ground
+            Items,
+            Mob,
+            Player          
         };
 
         enum class Tag {

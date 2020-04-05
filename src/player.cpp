@@ -13,12 +13,19 @@ ysAnimationAction
     *aw::Player::PoseFaceDown = nullptr,
     *aw::Player::PoseFaceUp = nullptr, 
     *aw::Player::PoseFaceLeft = nullptr, 
-    *aw::Player::PoseFaceRight = nullptr;
+    *aw::Player::PoseFaceRight = nullptr,
+    *aw::Player::AnimSidestep = nullptr;
 
 dbasic::SceneObjectAsset *aw::Player::CharacterRoot = nullptr;
 
 aw::Player::Player() {
     m_energy = 0.0f;
+
+    m_antennaChannel = nullptr;
+    m_bodyRotationChannel = nullptr;
+    m_eyelidChannel = nullptr;
+    m_legsChannel = nullptr;
+    m_renderSkeleton = nullptr;
 }
 
 aw::Player::~Player() {
@@ -55,6 +62,7 @@ void aw::Player::initialize() {
     m_renderSkeleton->BindAction(AnimBlink, &m_animBlink);
     m_renderSkeleton->BindAction(AnimWalk, &m_animWalk);
     m_renderSkeleton->BindAction(AnimIdle, &m_animIdle);
+    m_renderSkeleton->BindAction(AnimSidestep, &m_animSidestep);
     m_renderSkeleton->BindAction(PoseFaceDown, &m_faceDown);
     m_renderSkeleton->BindAction(PoseFaceUp, &m_faceUp);
     m_renderSkeleton->BindAction(PoseFaceLeft, &m_faceLeft);
@@ -151,6 +159,10 @@ void aw::Player::exitHole() {
 void aw::Player::updateMotion() {
     ysVector heading = ysMath::Constants::Zero;
     ysVector velocity = ysMath::LoadScalar(5.0f);
+
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
+        velocity = ysMath::LoadScalar(2.5f);
+    }
      
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_LEFT)) {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::XAxis));
@@ -179,34 +191,63 @@ void aw::Player::updateAnimation() {
 
     float x = ysMath::GetX(RigidBody.GetVelocity());
     float y = ysMath::GetY(RigidBody.GetVelocity());
+    if (!m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
+        ysAnimationChannel::ActionSettings rotationSettings;
+        rotationSettings.FadeIn = 7.0f;
+        rotationSettings.Speed = 0.0f;
 
-    ysAnimationChannel::ActionSettings rotationSettings;
-    rotationSettings.FadeIn = 7.0f;
-    rotationSettings.Speed = 0.0f;
-
-    ysAnimationActionBinding *newOrientation = nullptr;
-    if (std::abs(x) > std::abs(y)) {
-        if (x < 0) {
-            newOrientation = &m_faceLeft;
+        ysAnimationActionBinding *newOrientation = nullptr;
+        if (std::abs(x) > std::abs(y)) {
+            if (x < 0) {
+                newOrientation = &m_faceLeft;
+            }
+            else if (x > 0) {
+                newOrientation = &m_faceRight;
+            }
         }
-        else if (x > 0) {
-            newOrientation = &m_faceRight;
+        else {
+            if (y < 0) {
+                newOrientation = &m_faceDown;
+            }
+            else if (y > 0) {
+                newOrientation = &m_faceUp;
+            }
+        }
+
+        if (newOrientation != nullptr) {
+            if (m_bodyRotationChannel->GetCurrentAction() != newOrientation) {
+                m_bodyRotationChannel->AddSegment(newOrientation, rotationSettings);
+            }
         }
     }
-    else {
-        if (y < 0) {
-            newOrientation = &m_faceDown;
+
+    bool sideStepping = false;
+    bool walkingBackwards = false;
+    float sideSteppingSpeed = 0.0f;
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
+        if (m_bodyRotationChannel->GetCurrentAction() == &m_faceUp) {
+            if (x > 0) { sideStepping = true; sideSteppingSpeed = 1.0f; }
+            else if (x < 0) { sideStepping = true; sideSteppingSpeed = -1.0f; }
+
+            if (y < 0) walkingBackwards = true;
         }
-        else if (y > 0) {
-            newOrientation = &m_faceUp;
+        else if (m_bodyRotationChannel->GetCurrentAction() == &m_faceDown) {
+            if (x > 0) { sideStepping = true; sideSteppingSpeed = -1.0f; }
+            else if (x < 0) { sideStepping = true; sideSteppingSpeed = 1.0f; }
+
+            if (y > 0) walkingBackwards = true;
+        }
+        else if (m_bodyRotationChannel->GetCurrentAction() == &m_faceLeft) {
+            if (y > 0) { sideStepping = true; sideSteppingSpeed = 1.0f; }
+            else if (y < 0) { sideStepping = true; sideSteppingSpeed = -1.0f; }
+        }
+        else if (m_bodyRotationChannel->GetCurrentAction() == &m_faceRight) {
+            if (y > 0) { sideStepping = true; sideSteppingSpeed = -1.0f; }
+            else if (y < 0) { sideStepping = true; sideSteppingSpeed = 1.0f; }
         }
     }
 
-    if (newOrientation != nullptr) {
-        if (m_bodyRotationChannel->GetCurrentAction() != newOrientation) {
-            m_bodyRotationChannel->AddSegment(newOrientation, rotationSettings);
-        }
-    }
+    sideSteppingSpeed *= 1.5f;
     
     if (relVelocity < 0.001f) {
         ysAnimationChannel::ActionSettings s;
@@ -222,22 +263,47 @@ void aw::Player::updateAnimation() {
         }
     }
     else {
-        if (m_legsChannel->GetSpeed() != relVelocity) {
-            m_legsChannel->ChangeSpeed(relVelocity);
-            m_legsChannel->ClearQueue();
+        if (walkingBackwards) {
+            relVelocity *= -1;
         }
 
-        ysAnimationChannel::ActionSettings settings;
-        settings.FadeIn = 10.0f / relVelocity;
-        settings.Speed = relVelocity;
+        if (!sideStepping) {
+            if (m_legsChannel->GetSpeed() != relVelocity) {
+                m_legsChannel->ChangeSpeed(relVelocity);
+                m_legsChannel->ClearQueue();
+            }
 
-        if (m_legsChannel->GetCurrentAction() != &m_animWalk) {
-            m_legsChannel->AddSegment(&m_animWalk, settings);
-            m_legsChannel->ClearQueue();
+            ysAnimationChannel::ActionSettings settings;
+            settings.FadeIn = 10.0f / std::abs(relVelocity);
+            settings.Speed = relVelocity;
+
+            if (m_legsChannel->GetCurrentAction() != &m_animWalk) {
+                m_legsChannel->AddSegment(&m_animWalk, settings);
+                m_legsChannel->ClearQueue();
+            }
+            else if (!m_legsChannel->HasQueuedSegments()) {
+                settings.FadeIn = 0.0f;
+                m_legsChannel->QueueSegment(&m_animWalk, settings);
+            }
         }
-        else if (!m_legsChannel->HasQueuedSegments()) {
-            settings.FadeIn = 0.0f;
-            m_legsChannel->QueueSegment(&m_animWalk, settings);
+        else {
+            if (m_legsChannel->GetSpeed() != sideSteppingSpeed * relVelocity) {
+                m_legsChannel->ChangeSpeed(sideSteppingSpeed * relVelocity);
+                m_legsChannel->ClearQueue();
+            }
+
+            ysAnimationChannel::ActionSettings settings;
+            settings.FadeIn = 10.0f / std::abs(relVelocity);
+            settings.Speed = sideSteppingSpeed * relVelocity;
+
+            if (m_legsChannel->GetCurrentAction() != &m_animSidestep) {
+                m_legsChannel->AddSegment(&m_animSidestep, settings);
+                m_legsChannel->ClearQueue();
+            }
+            else if (!m_legsChannel->HasQueuedSegments()) {
+                settings.FadeIn = 0.0f;
+                m_legsChannel->QueueSegment(&m_animSidestep, settings);
+            }
         }
     }
 
@@ -249,6 +315,7 @@ void aw::Player::configureAssets(dbasic::AssetManager *am) {
     AnimBlink = am->GetAction("Blink");
     AnimIdle = am->GetAction("Idle");
     AnimWalk = am->GetAction("Walk");
+    AnimSidestep = am->GetAction("SideStep");
     PoseFaceUp = am->GetAction("FaceUp");
     PoseFaceDown = am->GetAction("FaceDown");
     PoseFaceLeft = am->GetAction("FaceLeft");
@@ -257,6 +324,7 @@ void aw::Player::configureAssets(dbasic::AssetManager *am) {
     AnimBlink->SetLength(40.0f);
     AnimIdle->SetLength(100.0f);
     AnimWalk->SetLength(30.0f);
+    AnimSidestep->SetLength(30.0f);
     PoseFaceUp->SetLength(0.0f);
     PoseFaceDown->SetLength(0.0f);
     PoseFaceLeft->SetLength(0.0f);

@@ -5,6 +5,7 @@
 #include "../include/hole.h"
 #include "../include/npc_ant.h"
 #include "../include/cookie.h"
+#include "../include/mm.h"
 
 aw::World::World() {
     m_mainRealm = nullptr;
@@ -58,13 +59,19 @@ void aw::World::initialSpawn() {
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
     Cookie *cookie = m_mainRealm->spawn<Cookie>();
-    cookie->RigidBody.SetPosition(ysMath::LoadVector(5.0f, -2.0f, 0.0f, 0.0f));
+    cookie->RigidBody.SetPosition(ysMath::LoadVector(5.0f, -2.0f, 0.0f, 1.0f));
 
     cookie = m_mainRealm->spawn<Cookie>();
-    cookie->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
+    cookie->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 1.0f));
 
     cookie = m_mainRealm->spawn<Cookie>();
-    cookie->RigidBody.SetPosition(ysMath::LoadVector(-4.0f, 3.0f, 0.0f, 0.0f));
+    cookie->RigidBody.SetPosition(ysMath::LoadVector(-4.0f, 3.0f, 0.0f, 1.0f));
+
+    MM *mm = m_mainRealm->spawn<MM>();
+    mm->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 1.0f));
+
+    mm = m_mainRealm->spawn<MM>();
+    mm->RigidBody.SetPosition(ysMath::LoadVector(2.0f, -6.0f, 0.0f, 1.0f));
 
     //Hole *hole = m_mainRealm->spawn<Hole>();
     //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));

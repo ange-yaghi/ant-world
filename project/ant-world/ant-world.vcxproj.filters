@@ -61,6 +61,9 @@
     <Filter Include="Source Files\game-objects\food">
       <UniqueIdentifier>{a28a74ae-aa99-496a-9e8c-4272db1b8329}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game-objects\food">
+      <UniqueIdentifier>{52f54a0c-7572-4325-91a7-2869c64c4c66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -114,6 +117,9 @@
     <ClCompile Include="..\..\src\cookie.cpp">
       <Filter>Source Files\game-objects\food</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\mm.cpp">
+      <Filter>Source Files\game-objects\food</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
@@ -164,11 +170,14 @@
     <ClInclude Include="..\..\include\asset_loader.h">
       <Filter>Header Files\assets</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\food.h">
-      <Filter>Header Files\game-objects</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\cookie.h">
-      <Filter>Header Files\game-objects</Filter>
+      <Filter>Header Files\game-objects\food</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\food.h">
+      <Filter>Header Files\game-objects\food</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\mm.h">
+      <Filter>Header Files\game-objects\food</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
