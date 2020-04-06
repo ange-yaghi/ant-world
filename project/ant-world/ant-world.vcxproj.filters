@@ -120,6 +120,9 @@
     <ClCompile Include="..\..\src\mm.cpp">
       <Filter>Source Files\game-objects\food</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\food_spawner.cpp">
+      <Filter>Source Files\game-objects\food</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
@@ -177,6 +180,9 @@
       <Filter>Header Files\game-objects\food</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\mm.h">
+      <Filter>Header Files\game-objects\food</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\food_spawner.h">
       <Filter>Header Files\game-objects\food</Filter>
     </ClInclude>
   </ItemGroup>

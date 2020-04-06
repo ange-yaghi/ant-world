@@ -23,6 +23,7 @@
     <ClCompile Include="..\..\src\ai_state_machine.cpp" />
     <ClCompile Include="..\..\src\asset_loader.cpp" />
     <ClCompile Include="..\..\src\cookie.cpp" />
+    <ClCompile Include="..\..\src\food_spawner.cpp" />
     <ClCompile Include="..\..\src\game_object.cpp" />
     <ClCompile Include="..\..\src\hole.cpp" />
     <ClCompile Include="..\..\src\insect.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="..\..\include\asset_loader.h" />
     <ClInclude Include="..\..\include\cookie.h" />
     <ClInclude Include="..\..\include\delta.h" />
+    <ClInclude Include="..\..\include\food_spawner.h" />
     <ClInclude Include="..\..\include\game_object.h" />
     <ClInclude Include="..\..\include\hole.h" />
     <ClInclude Include="..\..\include\insect.h" />

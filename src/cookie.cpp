@@ -34,7 +34,14 @@ void aw::Cookie::initialize() {
 
 void aw::Cookie::render() {
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
-    m_world->getEngine().SetMultiplyColor(ysVector4(1.0f, 1.0f, 1.0f, 1.0f));
+
+    if (RigidBody.IsAwake()) {
+        m_world->getEngine().SetMultiplyColor(ysVector4(1.0f, 1.0f, 1.0f, 1.0f));
+    }
+    else {
+        m_world->getEngine().SetMultiplyColor(ysVector4(1.0f, 0.0f, 0.0f, 1.0f));
+    }
+
     m_world->getEngine().DrawImage(CookieTexture->GetTexture(), (int)Layer::Items);
 }
 

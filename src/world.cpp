@@ -6,6 +6,7 @@
 #include "../include/npc_ant.h"
 #include "../include/cookie.h"
 #include "../include/mm.h"
+#include "../include/food_spawner.h"
 
 aw::World::World() {
     m_mainRealm = nullptr;
@@ -58,20 +59,12 @@ void aw::World::initialSpawn() {
     //Food *leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
-    Cookie *cookie = m_mainRealm->spawn<Cookie>();
-    cookie->RigidBody.SetPosition(ysMath::LoadVector(5.0f, -2.0f, 0.0f, 1.0f));
-
-    cookie = m_mainRealm->spawn<Cookie>();
-    cookie->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 1.0f));
-
-    cookie = m_mainRealm->spawn<Cookie>();
-    cookie->RigidBody.SetPosition(ysMath::LoadVector(-4.0f, 3.0f, 0.0f, 1.0f));
-
-    MM *mm = m_mainRealm->spawn<MM>();
-    mm->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 1.0f));
-
-    mm = m_mainRealm->spawn<MM>();
-    mm->RigidBody.SetPosition(ysMath::LoadVector(2.0f, -6.0f, 0.0f, 1.0f));
+    FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
+    spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
+    spawner->setAveragePeriod(0.5f);
+    spawner->setLifespan(3600.0f);
+    spawner->setType(FoodSpawner::Type::Cookie);
+    spawner->setRadius(10.0f);
 
     //Hole *hole = m_mainRealm->spawn<Hole>();
     //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
