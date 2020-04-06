@@ -31,7 +31,7 @@ void aw::Food::initialize() {
     dphysics::CollisionObject *sensor;
     RigidBody.CollisionGeometry.NewCircleObject(&sensor);
     sensor->SetMode(dphysics::CollisionObject::Mode::Sensor);
-    sensor->GetAsCircle()->RadiusSquared = 2.0f * 2.0f;
+    sensor->GetAsCircle()->Radius = 2.0f;
 }
 
 void aw::Food::process() {

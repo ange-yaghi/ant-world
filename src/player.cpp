@@ -39,6 +39,7 @@ void aw::Player::initialize() {
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
     RigidBody.SetInverseMass(1.0f);
     RigidBody.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));
+    //RigidBody.SetAlwaysAwake(true);
     //RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
 
     dphysics::CollisionObject *bounds;
@@ -52,7 +53,7 @@ void aw::Player::initialize() {
     dphysics::CollisionObject *sensor;
     RigidBody.CollisionGeometry.NewCircleObject(&sensor);
     sensor->SetMode(dphysics::CollisionObject::Mode::Sensor);
-    sensor->GetAsCircle()->RadiusSquared = 2.5f * 2.5f;
+    sensor->GetAsCircle()->Radius = 2.5f;
     //RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     //bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     //bounds->GetAsCircle()->RadiusSquared = 1.25 * 1.25;

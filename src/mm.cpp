@@ -24,12 +24,12 @@ void aw::MM::initialize() {
     dphysics::CollisionObject *bounds;
     RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
-    bounds->GetAsCircle()->RadiusSquared = 0.45f * 0.45f;
+    bounds->GetAsCircle()->Radius = 0.45f;
 
     dphysics::CollisionObject *sensor;
     RigidBody.CollisionGeometry.NewCircleObject(&sensor);
     sensor->SetMode(dphysics::CollisionObject::Mode::Sensor);
-    sensor->GetAsCircle()->RadiusSquared = 2.0f * 2.0f;
+    sensor->GetAsCircle()->Radius = 2.0f;
 }
 
 void aw::MM::render() {

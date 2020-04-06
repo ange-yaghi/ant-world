@@ -24,18 +24,20 @@ void aw::Cookie::initialize() {
     dphysics::CollisionObject *bounds;
     RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
-    bounds->GetAsCircle()->RadiusSquared = 0.9f * 0.9f;
+    bounds->GetAsCircle()->Radius = 0.9f;
 
     dphysics::CollisionObject *sensor;
     RigidBody.CollisionGeometry.NewCircleObject(&sensor);
     sensor->SetMode(dphysics::CollisionObject::Mode::Sensor);
-    sensor->GetAsCircle()->RadiusSquared = 2.0f * 2.0f;
+    sensor->GetAsCircle()->Radius = 2.0f;
 }
 
 void aw::Cookie::render() {
+    constexpr bool ShowAwake = false;
+
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
 
-    if (RigidBody.IsAwake()) {
+    if (RigidBody.IsAwake() || !ShowAwake) {
         m_world->getEngine().SetMultiplyColor(ysVector4(1.0f, 1.0f, 1.0f, 1.0f));
     }
     else {

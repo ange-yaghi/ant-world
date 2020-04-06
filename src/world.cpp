@@ -61,10 +61,10 @@ void aw::World::initialSpawn() {
 
     FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
     spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
-    spawner->setAveragePeriod(0.5f);
+    spawner->setAveragePeriod(2.0f);
     spawner->setLifespan(3600.0f);
     spawner->setType(FoodSpawner::Type::Cookie);
-    spawner->setRadius(10.0f);
+    spawner->setRadius(100.0f);
 
     //Hole *hole = m_mainRealm->spawn<Hole>();
     //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));

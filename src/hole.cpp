@@ -23,7 +23,7 @@ void aw::Hole::initialize() {
     dphysics::CollisionObject *bounds;
     RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     bounds->SetMode(dphysics::CollisionObject::Mode::Sensor);
-    bounds->GetAsCircle()->RadiusSquared = 2.5f * 2.5f;
+    bounds->GetAsCircle()->Radius = 2.5f;
 }
 
 void aw::Hole::render() {

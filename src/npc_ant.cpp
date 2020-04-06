@@ -33,7 +33,7 @@ void aw::NpcAnt::initialize() {
     dphysics::CollisionObject *sensor;
     RigidBody.CollisionGeometry.NewCircleObject(&sensor);
     sensor->SetMode(dphysics::CollisionObject::Mode::Sensor);
-    sensor->GetAsCircle()->RadiusSquared = 2.5f * 2.5f;
+    sensor->GetAsCircle()->Radius = 2.5f;
 
     RigidBody.CollisionGeometry.NewRayObject(&m_sightLine);
     m_sightLine->SetMode(dphysics::CollisionObject::Mode::Sensor);
