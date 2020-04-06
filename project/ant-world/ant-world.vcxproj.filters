@@ -64,6 +64,12 @@
     <Filter Include="Header Files\game-objects\food">
       <UniqueIdentifier>{52f54a0c-7572-4325-91a7-2869c64c4c66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game-objects\world-generation">
+      <UniqueIdentifier>{810dc4a5-f45b-4e0c-a206-1a6c17e1aa6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game-objects\world-generation">
+      <UniqueIdentifier>{f51c0650-fcc5-48b4-a4e4-4c1508f19eac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -122,6 +128,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\food_spawner.cpp">
       <Filter>Source Files\game-objects\food</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world_grid.cpp">
+      <Filter>Source Files\game-objects\world-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\world_fragment.cpp">
+      <Filter>Source Files\game-objects\world-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\biome.cpp">
+      <Filter>Source Files\game-objects\world-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\biomes.cpp">
+      <Filter>Source Files\game-objects\world-generation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +202,18 @@
     </ClInclude>
     <ClInclude Include="..\..\include\food_spawner.h">
       <Filter>Header Files\game-objects\food</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world_grid.h">
+      <Filter>Header Files\game-objects\world-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world_fragment.h">
+      <Filter>Header Files\game-objects\world-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\biome.h">
+      <Filter>Header Files\game-objects\world-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\biomes.h">
+      <Filter>Header Files\game-objects\world-generation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

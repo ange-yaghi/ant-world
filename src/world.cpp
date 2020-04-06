@@ -48,6 +48,9 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
     m_assetManager.SetEngine(&m_engine);
 
     AssetLoader::loadAllAssets(dbasic::Path(assetPath), &m_assetManager);
+
+    m_worldGrid.initialize(10.0f);
+    m_worldGrid.setWorld(this);
 }
 
 void aw::World::initialSpawn() {
@@ -136,12 +139,23 @@ void aw::World::render() {
     ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
 
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
-    m_engine.SetCameraAltitude(30.0f);
+    m_engine.SetCameraAltitude(30.0f); // 30.0f
 
     m_player->getRealm()->render();
+
+    m_worldGrid.debugRender();
 }
 
 void aw::World::process() {
+    int px, py;
+    px = ysMath::GetX(m_player->RigidBody.GetPosition()) / 10.0f;
+    py = ysMath::GetY(m_player->RigidBody.GetPosition()) / 10.0f;
+    for (int i = -10; i < 10; ++i) {
+        for (int j = -10; j < 10; ++j) {
+            m_worldGrid.requestFragment({ px + i, py + j });
+        }
+    }
+
     m_player->getRealm()->process();
 }
 

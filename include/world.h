@@ -4,6 +4,7 @@
 #include "game_object.h"
 #include "realm.h"
 #include "asset_loader.h"
+#include "world_grid.h"
 
 #include "delta.h"
 
@@ -50,6 +51,8 @@ namespace aw {
         Realm *m_mainRealm;
 
     protected:
+        WorldGrid m_worldGrid;
+
         dbasic::DeltaEngine m_engine;
         dbasic::AssetManager m_assetManager;
 

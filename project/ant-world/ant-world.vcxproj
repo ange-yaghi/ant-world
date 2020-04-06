@@ -19,9 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\world_fragment.cpp" />
     <ClCompile Include="..\..\src\ai_state.cpp" />
     <ClCompile Include="..\..\src\ai_state_machine.cpp" />
     <ClCompile Include="..\..\src\asset_loader.cpp" />
+    <ClCompile Include="..\..\src\biome.cpp" />
+    <ClCompile Include="..\..\src\biomes.cpp" />
     <ClCompile Include="..\..\src\cookie.cpp" />
     <ClCompile Include="..\..\src\food_spawner.cpp" />
     <ClCompile Include="..\..\src\game_object.cpp" />
@@ -38,12 +41,15 @@
     <ClCompile Include="..\..\src\player.cpp" />
     <ClCompile Include="..\..\src\realm.cpp" />
     <ClCompile Include="..\..\src\world.cpp" />
+    <ClCompile Include="..\..\src\world_grid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\aabb.h" />
     <ClInclude Include="..\..\include\ai_state.h" />
     <ClInclude Include="..\..\include\ai_state_machine.h" />
     <ClInclude Include="..\..\include\asset_loader.h" />
+    <ClInclude Include="..\..\include\biome.h" />
+    <ClInclude Include="..\..\include\biomes.h" />
     <ClInclude Include="..\..\include\cookie.h" />
     <ClInclude Include="..\..\include\delta.h" />
     <ClInclude Include="..\..\include\food_spawner.h" />
@@ -60,6 +66,8 @@
     <ClInclude Include="..\..\include\player.h" />
     <ClInclude Include="..\..\include\realm.h" />
     <ClInclude Include="..\..\include\world.h" />
+    <ClInclude Include="..\..\include\world_fragment.h" />
+    <ClInclude Include="..\..\include\world_grid.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\submodules\delta-studios\project\delta-basic-engine\delta-basic-engine.vcxproj">
@@ -130,7 +138,7 @@
     <SourcePath>$(SourcePath)</SourcePath>
     <OutDir>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\;$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -138,7 +146,7 @@
     <SourcePath>$(SourcePath)</SourcePath>
     <OutDir>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\;$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -146,7 +154,7 @@
     <SourcePath>$(SourcePath)</SourcePath>
     <OutDir>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\;$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -154,7 +162,7 @@
     <SourcePath>$(SourcePath)</SourcePath>
     <OutDir>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\..\$(PlatformTarget)\$(Configuration)\;$(ProjectDir)/../../dependencies/delta/lib/$(PlatformTarget)/$(Configuration);$(ProjectDir)/../../dependencies/libraries/SDL/lib/$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\D3DX\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DirectSound\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\DXGI\lib\$(PlatformTarget);$(ProjectDir)/../../dependencies\libraries\boost-filesystem\lib\$(PlatformTarget)\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -176,7 +184,8 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -203,7 +212,8 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -234,7 +244,8 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -265,7 +276,8 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
