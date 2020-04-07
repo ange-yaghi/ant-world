@@ -1,6 +1,8 @@
 #include "../include/world_grid.h"
 
 #include "../include/world_fragment.h"
+#include "../include/hole.h"
+#include "../include/world.h"
 
 #include <assert.h>
 
@@ -39,6 +41,9 @@ void aw::WorldGrid::initialize(double fragmentSize) {
 
     m_population.setSeed(seed + 4);
     m_population.setScale(1.0 / 200.0f);
+
+    m_microPopulation.setSeed(seed + 5);
+    m_microPopulation.setScale(1 / 15.0f);
 }
 
 void aw::WorldGrid::debugRender() {
@@ -62,13 +67,19 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
     param.AverageTemperature = m_averageTemperature.perlin(posx, posy);
     param.TemperatureFluctation = m_temperatureFluctuation.perlin(posx, posy);
     param.Elevation = m_elevation.perlin(posx, posy);
-    param.PopulationDensity = samplePopulation(posx, posy);
+    param.PopulationDensity = samplePopulationDensity(posx, posy);
 
     Biome::Type type = getBiomeType(param);
     assert(type != Biome::Type::Unknown);
 
     newFragment->initialize(coord.x, coord.y, m_fragmentSize, m_fragmentSize, type, param);
     newFragment->setWorld(m_world);
+
+    double populationNoise = sampleMicroPopulationDensity(posx, posy);
+    if (populationNoise + param.PopulationDensity > 1.3f) {
+        Hole *newHole = m_world->getMainRealm()->spawn<Hole>();
+        newHole->RigidBody.SetPosition(ysMath::LoadVector(posx, posy, 0.0f, 1.0f));
+    }
 
     return newFragment;
 }
@@ -91,11 +102,18 @@ aw::Biome::Type aw::WorldGrid::getBiomeType(
     else return closestBiome->getType();
 }
 
-double aw::WorldGrid::samplePopulation(double posx, double posy) {
+double aw::WorldGrid::samplePopulationDensity(double posx, double posy) {
     double density = m_population.perlin(posx, posy);
     density = (density + 1) / 2.0;
 
-    return density * density;
+    return density;
+}
+
+double aw::WorldGrid::sampleMicroPopulationDensity(double posx, double posy) {
+    double noiseFunction = m_microPopulation.perlin(posx, posy);
+    noiseFunction = (noiseFunction + 1) / 2.0f;
+
+    return noiseFunction;
 }
 
 aw::WorldFragment *aw::WorldGrid::requestFragment(const FragmentCoord &coord) {

@@ -69,7 +69,7 @@ void aw::WorldFragment::debugRender() {
     const int avgTempColor[] = { ((m_parameters.AverageTemperature + 1.0) / 2.0) * 255, 0, 0 };
     const int tempFlucColor[] = { ((m_parameters.TemperatureFluctation + 1.0) / 2.0) * 255, 0, 0 };
     const int populationColor[] = { m_parameters.PopulationDensity * 255, 0, 0 };
-    color = populationColor;
+    //color = populationColor;
 
     ysMatrix transform = ysMath::TranslationTransform(
         ysMath::LoadVector(m_x * m_width, m_y * m_height, 0.0f, 1.0f));

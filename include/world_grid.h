@@ -33,7 +33,8 @@ namespace aw {
         WorldFragment *newFragment(const FragmentCoord &coord);
         Biome::Type getBiomeType(const Biome::BiomeParameters &parameters) const;
 
-        double samplePopulation(double posx, double posy);
+        double samplePopulationDensity(double posx, double posy);
+        double sampleMicroPopulationDensity(double posx, double posy);
 
         std::map<unsigned __int64, WorldFragment *> m_fragments;
 
@@ -42,6 +43,7 @@ namespace aw {
         PerlinNoiseGenerator m_temperatureFluctuation;
         PerlinNoiseGenerator m_elevation;
         PerlinNoiseGenerator m_population;
+        PerlinNoiseGenerator m_microPopulation;
 
         double m_fragmentSize;
 

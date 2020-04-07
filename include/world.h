@@ -43,6 +43,8 @@ namespace aw {
             return newObject;
         }
 
+        Realm *getMainRealm() { return m_mainRealm; }
+
     protected:
         void updateRealms();
 
