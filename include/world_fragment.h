@@ -1,6 +1,8 @@
 #ifndef ANT_WORLD_WORLD_FRAGMENT_H
 #define ANT_WORLD_WORLD_FRAGMENT_H
 
+#include "delta.h"
+
 #include "biome.h"
 
 namespace aw {
@@ -25,17 +27,25 @@ namespace aw {
         void setWorld(World *world) { m_world = world; }
         World *getWorld() const { return m_world; }
 
+        static void configureAssets(dbasic::AssetManager *am);
+
     protected:
         int m_x;
         int m_y;
 
         float m_width;
         float m_height;
+        float m_blockAngle;
+        float m_blockScale;
 
         Biome::Type m_biome;
         Biome::BiomeParameters m_parameters;
 
         World *m_world;
+
+    protected:
+        static dbasic::ModelAsset *m_terrainBlock;
+        static dbasic::TextureAsset *m_terrainTexture;
     };
 
 } /* namespace aw */

@@ -36,6 +36,9 @@ void aw::WorldGrid::initialize(double fragmentSize) {
 
     m_elevation.setScale(1.0 / 200.0);
     m_elevation.setSeed(seed + 3);
+
+    m_population.setSeed(seed + 4);
+    m_population.setScale(1.0 / 200.0f);
 }
 
 void aw::WorldGrid::debugRender() {
@@ -59,6 +62,7 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
     param.AverageTemperature = m_averageTemperature.perlin(posx, posy);
     param.TemperatureFluctation = m_temperatureFluctuation.perlin(posx, posy);
     param.Elevation = m_elevation.perlin(posx, posy);
+    param.PopulationDensity = samplePopulation(posx, posy);
 
     Biome::Type type = getBiomeType(param);
     assert(type != Biome::Type::Unknown);
@@ -85,6 +89,13 @@ aw::Biome::Type aw::WorldGrid::getBiomeType(
 
     if (closestBiome == nullptr) return Biome::Type::Unknown;
     else return closestBiome->getType();
+}
+
+double aw::WorldGrid::samplePopulation(double posx, double posy) {
+    double density = m_population.perlin(posx, posy);
+    density = (density + 1) / 2.0;
+
+    return density * density;
 }
 
 aw::WorldFragment *aw::WorldGrid::requestFragment(const FragmentCoord &coord) {

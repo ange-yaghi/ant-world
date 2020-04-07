@@ -19,7 +19,8 @@ namespace aw {
             float Precipitation = 0.0f;
             float AverageTemperature = 0.0f;
             float TemperatureFluctation = 0.0f;
-            float Elevation = 0.0f;    
+            float Elevation = 0.0f;
+            float PopulationDensity = 0.0f;
 
             bool operator>=(const BiomeParameters &a) const {
                 return

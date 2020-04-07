@@ -3,6 +3,7 @@
 #include "../include/cookie.h"
 #include "../include/mm.h"
 #include "../include/player.h"
+#include "../include/world_fragment.h"
 
 aw::AssetLoader::AssetLoader() {
     /* void */
@@ -33,6 +34,7 @@ void aw::AssetLoader::createAllMaterials(dbasic::AssetManager *am) {
 void aw::AssetLoader::loadAllTextures(const dbasic::Path &assetPath, dbasic::AssetManager *am) {
     am->LoadTexture(getPath("food/Cookie_ChocChip.png", assetPath).c_str(), "Cookie");
     am->LoadTexture(getPath("food/MM_Red.png", assetPath).c_str(), "MM");
+    am->LoadTexture(getPath("terrain/TransparencyMap.png", assetPath).c_str(), "Terrain::TransparencyMap");
 }
 
 void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::AssetManager *am) {
@@ -42,6 +44,9 @@ void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::Asset
     am->CompileInterchangeFile(getPath("characters/ant/ant_rigged", assetPath).c_str(), 1.0f, true);
     am->LoadSceneFile(getPath("characters/ant/ant_rigged", assetPath).c_str());
 
+    am->CompileInterchangeFile(getPath("terrain/terrain_block", assetPath).c_str(), 1.0f, true);
+    am->LoadSceneFile(getPath("terrain/terrain_block", assetPath).c_str());
+
     am->LoadAnimationFile(getPath("characters/ant/ant_rigged.dimo", assetPath).c_str());
 
     am->ResolveNodeHierarchy();
@@ -49,6 +54,7 @@ void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::Asset
     Player::configureAssets(am);
     MM::configureAssets(am);
     Cookie::configureAssets(am);
+    WorldFragment::configureAssets(am);
 }
 
 std::string aw::AssetLoader::getPath(const char *path, const dbasic::Path &assetPath) {

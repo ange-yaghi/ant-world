@@ -33,12 +33,15 @@ namespace aw {
         WorldFragment *newFragment(const FragmentCoord &coord);
         Biome::Type getBiomeType(const Biome::BiomeParameters &parameters) const;
 
+        double samplePopulation(double posx, double posy);
+
         std::map<unsigned __int64, WorldFragment *> m_fragments;
 
         PerlinNoiseGenerator m_precipitation;
         PerlinNoiseGenerator m_averageTemperature;
         PerlinNoiseGenerator m_temperatureFluctuation;
         PerlinNoiseGenerator m_elevation;
+        PerlinNoiseGenerator m_population;
 
         double m_fragmentSize;
 

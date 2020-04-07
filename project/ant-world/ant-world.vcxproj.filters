@@ -132,13 +132,13 @@
     <ClCompile Include="..\..\src\world_grid.cpp">
       <Filter>Source Files\game-objects\world-generation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\world_fragment.cpp">
-      <Filter>Source Files\game-objects\world-generation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\biome.cpp">
       <Filter>Source Files\game-objects\world-generation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\biomes.cpp">
+      <Filter>Source Files\game-objects\world-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world_fragment.cpp">
       <Filter>Source Files\game-objects\world-generation</Filter>
     </ClCompile>
   </ItemGroup>

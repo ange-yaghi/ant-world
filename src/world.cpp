@@ -10,6 +10,7 @@
 
 aw::World::World() {
     m_mainRealm = nullptr;
+    m_player = nullptr;
 }
 
 aw::World::~World() {
@@ -139,7 +140,11 @@ void aw::World::render() {
     ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
 
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
-    m_engine.SetCameraAltitude(30.0f); // 30.0f
+
+    if (m_engine.IsKeyDown(ysKeyboard::KEY_V)) {
+        m_engine.SetCameraAltitude(500.0f);
+    }
+    else m_engine.SetCameraAltitude(30.0f);
 
     m_player->getRealm()->render();
 
@@ -150,8 +155,8 @@ void aw::World::process() {
     int px, py;
     px = ysMath::GetX(m_player->RigidBody.GetPosition()) / 10.0f;
     py = ysMath::GetY(m_player->RigidBody.GetPosition()) / 10.0f;
-    for (int i = -10; i < 10; ++i) {
-        for (int j = -10; j < 10; ++j) {
+    for (int i = -50; i < 50; ++i) {
+        for (int j = -50; j < 50; ++j) {
             m_worldGrid.requestFragment({ px + i, py + j });
         }
     }
