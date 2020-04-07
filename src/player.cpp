@@ -39,7 +39,8 @@ void aw::Player::initialize() {
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
     RigidBody.SetInverseMass(1.0f);
     RigidBody.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));
-    //RigidBody.SetAlwaysAwake(true);
+    RigidBody.SetAlwaysAwake(true);
+    RigidBody.SetRequestsInformation(true);
     //RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
 
     dphysics::CollisionObject *bounds;

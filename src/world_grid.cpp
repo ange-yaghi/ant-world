@@ -78,7 +78,12 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
     double populationNoise = sampleMicroPopulationDensity(posx, posy);
     if (populationNoise + param.PopulationDensity > 1.3f) {
         Hole *newHole = m_world->getMainRealm()->spawn<Hole>();
-        newHole->RigidBody.SetPosition(ysMath::LoadVector(posx, posy, 0.0f, 1.0f));
+
+        float holeOffsetX, holeOffsetY;
+        holeOffsetX = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
+        holeOffsetY = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
+        newHole->RigidBody.SetPosition(ysMath::LoadVector(
+            posx + holeOffsetX, posy + holeOffsetY, 0.0f, 1.0f));
     }
 
     return newFragment;

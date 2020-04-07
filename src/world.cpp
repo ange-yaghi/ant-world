@@ -63,12 +63,12 @@ void aw::World::initialSpawn() {
     //Food *leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
-    FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
-    spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
-    spawner->setAveragePeriod(2.0f);
-    spawner->setLifespan(3600.0f);
-    spawner->setType(FoodSpawner::Type::Cookie);
-    spawner->setRadius(100.0f);
+    //FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
+    //spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
+    //spawner->setAveragePeriod(2.0f);
+    //spawner->setLifespan(3600.0f);
+    //spawner->setType(FoodSpawner::Type::Cookie);
+    //spawner->setRadius(100.0f);
 
     //Hole *hole = m_mainRealm->spawn<Hole>();
     //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
@@ -155,8 +155,8 @@ void aw::World::process() {
     int px, py;
     px = ysMath::GetX(m_player->RigidBody.GetPosition()) / 10.0f;
     py = ysMath::GetY(m_player->RigidBody.GetPosition()) / 10.0f;
-    for (int i = -50; i < 50; ++i) {
-        for (int j = -50; j < 50; ++j) {
+    for (int i = -5; i < 5; ++i) {
+        for (int j = -5; j < 5; ++j) {
             m_worldGrid.requestFragment({ px + i, py + j });
         }
     }
