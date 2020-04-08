@@ -15,7 +15,6 @@ void aw::AntWorld::Initialize(void *instance, ysContextObject::DEVICE_API api) {
 void aw::AntWorld::Run() {
     world.run();
 
-    world.getEngine().GetConsole()->Destroy();
     world.getAssetManager().Destroy();
     world.getEngine().Destroy();
 }

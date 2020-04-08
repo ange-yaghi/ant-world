@@ -155,6 +155,21 @@ aw::AABB aw::World::getCameraExtents() const {
 void aw::World::render() {
     ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
 
+    m_engine.SetAmbientLight(ysVector4(0.1, 0.1, 0.1, 1.0f));
+
+    dbasic::Light sun;
+    sun.Position = ysVector4(0.0f, 0.0f, 1000.0f, 0.0f);
+    sun.Color = ysVector4(0.95f, 0.9f, 1.0f, 0.0f);
+    //sun.Color = ysVector4(7 / 255.0f, 11 / 255.0f, 52 / 255.0f);
+    sun.FalloffEnabled = 0;  
+    m_engine.AddLight(sun);   
+
+    dbasic::Light light;
+    light.Position = ysVector4(0.0f, 0.0f, 3.0f, 0.0f);
+    light.Color = ysVector4(0.1f, 0.1f, 0.1f, 0.0f);
+    light.FalloffEnabled = 1;
+    m_engine.AddLight(light); 
+
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
 
     if (m_engine.IsKeyDown(ysKeyboard::KEY_V)) {
