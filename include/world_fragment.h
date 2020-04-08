@@ -4,6 +4,7 @@
 #include "delta.h"
 
 #include "biome.h"
+#include "aabb.h"
 
 namespace aw {
 
@@ -28,6 +29,8 @@ namespace aw {
         World *getWorld() const { return m_world; }
 
         static void configureAssets(dbasic::AssetManager *am);
+
+        AABB getBounds() const;
 
     protected:
         int m_x;

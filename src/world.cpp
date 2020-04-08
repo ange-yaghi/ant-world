@@ -63,12 +63,12 @@ void aw::World::initialSpawn() {
     //Food *leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
-    //FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
-    //spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
-    //spawner->setAveragePeriod(2.0f);
-    //spawner->setLifespan(3600.0f);
-    //spawner->setType(FoodSpawner::Type::Cookie);
-    //spawner->setRadius(100.0f);
+    FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
+    spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
+    spawner->setAveragePeriod(2.0f);
+    spawner->setLifespan(3600.0f);
+    spawner->setType(FoodSpawner::Type::Cookie);
+    spawner->setRadius(100.0f);
 
     //Hole *hole = m_mainRealm->spawn<Hole>();
     //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
@@ -136,6 +136,22 @@ m_engine.SetObjectTransform(ysMath::LoadIdentity());
 m_engine.DrawImage(m_demoTexture, 0, (float)m_demoTexture->GetWidth() / m_demoTexture->GetHeight());
 */
 
+aw::AABB aw::World::getCameraExtents() const {
+    float cameraX, cameraY;
+    m_engine.GetCameraPosition(&cameraX, &cameraY);
+
+    float altitude = m_engine.GetCameraAltitude();
+
+    float v, h;
+    float fov = m_engine.GetCameraFov();
+    float aspect = m_engine.GetCameraAspect();
+
+    v = std::tan(fov / 2) * altitude;
+    h = v * aspect;
+
+    return { ysMath::LoadVector(-h + cameraX, -v + cameraY, 0.0f, 0.0f), ysMath::LoadVector(h + cameraX, v + cameraY) };
+}
+
 void aw::World::render() {
     ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
 
@@ -148,7 +164,9 @@ void aw::World::render() {
 
     m_player->getRealm()->render();
 
-    m_worldGrid.debugRender();
+    if (m_player->getRealm() == m_mainRealm) {
+        m_worldGrid.debugRender();
+    }
 }
 
 void aw::World::process() {

@@ -3,6 +3,7 @@ SamplerState samLinear : register( s0 );
 
 struct VS_OUTPUT {
 	float4 Pos : SV_POSITION;
+	float4 ScreenPos : POSITION;
 	float2 TexCoord : TEXCOORD0;
 	float3 Normal : NORMAL;
 
@@ -115,6 +116,7 @@ VS_OUTPUT VS_STANDARD(VS_INPUT_STANDARD input) {
 	inputPos = mul(inputPos, Projection);
 
 	output.Pos = float4(inputPos.xyzw);
+	output.ScreenPos = float4(inputPos.xyzw);
 
 	input.TexCoord.y = 1 - input.TexCoord.y;
 	output.TexCoord = ( (input.TexCoord) * TexScale) + TexOffset;
@@ -130,7 +132,7 @@ float4 PS(VS_OUTPUT input) : SV_Target {
 	//return float4((input.Normal + float3(1.0, 1.0, 1.0))/2.0, 1.0);
 	//return float4(input.BoneWeight, 0.0, 0.0, 1.0);
 	//return float4(input.TexCoord, 1.0, 1.0);
-	//return float4(input.Pos.xyz/1920.0f, 1.0);
+	//return float4((input.ScreenPos.xy / input.ScreenPos.w + float2(1.0, 1.0)) / 2, 0.0, 1.0);
 	
 	if (ColorReplace == 0) {
 		return float4(txDiffuse.Sample( samLinear, input.TexCoord ).rgba * MulCol);

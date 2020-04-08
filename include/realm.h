@@ -50,6 +50,7 @@ namespace aw {
 
         int getAliveObjectCount() const { return (int)m_gameObjects.size(); }
         int getDeadObjectCount() const { return (int)m_deadObjects.size(); }
+        int getVisibleObjectCount() const { return m_visibleObjectCount; }
 
     protected:
         void addToSpawnQueue(GameObject *object);
@@ -64,6 +65,8 @@ namespace aw {
     protected:
         World *m_world;
         Hole *m_exitPortal;
+
+        int m_visibleObjectCount;
     };
 
 } /* namespace aw */

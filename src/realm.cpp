@@ -3,10 +3,13 @@
 #include "../include/game_object.h"
 #include "../include/world.h"
 #include "../include/hole.h"
+#include "../include/player.h"
 
 aw::Realm::Realm() {
     m_exitPortal = nullptr;
     m_world = nullptr;
+
+    m_visibleObjectCount = 0;
 }
 
 aw::Realm::~Realm() {
@@ -43,16 +46,27 @@ void aw::Realm::process() {
         if (g->getDeletionFlag()) continue;
 
         g->updatePathfinderBounds();
+        g->createVisualBounds();
         g->process();
     }
 }
 
 void aw::Realm::render() {
+    AABB cameraExtents = m_world->getCameraExtents();
+
+    int visibleObjects = 0;
+
     for (GameObject *g : m_gameObjects) {
         if (g->getDeletionFlag()) continue;
+        AABB extents = g->getVisualBounds();
 
-        g->render();
+        if (extents.intersects2d(cameraExtents)) {
+            g->render();
+            ++visibleObjects;
+        }
     }
+
+    m_visibleObjectCount = visibleObjects;
 }
 
 void aw::Realm::spawnObjects() {
@@ -92,7 +106,7 @@ void aw::Realm::updateRealms() {
             }
 
             --i;
-            N = (int)m_gameObjects.size();
+            N = (int)m_gameObjects.size(); 
         }
     }
 }

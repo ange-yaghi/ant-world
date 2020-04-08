@@ -72,6 +72,10 @@ namespace aw {
         void addPathfinderBound(const AABB &bounds);
         virtual void addPathfinderBounds();
 
+        const AABB &getVisualBounds() const { return m_visualBounds; }
+        void addVisualBound(const AABB &bound);
+        virtual void createVisualBounds();
+
         int getPathfinderBoundCount() { return (int)m_pathfinderBounds.size(); }
         AABB &getPathfinderBound(int index) { return m_pathfinderBounds[index]; }
 
@@ -87,6 +91,7 @@ namespace aw {
 
     protected:
         std::vector<AABB> m_pathfinderBounds;
+        AABB m_visualBounds;
 
     protected:
         int m_referenceCount;

@@ -378,7 +378,7 @@ void aw::Player::render() {
     msg << "Pos " << ysMath::GetX(position) << "/" << ysMath::GetY(position) << "\n";
     msg << "FPS " << m_world->getEngine().GetAverageFramerate() << "\n";
     msg << "Energy: " << m_energy << "\n";
-    msg << "AO/DO: " << m_realm->getAliveObjectCount() << "/" << m_realm->getDeadObjectCount() << "\n";
+    msg << "AO/DO/VI: " << m_realm->getAliveObjectCount() << "/" << m_realm->getDeadObjectCount() << "/" << m_realm->getVisibleObjectCount() << "\n";
     console->DrawGeneralText(msg.str().c_str());
 }
 

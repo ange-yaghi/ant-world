@@ -2,6 +2,8 @@
 
 #include "../include/world.h"
 
+#include <float.h>
+
 aw::GameObject::GameObject() {
     m_world = nullptr;
     m_deletionFlag = false;
@@ -16,6 +18,9 @@ aw::GameObject::GameObject() {
     m_lastPortal = nullptr;
 
     m_referenceCount = 0;
+
+    m_visualBounds.maxPoint = ysMath::LoadVector(FLT_MAX, FLT_MAX, 0.0f, 1.0f);
+    m_visualBounds.minPoint = ysMath::LoadVector(FLT_MIN, FLT_MIN, 0.0f, 1.0f);
 }
 
 aw::GameObject::~GameObject() {
@@ -44,6 +49,24 @@ void aw::GameObject::addPathfinderBounds() {
             object->GetBounds(minPoint, maxPoint);
             addPathfinderBound({ minPoint, maxPoint });
         }
+    }
+}
+
+void aw::GameObject::addVisualBound(const AABB &bound) {
+    m_visualBounds.minPoint = ysMath::ComponentMax(bound.minPoint, m_visualBounds.minPoint);
+    m_visualBounds.maxPoint = ysMath::ComponentMin(bound.maxPoint, m_visualBounds.maxPoint);
+}
+
+void aw::GameObject::createVisualBounds() {
+    m_visualBounds.maxPoint = ysMath::LoadVector(FLT_MAX, FLT_MAX, 0.0f, 1.0f);
+    m_visualBounds.minPoint = ysMath::LoadVector(-FLT_MAX, -FLT_MAX, 0.0f, 1.0f);
+
+    int objects = RigidBody.CollisionGeometry.GetNumObjects();
+    for (int i = 0; i < objects; ++i) {
+        dphysics::CollisionObject *object = RigidBody.CollisionGeometry.GetCollisionObject(i);
+        ysVector minPoint, maxPoint;
+        object->GetBounds(minPoint, maxPoint);
+        addVisualBound({ minPoint, maxPoint });
     }
 }
 

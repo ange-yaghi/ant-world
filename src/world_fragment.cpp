@@ -86,3 +86,12 @@ void aw::WorldFragment::configureAssets(dbasic::AssetManager *am) {
     m_terrainBlock = am->GetModelAsset("TerrainBlock");
     m_terrainTexture = am->GetTexture("Terrain::TransparencyMap");
 }
+
+aw::AABB aw::WorldFragment::getBounds() const {
+    AABB result;
+    ysVector position = ysMath::LoadVector(m_x * m_width, m_y * m_height, 0.0f, 1.0f);
+    result.minPoint = ysMath::Sub(position, ysMath::LoadVector(m_width * 2.0f, m_height * 2.0f));
+    result.maxPoint = ysMath::Add(position, ysMath::LoadVector(m_width * 2.0f, m_height * 2.0f));
+
+    return result;
+}

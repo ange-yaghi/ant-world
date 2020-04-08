@@ -29,6 +29,8 @@ namespace aw {
         dbasic::DeltaEngine &getEngine() { return m_engine; }
         dbasic::AssetManager &getAssetManager() { return m_assetManager; }
 
+        AABB getCameraExtents() const;
+
         void render();
         void process();
 
@@ -44,6 +46,8 @@ namespace aw {
         }
 
         Realm *getMainRealm() { return m_mainRealm; }
+
+        Player *getPlayer() const { return m_player; }
 
     protected:
         void updateRealms();

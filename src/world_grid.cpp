@@ -47,8 +47,12 @@ void aw::WorldGrid::initialize(double fragmentSize) {
 }
 
 void aw::WorldGrid::debugRender() {
+    AABB cameraExtents = m_world->getCameraExtents();
+
     for (auto fragment : m_fragments) {
-        fragment.second->debugRender();
+        if (fragment.second->getBounds().intersects2d(cameraExtents)) {
+            fragment.second->debugRender();
+        }
     }
 }
 

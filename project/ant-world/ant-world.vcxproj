@@ -184,8 +184,7 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -212,8 +211,7 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -244,8 +242,7 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -276,8 +273,7 @@ py $(ProjectDir)\..\..\scripts\package_application.py $(PlatformTarget) $(Config
 py $(ProjectDir)\..\..\scripts\copy_dlls.py $(PlatformTarget) $(Configuration)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>py $(ProjectDir)\..\..\scripts\fetch_local_delta_build.py $(ProjectName)</Command>
     </PreBuildEvent>
     <PreLinkEvent>
       <Command>
