@@ -44,7 +44,10 @@ void aw::Cookie::render() {
         m_world->getEngine().SetMultiplyColor(ysVector4(1.0f, 0.0f, 0.0f, 1.0f));
     }
 
-    m_world->getEngine().DrawImage(CookieTexture->GetTexture(), (int)Layer::Items);
+    int layer = (int)Layer::Items;
+    if (isBeingCarried()) layer = (int)Layer::PlayerCarriedItem;
+
+    m_world->getEngine().DrawImage(CookieTexture->GetTexture(), layer);
 }
 
 void aw::Cookie::process() {

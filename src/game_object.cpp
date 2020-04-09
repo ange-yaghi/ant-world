@@ -113,6 +113,11 @@ void aw::GameObject::createVisualBounds() {
     }
 }
 
+void aw::GameObject::setGraceMode(bool graceMode) {
+    m_graceMode = graceMode; 
+    RigidBody.SetGhost(graceMode);
+}
+
 void aw::GameObject::initialize() {
     RigidBody.SetOwner((void *)this);
 }

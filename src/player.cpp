@@ -166,21 +166,35 @@ void aw::Player::updateMotion() {
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
         velocity = ysMath::LoadScalar(2.5f);
     }
+
+    if (isCarryingItem()) {
+        velocity = ysMath::LoadScalar(4.0f);
+    }
+
+    bool moving = false;
      
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_A)) {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::XAxis));
+        moving = true;
     }
 
-    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_D)) {
+    else if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_D)) {
         heading = ysMath::Add(heading, ysMath::Constants::XAxis);
+        moving = true;
     }
 
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_W)) {
         heading = ysMath::Add(heading, ysMath::Constants::YAxis);
+        moving = true;
     }
 
-    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_S)) {
+    else if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_S)) {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::YAxis));
+        moving = true;
+    }
+    
+    if (moving) {
+        heading = ysMath::Normalize(heading);
     }
 
     //ysVector vel = RigidBody.GetGlobalSpace(ysMath::Mul(ysMath::Constants::YAxis, velocity));
@@ -194,7 +208,7 @@ void aw::Player::updateAnimation() {
 
     float x = ysMath::GetX(RigidBody.GetVelocity());
     float y = ysMath::GetY(RigidBody.GetVelocity());
-    if (!m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
+    if (!m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT) && !isCarryingItem()) {
         ysAnimationChannel::ActionSettings rotationSettings;
         rotationSettings.FadeIn = 7.0f;
         rotationSettings.Speed = 0.0f;
@@ -227,7 +241,7 @@ void aw::Player::updateAnimation() {
     bool sideStepping = false;
     bool walkingBackwards = false;
     float sideSteppingSpeed = 0.0f;
-    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT) || isCarryingItem()) {
         if (m_bodyRotationChannel->GetCurrentAction() == &m_faceUp) {
             if (x > 0) { sideStepping = true; sideSteppingSpeed = 1.0f; }
             else if (x < 0) { sideStepping = true; sideSteppingSpeed = -1.0f; }

@@ -39,5 +39,5 @@ void aw::Wall::render() {
 
     ysMatrix translation = ysMath::TranslationTransform(position);
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
-    m_world->getEngine().DrawBox(color, 10.0f, 10.0f, (int)Layer::Holes);
+    m_world->getEngine().DrawBox(color, 10.0f, 10.0f, (int)Layer::Wall);
 }

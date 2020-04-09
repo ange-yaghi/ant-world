@@ -26,7 +26,9 @@ namespace aw {
             Holes,
             Items,
             Mob,
-            Player          
+            PlayerCarriedItem,
+            Player,
+            Wall
         };
 
         enum class Tag {
@@ -110,7 +112,7 @@ namespace aw {
         virtual ysVector getPickupPointWorld() const { return RigidBody.GetWorldPosition(); }
         virtual float getPickupRadius() const { return 0.0f; }
 
-        void setGraceMode(bool graceMode) { m_graceMode = graceMode; }
+        void setGraceMode(bool graceMode);
         bool inGraceMode() const { return m_graceMode; }
 
     protected:

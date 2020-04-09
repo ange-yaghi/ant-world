@@ -55,5 +55,9 @@ aw::GameObject *aw::Container::unload(int objectIndex) {
 void aw::Container::render() {
     int color[] = { 0xc7, 0xea, 0x46 };
     m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
-    m_world->getEngine().DrawBox(color, 4.0f, 4.0f, (int)Layer::Items);
+
+    int layer = (int)Layer::Items;
+    if (isBeingCarried()) layer = (int)Layer::PlayerCarriedItem;
+
+    m_world->getEngine().DrawBox(color, 4.0f, 4.0f, layer);
 }
