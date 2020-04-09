@@ -70,6 +70,18 @@
     <Filter Include="Source Files\game-objects\world-generation">
       <UniqueIdentifier>{f51c0650-fcc5-48b4-a4e4-4c1508f19eac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\interior-generation">
+      <UniqueIdentifier>{92e8e310-31b8-42a1-a287-b8abf1f1b2e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\interior-generation">
+      <UniqueIdentifier>{47c1a66d-3c2c-4b2b-a23e-2c2f20b981b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game-objects\container">
+      <UniqueIdentifier>{eafd30b6-a40d-4d17-adeb-a7270eec679b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game-objects\container">
+      <UniqueIdentifier>{3284ca69-fd59-4e7e-83c6-4d37b71499c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -140,6 +152,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\world_fragment.cpp">
       <Filter>Source Files\game-objects\world-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\interior_generation.cpp">
+      <Filter>Source Files\interior-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\wall.cpp">
+      <Filter>Source Files\interior-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\flooring.cpp">
+      <Filter>Source Files\interior-generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\container.cpp">
+      <Filter>Source Files\game-objects\container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="..\..\include\biomes.h">
       <Filter>Header Files\game-objects\world-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\interior_generation.h">
+      <Filter>Header Files\interior-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\wall.h">
+      <Filter>Header Files\interior-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\flooring.h">
+      <Filter>Header Files\interior-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\container.h">
+      <Filter>Header Files\game-objects\container</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

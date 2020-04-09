@@ -7,6 +7,7 @@
 #include "../include/cookie.h"
 #include "../include/mm.h"
 #include "../include/food_spawner.h"
+#include "../include/container.h"
 
 aw::World::World() {
     m_mainRealm = nullptr;
@@ -44,8 +45,6 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
         api,
         (enginePath + "/shaders/").c_str());
 
-    m_engine.SetClearColor(0xf4, 0xa4, 0x60);
-
     m_assetManager.SetEngine(&m_engine);
 
     AssetLoader::loadAllAssets(dbasic::Path(assetPath), &m_assetManager);
@@ -56,6 +55,7 @@ void aw::World::initialize(void *instance, ysContextObject::DEVICE_API api) {
 
 void aw::World::initialSpawn() {
     m_mainRealm = newRealm<Realm>();
+    m_mainRealm->setIndoor(false);
 
     //Food *leaf1 = m_mainRealm->spawn<Food>();
     //leaf1->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 0.0f, 0.0f, 0.0f));
@@ -70,8 +70,11 @@ void aw::World::initialSpawn() {
     spawner->setType(FoodSpawner::Type::Cookie);
     spawner->setRadius(100.0f);
 
-    //Hole *hole = m_mainRealm->spawn<Hole>();
-    //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 0.0f));
+    Hole *hole = m_mainRealm->spawn<Hole>();
+    hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 1.0f));
+
+    Container *container = m_mainRealm->spawn<Container>();
+    container->RigidBody.SetPosition(ysMath::LoadVector(5.0f, 0.0f, 0.0f, 1.0f));
 
     //leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
@@ -154,21 +157,6 @@ aw::AABB aw::World::getCameraExtents() const {
 
 void aw::World::render() {
     ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
-
-    m_engine.SetAmbientLight(ysVector4(0.1, 0.1, 0.1, 1.0f));
-
-    dbasic::Light sun;
-    sun.Position = ysVector4(0.0f, 0.0f, 1000.0f, 0.0f);
-    sun.Color = ysVector4(0.95f, 0.9f, 1.0f, 0.0f);
-    //sun.Color = ysVector4(7 / 255.0f, 11 / 255.0f, 52 / 255.0f);
-    sun.FalloffEnabled = 0;  
-    m_engine.AddLight(sun);   
-
-    dbasic::Light light;
-    light.Position = ysVector4(0.0f, 0.0f, 3.0f, 0.0f);
-    light.Color = ysVector4(0.1f, 0.1f, 0.1f, 0.0f);
-    light.FalloffEnabled = 1;
-    m_engine.AddLight(light); 
 
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
 

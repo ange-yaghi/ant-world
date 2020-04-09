@@ -35,7 +35,7 @@ void aw::Food::initialize() {
 }
 
 void aw::Food::process() {
-    /* void */
+    GameObject::process();
 }
 
 void aw::Food::render() {

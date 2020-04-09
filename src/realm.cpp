@@ -38,6 +38,7 @@ void aw::Realm::unregisterGameObject(GameObject *object) {
 void aw::Realm::process() {
     cleanObjectList();
     spawnObjects();
+    respawnObjects();
 
     PhysicsSystem.Update(getEngine().GetFrameLength() / 2);
     PhysicsSystem.Update(getEngine().GetFrameLength() / 2);
@@ -52,6 +53,33 @@ void aw::Realm::process() {
 }
 
 void aw::Realm::render() {
+    if (isIndoor()) {
+        m_world->getEngine().SetClearColor(0x0, 0x0, 0x0);
+
+        m_world->getEngine().SetAmbientLight(ysVector4(0.3, 0.3, 0.3, 1.0f));
+        dbasic::Light holeLight;
+        holeLight.Position = ysVector4(0.0f, 0.0f, 10.0f, 0.0f);
+        holeLight.Direction = ysMath::GetVector4(ysMath::Normalize(ysMath::LoadVector(0.2f, 0.2f, -1.0f)));
+        float intensity = 50.0f;
+        holeLight.Color = ysVector4(0.5f * intensity, 0.5f * intensity, 1.0f * intensity, 0.0f);
+        holeLight.FalloffEnabled = 1;
+        holeLight.Attenuation0 = 0.99;
+        holeLight.Attenuation1 = 0.8;
+        m_world->getEngine().AddLight(holeLight);
+    }
+    else {
+        m_world->getEngine().SetClearColor(0xf4, 0xa4, 0x60);
+
+        m_world->getEngine().SetAmbientLight(ysVector4(0.1, 0.1, 0.1, 1.0f));
+
+        dbasic::Light sun;
+        sun.Position = ysVector4(0.0f, 0.0f, 1000.0f, 0.0f);
+        sun.Color = ysVector4(0.95f, 0.9f, 1.0f, 0.0f);
+        //sun.Color = ysVector4(7 / 255.0f, 11 / 255.0f, 52 / 255.0f);
+        sun.FalloffEnabled = 0;
+        m_world->getEngine().AddLight(sun);
+    }
+
     AABB cameraExtents = m_world->getCameraExtents();
 
     int visibleObjects = 0;
@@ -78,6 +106,13 @@ void aw::Realm::spawnObjects() {
     }
 }
 
+void aw::Realm::respawnObjects() {
+    while (!m_respawnQueue.empty()) {
+        GameObject *u = m_respawnQueue.front(); m_respawnQueue.pop();
+        registerGameObject(u);
+    }
+}
+
 dbasic::DeltaEngine &aw::Realm::getEngine() {
     return m_world->getEngine();
 }
@@ -85,13 +120,16 @@ dbasic::DeltaEngine &aw::Realm::getEngine() {
 void aw::Realm::updateRealms() {
     int N = (int)m_gameObjects.size();
     for (int i = 0; i < N; ++i) {
-        if (m_gameObjects[i]->getNewRealm() != nullptr) {
+        if (m_gameObjects[i]->isChangingRealm()) {
             GameObject *object = m_gameObjects[i];
             Realm *newRealm = object->getNewRealm();
-            object->changeRealm(nullptr);
+            object->resetRealmChange();
 
             unregisterGameObject(object);
-            newRealm->registerGameObject(object);
+
+            if (newRealm != nullptr) {
+                newRealm->registerGameObject(object);
+            }
 
             Hole *lastPortal = object->getLastPortal();
             object->setLastPortal(nullptr);
@@ -109,6 +147,10 @@ void aw::Realm::updateRealms() {
             N = (int)m_gameObjects.size(); 
         }
     }
+}
+
+void aw::Realm::respawn(GameObject *object) {
+    m_respawnQueue.push(object);
 }
 
 void aw::Realm::addToSpawnQueue(GameObject *object) {

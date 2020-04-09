@@ -15,7 +15,9 @@ aw::GameObject::GameObject() {
 
     m_realm = nullptr;
     m_newRealm = nullptr;
+    m_changeRealm = false;
     m_lastPortal = nullptr;
+    m_graceMode = false;
 
     m_referenceCount = 0;
 
@@ -28,7 +30,48 @@ aw::GameObject::~GameObject() {
 }
 
 void aw::GameObject::process() {
+    if (inGraceMode() && !colliding()) {
+        setGraceMode(false);
+    }
+}
+
+void aw::GameObject::onCarry() {
     /* void */
+}
+
+void aw::GameObject::onDrop() {
+    /* void */
+}
+
+aw::GameObject *aw::GameObject::getCollidingObject(dphysics::Collision *collision) {
+    dphysics::RigidBody *body = collision->m_body1 == &RigidBody
+        ? collision->m_body2
+        : collision->m_body1;
+
+    return reinterpret_cast<aw::GameObject *>(body->GetOwner());
+}
+
+bool aw::GameObject::colliding() {
+    int collisionCount = RigidBody.GetCollisionCount();
+    for (int i = 0; i < collisionCount; ++i) {
+        dphysics::Collision *col = RigidBody.GetCollision(i);
+
+        if (col->m_sensor) continue;
+        else return true;
+    }
+
+    return false;
+}
+
+bool aw::GameObject::colliding(GameObject *object) {
+    int collisionCount = RigidBody.GetCollisionCount();
+    for (int i = 0; i < collisionCount; ++i) {
+        dphysics::Collision *col = RigidBody.GetCollision(i);
+        if (col->m_sensor) continue;
+        else if (getCollidingObject(col) == object) return true;
+    }
+
+    return false;
 }
 
 void aw::GameObject::updatePathfinderBounds() {

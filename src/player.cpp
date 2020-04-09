@@ -3,6 +3,7 @@
 #include "../include/world.h"
 #include "../include/hole.h"
 #include "../include/math.h"
+#include "../include/container.h"
 
 #include <sstream>
 
@@ -54,7 +55,7 @@ void aw::Player::initialize() {
     dphysics::CollisionObject *sensor;
     RigidBody.CollisionGeometry.NewCircleObject(&sensor);
     sensor->SetMode(dphysics::CollisionObject::Mode::Sensor);
-    sensor->GetAsCircle()->Radius = 2.5f;
+    sensor->GetAsCircle()->Radius = 5.0f;
     //RigidBody.CollisionGeometry.NewCircleObject(&bounds);
     //bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     //bounds->GetAsCircle()->RadiusSquared = 1.25 * 1.25;
@@ -166,19 +167,19 @@ void aw::Player::updateMotion() {
         velocity = ysMath::LoadScalar(2.5f);
     }
      
-    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_LEFT)) {
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_A)) {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::XAxis));
     }
 
-    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_RIGHT)) {
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_D)) {
         heading = ysMath::Add(heading, ysMath::Constants::XAxis);
     }
 
-    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_UP)) {
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_W)) {
         heading = ysMath::Add(heading, ysMath::Constants::YAxis);
     }
 
-    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_DOWN)) {
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_S)) {
         heading = ysMath::Add(heading, ysMath::Negate(ysMath::Constants::YAxis));
     }
 
@@ -313,6 +314,112 @@ void aw::Player::updateAnimation() {
     m_renderSkeleton->UpdateAnimation(m_world->getEngine().GetFrameLength() * 60.0f);
 }
 
+void aw::Player::updateAnimationSmooth() {
+    float velocity = ysMath::GetScalar(ysMath::Magnitude(RigidBody.GetVelocity()));
+    float unitVelocity = 4.0f;
+    float relVelocity = velocity / unitVelocity;
+
+    if (m_legsChannel->GetSpeed() != relVelocity) {
+        m_legsChannel->ChangeSpeed(relVelocity);
+        m_legsChannel->ClearQueue();
+    }
+
+    ysAnimationChannel::ActionSettings settings;
+    settings.FadeIn = 10.0f / std::abs(relVelocity);
+    settings.Speed = relVelocity;
+
+    if (m_legsChannel->GetCurrentAction() != &m_animWalk) {
+        m_legsChannel->AddSegment(&m_animWalk, settings);
+        m_legsChannel->ClearQueue();
+    }
+    else if (!m_legsChannel->HasQueuedSegments()) {
+        settings.FadeIn = 0.0f;
+        m_legsChannel->QueueSegment(&m_animWalk, settings);
+    }
+
+    RigidBody.UpdateDerivedData(true); // TODO: could remove this call?
+    m_renderSkeleton->UpdateAnimation(m_world->getEngine().GetFrameLength() * 60.0f);
+}
+
+void aw::Player::updateMotionSmooth() {
+    ysVector force = ysMath::Constants::Zero;
+
+    RigidBody.SetLinearDamping(0.0001f);
+
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
+
+    }
+
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_A)) {
+        force = ysMath::LoadVector(0.0f, 1.0f, 0.0f);
+        RigidBody.AddAngularVelocity(ysMath::LoadVector(0.0f, 0.0f, -0.2f));
+    }
+
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_D)) {
+        force = ysMath::LoadVector(0.0f, 1.0f, 0.0f);
+        RigidBody.AddAngularVelocity(ysMath::LoadVector(0.0f, 0.0f, 0.2f));
+    }
+
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_W)) {
+        force = ysMath::LoadVector(0.0f, 10.0f, 0.0f);
+    }
+
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_S)) {
+        force = ysMath::LoadVector(0.0f, -10.0f, 0.0f);
+    }
+
+    //ysVector vel = RigidBody.GetGlobalSpace(ysMath::Mul(ysMath::Constants::YAxis, velocity));
+    RigidBody.AddForceLocalSpace(force, ysMath::Constants::Zero);
+
+    ysVector velocity = RigidBody.GetVelocity();
+    RigidBody.AddForceWorldSpace(ysMath::Mul(ysMath::LoadScalar(1.0f), ysMath::Negate(velocity)), ysMath::Constants::Zero);
+}
+
+void aw::Player::interactWithBoxes() {
+    int collisionCount = RigidBody.GetCollisionCount();
+    float closestBoxDistance = 0.0f;
+    GameObject *closestBox = nullptr;
+
+    for (int i = 0; i < collisionCount; ++i) {
+        dphysics::Collision *col = RigidBody.GetCollision(i);
+        dphysics::RigidBody *body = col->m_body1 == &RigidBody
+            ? col->m_body2
+            : col->m_body1;
+
+        GameObject *object = reinterpret_cast<GameObject *>(body->GetOwner());
+        if (object->hasTag(Tag::Container) && !object->isBeingCarried()) {
+            float distance = aw::distance(object->RigidBody.GetWorldPosition(), RigidBody.GetWorldPosition());
+            if (closestBox == nullptr || distance < closestBoxDistance) {
+                closestBox = object;
+                closestBoxDistance = distance;
+            }
+        }
+    }
+
+    if (closestBox != nullptr) {
+        GameObject *carriedObject = getCarriedItem();
+
+        Container *box = static_cast<Container *>(closestBox);
+
+        if (carriedObject != nullptr) {
+            if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_DOWN)) {
+                drop();
+                box->load(carriedObject);
+            }
+        }
+        else {
+            if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_UP)) {
+                GameObject *object = box->unload(0);
+                object->setGraceMode(true);
+
+                ysVector localPosition = ysMath::LoadVector(0.0f, object->getPickupRadius() - 0.1f, 0.0f, 0.0f);
+                carry(object);
+                object->RigidBody.SetPosition(localPosition);
+            }
+        }
+    }
+}
+
 void aw::Player::configureAssets(dbasic::AssetManager *am) {
     AnimBlink = am->GetAction("Blink");
     AnimIdle = am->GetAction("Idle");
@@ -358,6 +465,7 @@ void aw::Player::process() {
     updateEnergy(m_world->getEngine().GetFrameLength());
     updateMotion();
     updateAnimation();
+    interactWithBoxes();
 }
 
 void aw::Player::render() {

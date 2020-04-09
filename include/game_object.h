@@ -15,6 +15,12 @@ namespace aw {
 
     class GameObject {
     public:
+        enum class CollisionLayers {
+            Main = 0x0,
+            Box = 0x1,
+            CarriedBoxableItem = 0x2
+        };
+
         enum class Layer {
             Ground,
             Holes,
@@ -25,10 +31,14 @@ namespace aw {
 
         enum class Tag {
             Hole,
+            Wall,
+            Floor,
+            Obstacle,
             Insect,
             Player,
             Carryable,
             Edible,
+            Container,
             Count
         };
 
@@ -44,6 +54,14 @@ namespace aw {
         virtual void initialize();
         virtual void render();
         virtual void process();
+
+        virtual void onCarry();
+        virtual void onDrop();
+
+        GameObject *getCollidingObject(dphysics::Collision *collision);
+
+        bool colliding();
+        bool colliding(GameObject *object);
 
         bool getDeletionFlag() const { return m_deletionFlag; }
         void setDeletionFlag() { m_deletionFlag = true; }
@@ -61,8 +79,11 @@ namespace aw {
         void setRealm(Realm *realm) { m_realm = realm; }
         Realm *getRealm() const { return m_realm; }
 
-        virtual void changeRealm(Realm *newRealm) { m_newRealm = newRealm; }
+        virtual void changeRealm(Realm *newRealm) { m_newRealm = newRealm; m_changeRealm = true; }
         Realm *getNewRealm() const { return m_newRealm; }
+
+        void resetRealmChange() { m_changeRealm = false; m_newRealm = nullptr; }
+        bool isChangingRealm() const { return m_changeRealm; }
 
         Hole *getLastPortal() { return m_lastPortal; }
         void setLastPortal(Hole *hole) { m_lastPortal = hole; }
@@ -89,6 +110,9 @@ namespace aw {
         virtual ysVector getPickupPointWorld() const { return RigidBody.GetWorldPosition(); }
         virtual float getPickupRadius() const { return 0.0f; }
 
+        void setGraceMode(bool graceMode) { m_graceMode = graceMode; }
+        bool inGraceMode() const { return m_graceMode; }
+
     protected:
         std::vector<AABB> m_pathfinderBounds;
         AABB m_visualBounds;
@@ -100,10 +124,12 @@ namespace aw {
         World *m_world;
         Realm *m_realm;
         Realm *m_newRealm;
+        bool m_changeRealm;
         Hole *m_lastPortal;
 
     private:
         bool m_beingCarried;
+        bool m_graceMode;
 
     private:
         bool m_deletionFlag;

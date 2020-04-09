@@ -48,7 +48,7 @@ void aw::Cookie::render() {
 }
 
 void aw::Cookie::process() {
-    /* void */
+    Food::process();
 }
 
 void aw::Cookie::configureAssets(dbasic::AssetManager *am) {

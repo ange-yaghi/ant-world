@@ -27,7 +27,11 @@ namespace aw {
         void process();
         void render();
 
+        bool isIndoor() const { return m_indoor; }
+        void setIndoor(bool indoor) { m_indoor = indoor; }
+
         void spawnObjects();
+        void respawnObjects();
 
         dbasic::DeltaEngine &getEngine();
 
@@ -45,6 +49,8 @@ namespace aw {
             return newObject;
         }
 
+        void respawn(GameObject *object);
+
         void setExitPortal(Hole *portal) { m_exitPortal = portal; }
         Hole *getExitPortal() const { return m_exitPortal; }
 
@@ -59,6 +65,7 @@ namespace aw {
 
     protected:
         std::queue<GameObject *> m_spawnQueue;
+        std::queue<GameObject *> m_respawnQueue;
         std::vector<GameObject *> m_gameObjects;
         std::vector<GameObject *> m_deadObjects;
 
@@ -67,6 +74,7 @@ namespace aw {
         Hole *m_exitPortal;
 
         int m_visibleObjectCount;
+        bool m_indoor;
     };
 
 } /* namespace aw */

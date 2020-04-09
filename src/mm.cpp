@@ -39,7 +39,7 @@ void aw::MM::render() {
 }
 
 void aw::MM::process() {
-    /* void */
+    Food::process();
 }
 
 void aw::MM::configureAssets(dbasic::AssetManager *am) {

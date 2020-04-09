@@ -26,6 +26,10 @@ namespace aw {
 
         void updateMotion();
         void updateAnimation();
+        void interactWithBoxes();
+
+        void updateAnimationSmooth();
+        void updateMotionSmooth();
 
     protected:
         ysAnimationActionBinding
