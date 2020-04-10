@@ -9,6 +9,14 @@ float aw::distance(const ysVector &a, const ysVector &b) {
     return ysMath::GetScalar(ysMath::Magnitude(vector3d(d)));
 }
 
+float aw::length(const ysVector &v) {
+    return ysMath::GetScalar(ysMath::Magnitude(v));
+}
+
+float aw::length2(const ysVector &v) {
+    return ysMath::GetScalar(ysMath::MagnitudeSquared3(v));
+}
+
 bool aw::inRange(const ysVector &a, const ysVector &b, float distance) {
     return inRangeSq(a, b, distance * distance);
 }

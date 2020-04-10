@@ -8,6 +8,7 @@
 #include "../include/mm.h"
 #include "../include/food_spawner.h"
 #include "../include/container.h"
+#include "../include/vehicle.h"
 
 aw::World::World() {
     m_mainRealm = nullptr;
@@ -63,18 +64,21 @@ void aw::World::initialSpawn() {
     //Food *leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
-    FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
-    spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
-    spawner->setAveragePeriod(2.0f);
-    spawner->setLifespan(3600.0f);
-    spawner->setType(FoodSpawner::Type::Cookie);
-    spawner->setRadius(100.0f);
+    //FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
+    //spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
+    //spawner->setAveragePeriod(2.0f);
+    //spawner->setLifespan(3600.0f);
+    //spawner->setType(FoodSpawner::Type::Cookie);
+    //spawner->setRadius(100.0f);
 
-    Hole *hole = m_mainRealm->spawn<Hole>();
-    hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 1.0f));
+    //Hole *hole = m_mainRealm->spawn<Hole>();
+    //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 1.0f));
 
-    Container *container = m_mainRealm->spawn<Container>();
-    container->RigidBody.SetPosition(ysMath::LoadVector(5.0f, 0.0f, 0.0f, 1.0f));
+    //Container *container = m_mainRealm->spawn<Container>();
+    //container->RigidBody.SetPosition(ysMath::LoadVector(5.0f, 0.0f, 0.0f, 1.0f));
+
+    Vehicle *vehicle = m_mainRealm->spawn<Vehicle>();
+    vehicle->RigidBody.SetPosition(ysMath::LoadVector(-5.0f, 0.0f, 0.0f, 1.0f));
 
     //leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));

@@ -82,6 +82,12 @@
     <Filter Include="Source Files\game-objects\container">
       <UniqueIdentifier>{3284ca69-fd59-4e7e-83c6-4d37b71499c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game-objects\vehicles">
+      <UniqueIdentifier>{ce4c31ff-b4c2-4181-9643-97259528fa60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game-objects\vehicles">
+      <UniqueIdentifier>{723c1866-c690-4793-a7ae-1d9e9dd11b78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -164,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\container.cpp">
       <Filter>Source Files\game-objects\container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\wheel.cpp">
+      <Filter>Source Files\game-objects\vehicles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\vehicle.cpp">
+      <Filter>Source Files\game-objects\vehicles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +262,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\container.h">
       <Filter>Header Files\game-objects\container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\vehicle.h">
+      <Filter>Header Files\game-objects\vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\wheel.h">
+      <Filter>Header Files\game-objects\vehicles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

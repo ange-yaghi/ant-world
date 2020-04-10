@@ -4,6 +4,7 @@
 #include "../include/mm.h"
 #include "../include/player.h"
 #include "../include/world_fragment.h"
+#include "../include/wheel.h"
 
 aw::AssetLoader::AssetLoader() {
     /* void */
@@ -47,6 +48,9 @@ void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::Asset
     am->CompileInterchangeFile(getPath("terrain/terrain_block", assetPath).c_str(), 1.0f, true);
     am->LoadSceneFile(getPath("terrain/terrain_block", assetPath).c_str());
 
+    am->CompileInterchangeFile(getPath("debug/wheel_debug", assetPath).c_str(), 1.0f, true);
+    am->LoadSceneFile(getPath("debug/wheel_debug", assetPath).c_str());
+
     am->LoadAnimationFile(getPath("characters/ant/ant_rigged.dimo", assetPath).c_str());
 
     am->ResolveNodeHierarchy();
@@ -55,6 +59,7 @@ void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::Asset
     MM::configureAssets(am);
     Cookie::configureAssets(am);
     WorldFragment::configureAssets(am);
+    Wheel::configureAssets(am);
 }
 
 std::string aw::AssetLoader::getPath(const char *path, const dbasic::Path &assetPath) {
