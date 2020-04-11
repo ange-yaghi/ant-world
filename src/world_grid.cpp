@@ -86,7 +86,7 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
         float holeOffsetX, holeOffsetY;
         holeOffsetX = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
         holeOffsetY = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
-        newHole->RigidBody.SetPosition(ysMath::LoadVector(
+        newHole->RigidBody.Transform.SetPosition(ysMath::LoadVector(
             posx + holeOffsetX, posy + holeOffsetY, 0.0f, 1.0f));
     }
 

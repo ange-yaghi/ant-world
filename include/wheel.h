@@ -20,15 +20,15 @@ namespace aw {
         virtual void Initialize(dphysics::RigidBody *rigidBody);
         virtual void GenerateForces(float dt);
 
-        ysVector getForwardDirection() const;
-        ysVector getShearDirection() const;
+        ysVector getForwardDirection();
+        ysVector getShearDirection();
 
         void setCoeffStaticFriction(float u) { m_coeffStaticFriction = u; }
         float getCoeffStaticFriction() const { return m_coeffStaticFriction; }
 
         void setCoeffDynamicFriction(float u) { m_coeffDynamicFriction = u; }
         float getCoeffDynamicFriction() const { return m_coeffDynamicFriction; }
-        
+
         float getStaticVelocityCorrectionLimit(float dt) const;
         float getDynamicVelocityCorrectionLimit(float dt) const;
 
@@ -44,10 +44,15 @@ namespace aw {
         void setResistance(float resistance) { m_resistance = resistance; }
 
         bool isSlipping() const { return m_slipping; }
-        
 
+        void setAngularVelocity(float v) { m_angularVelocity = v; }
+        float getAngularVelocity() const { return m_angularVelocity; }
+
+        bool m_free;
+        
     public:
         float m_radius;
+        float m_angularVelocity;
 
         float m_coeffStaticFriction;
         float m_coeffDynamicFriction;
@@ -55,7 +60,10 @@ namespace aw {
         float m_inputTorque;
         float m_resistance;
 
+        ysVector m_velocity;
         bool m_slipping;
+
+        
 
         dbasic::DeltaEngine *m_engine;
     };

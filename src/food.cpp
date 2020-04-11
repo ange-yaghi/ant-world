@@ -25,7 +25,7 @@ void aw::Food::initialize() {
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     bounds->GetAsBox()->HalfHeight = 1.0f;
     bounds->GetAsBox()->HalfWidth = 1.0f;
-    bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
+    bounds->GetAsBox()->Orientation = ysMath::Constants::QuatIdentity;
     bounds->GetAsBox()->Position = ysMath::Constants::Zero;
 
     dphysics::CollisionObject *sensor;
@@ -40,6 +40,6 @@ void aw::Food::process() {
 
 void aw::Food::render() {
     int color[] = { 0xc7, 0xea, 0x46 };
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     m_world->getEngine().DrawBox(color, 2.0f, 2.0f, (int)Layer::Items);
 }

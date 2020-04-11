@@ -6,11 +6,14 @@
 dbasic::ModelAsset *aw::Wheel::m_wheelModel = nullptr;
 
 aw::Wheel::Wheel() {
-    m_coeffStaticFriction = 5.0f;
-    m_coeffDynamicFriction = 4.0f;
+    m_coeffStaticFriction = 10.0f;
+    m_coeffDynamicFriction = 2.0f;
     m_inputTorque = 1000.0f;
     m_resistance = 50.0f;
     m_slipping = false;
+    m_velocity = ysMath::Constants::Zero;
+    m_angularVelocity = 0.0f;
+    m_free = false;
 }
 
 aw::Wheel::~Wheel() {
@@ -18,9 +21,11 @@ aw::Wheel::~Wheel() {
 }
 
 void aw::Wheel::debugRender() {
-    m_engine->SetObjectTransform(RigidBody.GetTransform());
+    m_engine->SetObjectTransform(RigidBody.Transform.GetWorldTransform());
 
+    int wheel[3] = { 255, 0, 0 };
     int red[3] = { 255, 0, 0 };
+    int green[3] = {0, 255, 0 };
 
     //m_engine->DrawBox(red, 0.2f, 1.0f, (int)GameObject::Layer::Wall);
     if (isSlipping()) {
@@ -30,13 +35,41 @@ void aw::Wheel::debugRender() {
         m_engine->SetMultiplyColor(ysVector4(0.0f, 0.0f, 1.0f, 1.0f));
     }
 
-    m_engine->DrawModel(m_wheelModel, RigidBody.GetTransform(), 1.0f, nullptr, (int)GameObject::Layer::Wall);
+    m_engine->DrawModel(
+        m_wheelModel, 
+        ysMath::MatMult(
+            ysMath::TranslationTransform(ysMath::LoadVector(0.0f, 0.0f, 1.0f)), 
+            RigidBody.Transform.GetWorldTransform()),
+        1.0f, nullptr, (int)GameObject::Layer::Wall);
+
+    int yellow[] = { 255, 255,  0 };
+    m_engine->DrawAxis(red, 
+        RigidBody.Transform.GetWorldPosition(), 
+        getShearDirection(), 
+        0.1f,
+        2.0f,
+        (int)GameObject::Layer::Wall);
+
+    m_engine->DrawAxis(green,
+        RigidBody.Transform.GetWorldPosition(),
+        getForwardDirection(),
+        0.1f,
+        2.0f,
+        (int)GameObject::Layer::Wall);
+
+    m_engine->DrawAxis(yellow,
+        RigidBody.Transform.GetWorldPosition(),
+        m_velocity,
+        0.1f,
+        2.0f,
+        (int)GameObject::Layer::Wall);
 }
 
 void aw::Wheel::Initialize(dphysics::RigidBody *rigidBody) {
     dphysics::ForceGenerator::Initialize(rigidBody);
 
     rigidBody->AddChild(&RigidBody);
+    RigidBody.Transform.SetParent(&rigidBody->Transform);
 
     RigidBody.SetInverseMass(0.5f);
     RigidBody.SetInverseInertiaTensor(ysMath::LoadMatrix(
@@ -48,14 +81,29 @@ void aw::Wheel::Initialize(dphysics::RigidBody *rigidBody) {
 }
 
 void aw::Wheel::GenerateForces(float dt) {
+    RigidBody.SetAngularVelocity(
+            ysMath::LoadVector(getAngularVelocity(), 0.0f, 0.0f));
+
     ysVector shear = getShearDirection();
     ysVector forward = ysMath::Cross(ysMath::Constants::ZAxis, shear);
+    forward = ysMath::Mask(forward, ysMath::Constants::MaskOffZ);
+    shear = ysMath::Mask(shear, ysMath::Constants::MaskOffZ);
 
-    ysVector vehicleVelocity = m_rigidBody->GetVelocityLocal(RigidBody.GetPosition());
+    ysVector vehicleVelocity = m_rigidBody->GetVelocityAtLocalPoint(
+        RigidBody.Transform.GetLocalPosition());
+    m_velocity = vehicleVelocity;
+    //vehicleVelocity = ysMath::Constants::Zero;
 
     // Wheel velocity at contact point (due to rotation)
     ysVector contactPoint = ysMath::LoadVector(0.0f, 0.0f, -m_radius, 1.0f);
-    ysVector rotationVelocity = RigidBody.GetGlobalSpace(RigidBody.GetVelocityLocal(contactPoint));
+    ysVector rotationVelocity = RigidBody.GetVelocityAtWorldPoint(
+        ysMath::Add(RigidBody.Transform.GetWorldPosition(), contactPoint));
+    //m_velocity = rotationVelocity;
+    if (m_free) {
+        ysVector proj = ysMath::Dot(vehicleVelocity, forward);
+        proj = ysMath::Mul(proj, forward);
+        rotationVelocity = ysMath::Negate(proj);
+    }
 
     // Total wheel velocity at contact point
     ysVector wheelVelocity = ysMath::Add(vehicleVelocity, rotationVelocity);
@@ -86,7 +134,7 @@ void aw::Wheel::GenerateForces(float dt) {
 
     ysVector correctionShear = ysMath::Mul(ysMath::Dot(correctionImpulse, shear), shear);
 
-    m_rigidBody->AddImpulseWorldSpace(correctionShear, RigidBody.GetWorldPosition());
+    m_rigidBody->AddImpulseWorldSpace(correctionShear, RigidBody.Transform.GetWorldPosition());
 
     // F = (axial_impulse) / dt
     // torque = (wheel_radius) * F = r * (axial_impulse) / dt
@@ -109,7 +157,7 @@ void aw::Wheel::GenerateForces(float dt) {
 
     float momentum = ysMath::GetX(RigidBody.GetAngularVelocity()) / RigidBody.GetInverseMass();
 
-    if (torque < m_inputTorque) {
+    if (std::abs(torque) < m_inputTorque) {
         //wheelAngularImpulse = -excessTorque * dt;
         vehicleLinearImpulse = torque * dt / m_radius;
     }
@@ -121,18 +169,21 @@ void aw::Wheel::GenerateForces(float dt) {
         //    );
     }
 
-    RigidBody.AddAngularImpulseLocal(ysMath::LoadVector(-wheelAngularImpulse, 0.0f, 0.0f, 0.0f));
-    m_rigidBody->AddImpulseWorldSpace(
-        ysMath::Mul(ysMath::LoadScalar(vehicleLinearImpulse), forward), 
-        RigidBody.GetWorldPosition());
+    if (!m_free) {
+        RigidBody.AddAngularImpulseLocal(ysMath::LoadVector(-wheelAngularImpulse, 0.0f, 0.0f, 0.0f));
+
+        m_rigidBody->AddImpulseWorldSpace(
+            ysMath::Mul(ysMath::LoadScalar(vehicleLinearImpulse), forward),
+            RigidBody.Transform.GetWorldPosition());
+    }
 }
 
-ysVector aw::Wheel::getForwardDirection() const {
-    return ysMath::MatMult(RigidBody.GetOrientationMatrix(), ysMath::Constants::YAxis);
+ysVector aw::Wheel::getForwardDirection() {
+    return ysMath::Cross(ysMath::Constants::ZAxis, getShearDirection());
 }
 
-ysVector aw::Wheel::getShearDirection() const {
-    return ysMath::MatMult(RigidBody.GetOrientationMatrix(), ysMath::Constants::XAxis);
+ysVector aw::Wheel::getShearDirection() {
+    return RigidBody.Transform.LocalToWorldDirection(ysMath::Constants::XAxis);
 }
 
 float aw::Wheel::getDynamicVelocityCorrectionLimit(float dt) const {

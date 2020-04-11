@@ -29,19 +29,16 @@ void aw::Hole::initialize() {
 
 void aw::Hole::render() {
     int color[] = { 0xDE, 0xB8, 0x87 };
-    ysVector position = RigidBody.GetPosition();
-
-    ysMatrix translation = ysMath::TranslationTransform(position);
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     m_world->getEngine().DrawBox(color, 5.0f, 5.0f, (int)Layer::Holes);
 }
 
 void aw::Hole::onEnter(GameObject *object) {
-    object->RigidBody.SetPosition(ysMath::Constants::Zero);
+    object->RigidBody.Transform.SetPosition(ysMath::Constants::Zero);
 }
 
 void aw::Hole::onExit(GameObject *object) {
-    object->RigidBody.SetPosition(RigidBody.GetPosition());
+    object->RigidBody.Transform.SetPosition(RigidBody.Transform.GetWorldPosition());
 }
 
 void aw::Hole::process() {

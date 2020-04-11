@@ -44,7 +44,7 @@ void aw::FoodSpawner::resetTimer() {
     if (m_currentPeriod < 0) m_currentPeriod = 0.0f;
 }
 
-ysVector aw::FoodSpawner::generateRandomLocation() const {
+ysVector aw::FoodSpawner::generateRandomLocation() {
     float r0 = ysMath::UniformRandom() * m_radius;
     float r1 = ysMath::UniformRandom() * ysMath::Constants::TWO_PI;
 
@@ -52,7 +52,7 @@ ysVector aw::FoodSpawner::generateRandomLocation() const {
     float y = r0 * std::cos(r1);
 
     ysVector delta = ysMath::LoadVector(x, y, 0.0f, 0.0f);
-    return ysMath::Add(RigidBody.GetWorldPosition(), delta);
+    return ysMath::Add(RigidBody.Transform.GetWorldPosition(), delta);
 }
 
 ysQuaternion aw::FoodSpawner::generateRandomOrientation() const {
@@ -73,8 +73,8 @@ bool aw::FoodSpawner::attemptSpawn() {
     aw::GameObject *newObject = spawnObject();
     if (newObject == nullptr) return false;
 
-    newObject->RigidBody.SetPosition(p);
-    newObject->RigidBody.SetOrientation(o);
+    newObject->RigidBody.Transform.SetPosition(p);
+    newObject->RigidBody.Transform.SetOrientation(o);
 
     return true;
 }

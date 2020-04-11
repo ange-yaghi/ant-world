@@ -78,8 +78,8 @@ void aw::World::initialSpawn() {
     //container->RigidBody.SetPosition(ysMath::LoadVector(5.0f, 0.0f, 0.0f, 1.0f));
 
     Vehicle *vehicle = m_mainRealm->spawn<Vehicle>();
-    vehicle->RigidBody.SetPosition(ysMath::LoadVector(-5.0f, 0.0f, 0.0f, 1.0f));
-
+    vehicle->RigidBody.Transform.SetPosition(ysMath::LoadVector(-5.0f, 0.0f, 0.0f, 1.0f));
+    m_player = vehicle;
     //leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
 
@@ -110,7 +110,7 @@ void aw::World::initialSpawn() {
     //npc = m_mainRealm->spawn<NpcAnt>();
     //npc->RigidBody.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0f, 0.0f));
 
-    m_player = m_mainRealm->spawn<Player>();
+    //m_player = m_mainRealm->spawn<Player>();
 }
 
 void aw::World::run() {
@@ -160,14 +160,14 @@ aw::AABB aw::World::getCameraExtents() const {
 }
 
 void aw::World::render() {
-    ysVector playerPosition = m_player->RigidBody.GetWorldPosition();
+    ysVector playerPosition = m_player->RigidBody.Transform.GetWorldPosition();
 
     m_engine.SetCameraPosition(ysMath::GetX(playerPosition), ysMath::GetY(playerPosition));
 
     if (m_engine.IsKeyDown(ysKeyboard::KEY_V)) {
         m_engine.SetCameraAltitude(500.0f);
     }
-    else m_engine.SetCameraAltitude(30.0f);
+    else m_engine.SetCameraAltitude(15.0f); // 30.0f
 
     m_player->getRealm()->render();
 
@@ -178,8 +178,8 @@ void aw::World::render() {
 
 void aw::World::process() {
     int px, py;
-    px = ysMath::GetX(m_player->RigidBody.GetPosition()) / 10.0f;
-    py = ysMath::GetY(m_player->RigidBody.GetPosition()) / 10.0f;
+    px = ysMath::GetX(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
+    py = ysMath::GetY(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
     for (int i = -5; i < 5; ++i) {
         for (int j = -5; j < 5; ++j) {
             m_worldGrid.requestFragment({ px + i, py + j });

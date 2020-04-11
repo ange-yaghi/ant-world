@@ -39,7 +39,7 @@ void aw::Player::initialize() {
 
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
     RigidBody.SetInverseMass(1.0f);
-    RigidBody.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));
+    RigidBody.Transform.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));
     RigidBody.SetAlwaysAwake(true);
     RigidBody.SetRequestsInformation(true);
     //RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
@@ -49,7 +49,7 @@ void aw::Player::initialize() {
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     bounds->GetAsBox()->HalfHeight = 1.5f;
     bounds->GetAsBox()->HalfWidth = 1.5f;
-    bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
+    bounds->GetAsBox()->Orientation = ysMath::Constants::QuatIdentity;
     bounds->GetAsBox()->Position = ysMath::Constants::Zero;
 
     dphysics::CollisionObject *sensor;
@@ -60,7 +60,8 @@ void aw::Player::initialize() {
     //bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     //bounds->GetAsCircle()->RadiusSquared = 1.25 * 1.25;
 
-    m_renderSkeleton = m_world->getAssetManager().BuildRenderSkeleton(&RigidBody, CharacterRoot);
+    m_renderSkeleton = m_world->getAssetManager().BuildRenderSkeleton(
+        &RigidBody.Transform, CharacterRoot);
 
     m_renderSkeleton->BindAction(AnimBlink, &m_animBlink);
     m_renderSkeleton->BindAction(AnimWalk, &m_animWalk);
@@ -80,7 +81,7 @@ void aw::Player::initialize() {
     settings.FadeIn = 0.0f;
     m_bodyRotationChannel->AddSegment(&m_faceUp, settings);
 
-    dphysics::RigidBody *mouth = &m_renderSkeleton->GetNode("Mouth")->RigidBody;
+    ysTransform *mouth = &m_renderSkeleton->GetNode("Mouth")->Transform;
     setCarryPoint(mouth);
 
     m_energy = 10.0f;
@@ -402,7 +403,9 @@ void aw::Player::interactWithBoxes() {
 
         GameObject *object = reinterpret_cast<GameObject *>(body->GetOwner());
         if (object->hasTag(Tag::Container) && !object->isBeingCarried()) {
-            float distance = aw::distance(object->RigidBody.GetWorldPosition(), RigidBody.GetWorldPosition());
+            float distance = aw::distance(
+                object->RigidBody.Transform.GetWorldPosition(), 
+                RigidBody.Transform.GetWorldPosition());
             if (closestBox == nullptr || distance < closestBoxDistance) {
                 closestBox = object;
                 closestBoxDistance = distance;
@@ -428,7 +431,7 @@ void aw::Player::interactWithBoxes() {
 
                 ysVector localPosition = ysMath::LoadVector(0.0f, object->getPickupRadius() - 0.1f, 0.0f, 0.0f);
                 carry(object);
-                object->RigidBody.SetPosition(localPosition);
+                object->RigidBody.Transform.SetPosition(localPosition);
             }
         }
     }
@@ -484,7 +487,7 @@ void aw::Player::process() {
 
 void aw::Player::render() {
     int color[] = { 0xf1, 0xc4, 0x0f };
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     //m_world->getEngine().DrawBox(color, 5.0f, 5.0f, (int)Layer::Player);
 
     m_world->getEngine().DrawRenderSkeleton(m_renderSkeleton, 1.0f, (int)Layer::Player);
@@ -496,7 +499,7 @@ void aw::Player::render() {
     console->SetFontBackColor(0, 0, 0, 0.0f);
 
     std::stringstream msg;
-    ysVector position = RigidBody.GetWorldPosition();
+    ysVector position = RigidBody.Transform.GetWorldPosition();
     msg << "Pos " << ysMath::GetX(position) << "/" << ysMath::GetY(position) << "\n";
     msg << "FPS " << m_world->getEngine().GetAverageFramerate() << "\n";
     msg << "Energy: " << m_energy << "\n";

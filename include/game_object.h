@@ -109,7 +109,7 @@ namespace aw {
         void decrementReferenceCount() { --m_referenceCount; }
         int getReferenceCount() const { return m_referenceCount; }
 
-        virtual ysVector getPickupPointWorld() const { return RigidBody.GetWorldPosition(); }
+        virtual ysVector getPickupPointWorld() { return RigidBody.Transform.GetWorldPosition(); }
         virtual float getPickupRadius() const { return 0.0f; }
 
         void setGraceMode(bool graceMode);

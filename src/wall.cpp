@@ -25,7 +25,7 @@ void aw::Wall::initialize() {
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     bounds->GetAsBox()->HalfHeight = m_height / 2;
     bounds->GetAsBox()->HalfWidth = m_width / 2;
-    bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
+    bounds->GetAsBox()->Orientation = ysMath::Constants::QuatIdentity;
     bounds->GetAsBox()->Position = ysMath::Constants::Zero;
 }
 
@@ -35,9 +35,6 @@ void aw::Wall::process() {
 
 void aw::Wall::render() {
     int color[] = { 0x0, 0x0, 0x0 };
-    ysVector position = RigidBody.GetPosition();
-
-    ysMatrix translation = ysMath::TranslationTransform(position);
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     m_world->getEngine().DrawBox(color, 10.0f, 10.0f, (int)Layer::Wall);
 }

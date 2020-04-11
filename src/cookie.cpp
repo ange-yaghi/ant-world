@@ -35,7 +35,7 @@ void aw::Cookie::initialize() {
 void aw::Cookie::render() {
     constexpr bool ShowAwake = false;
 
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
 
     if (RigidBody.IsAwake() || !ShowAwake) {
         m_world->getEngine().SetMultiplyColor(ysVector4(1.0f, 1.0f, 1.0f, 1.0f));

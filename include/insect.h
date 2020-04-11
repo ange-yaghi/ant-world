@@ -14,8 +14,8 @@ namespace aw {
         void carry(GameObject *object);
         void drop();
 
-        void setCarryPoint(dphysics::RigidBody *point) { m_carryPoint = point; }
-        dphysics::RigidBody *getCarryPoint() const { return m_carryPoint; }
+        void setCarryPoint(ysTransform *point) { m_carryPoint = point; }
+        ysTransform *getCarryPoint() const { return m_carryPoint; }
 
         GameObject *getCarriedItem() const { return m_carryItem; }
 
@@ -30,7 +30,7 @@ namespace aw {
 
     protected:
         GameObject *m_carryItem;
-        dphysics::RigidBody *m_carryPoint;
+        ysTransform *m_carryPoint;
         ysVector m_dropLocation;
     };
 

@@ -27,7 +27,7 @@ void aw::NpcAnt::initialize() {
     bounds->SetMode(dphysics::CollisionObject::Mode::Fine);
     bounds->GetAsBox()->HalfHeight = 2.5f / 2;
     bounds->GetAsBox()->HalfWidth = 2.5f / 2;
-    bounds->GetAsBox()->Orientation = ysMath::LoadIdentity();
+    bounds->GetAsBox()->Orientation = ysMath::Constants::QuatIdentity;
     bounds->GetAsBox()->Position = ysMath::Constants::Zero;
 
     dphysics::CollisionObject *sensor;
@@ -59,7 +59,7 @@ void aw::NpcAnt::process() {
         newObstacle = m_pathfinder.addObstacle(object);
     }
 
-    ysVector position = RigidBody.GetWorldPosition();
+    ysVector position = RigidBody.Transform.GetWorldPosition();
     ysVector next;
 
     bool move = m_pathfinder.update(position, hitSomething, newObstacle, &next);
@@ -80,7 +80,7 @@ void aw::NpcAnt::process() {
 
 void aw::NpcAnt::render() {
     int color[] = { 0xf1, 0x14, 0x01 };
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     m_world->getEngine().DrawBox(color, 2.5f, 2.5f, (int)Layer::Mob);
 
     int pathFinderColor[] = { 0x00, 0x00, 0x00 };

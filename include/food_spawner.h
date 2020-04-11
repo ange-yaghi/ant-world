@@ -39,7 +39,7 @@ namespace aw {
     protected:
         void resetTimer();
 
-        ysVector generateRandomLocation() const;
+        ysVector generateRandomLocation();
         ysQuaternion generateRandomOrientation() const;
 
         bool checkLocation(const ysVector &vec) const;

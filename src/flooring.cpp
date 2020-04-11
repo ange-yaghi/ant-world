@@ -26,9 +26,6 @@ void aw::Flooring::process() {
 
 void aw::Flooring::render() {
     int color[] = { 0xDE, 0xB8, 0x87 };
-    ysVector position = RigidBody.GetPosition();
-
-    ysMatrix translation = ysMath::TranslationTransform(position);
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     m_world->getEngine().DrawBox(color, 10.0f, 10.0f, (int)Layer::Holes);
 }

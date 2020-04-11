@@ -72,7 +72,7 @@ void aw::InteriorGenerator::generateWalls(Realm *realm, const WallsParam &param)
             if (grid[j][i]) {
                 Flooring *newFloor = realm->spawn<Flooring>();
                 newFloor->setDimensions(param.GridSize, param.GridSize);
-                newFloor->RigidBody.SetPosition(
+                newFloor->RigidBody.Transform.SetPosition(
                     ysMath::LoadVector((i - center_x) * param.GridSize, (j - center_y) * param.GridSize, 0.0f, 0.0f));
             }
             else {
@@ -85,7 +85,7 @@ void aw::InteriorGenerator::generateWalls(Realm *realm, const WallsParam &param)
                 if (border) {
                     Wall *newWall = realm->spawn<Wall>();
                     newWall->setDimensions(param.GridSize, param.GridSize);
-                    newWall->RigidBody.SetPosition(
+                    newWall->RigidBody.Transform.SetPosition(
                         ysMath::LoadVector((i - center_x) * param.GridSize, (j - center_y) * param.GridSize, 0.0f, 0.0f));
                 }
             }

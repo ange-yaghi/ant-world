@@ -23,6 +23,7 @@ namespace aw {
         Wheel *m_frWheel;
         Wheel *m_rlWheel;
         Wheel *m_rrWheel;
+        Wheel *m_fWheel;
     };
 
 } /* namespace aw */

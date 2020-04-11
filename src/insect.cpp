@@ -16,11 +16,14 @@ void aw::Insect::carry(GameObject *object) {
 
     m_carryItem = object;
     object->setBeingCarried(true);
-    m_carryPoint->UpdateDerivedData(true);
 
-    object->RigidBody.SetPosition(m_carryPoint->GetLocalSpace(ysMath::ExtendVector(object->RigidBody.GetWorldPosition())));
-    object->RigidBody.SetOrientation(ysMath::QuatMultiply(object->RigidBody.GetWorldOrientation(), ysMath::QuatInvert(m_carryPoint->GetWorldOrientation())));
-    m_carryPoint->AddChild(&object->RigidBody);
+    object->RigidBody.Transform.SetPosition(
+        m_carryPoint->WorldToLocalSpace(
+            ysMath::ExtendVector(object->RigidBody.Transform.GetWorldPosition())));
+    object->RigidBody.Transform.SetOrientation(
+        ysMath::QuatMultiply(
+            object->RigidBody.Transform.GetWorldOrientation(), 
+            ysMath::QuatInvert(m_carryPoint->GetWorldOrientation())));
 
     object->incrementReferenceCount();
 }
@@ -32,12 +35,11 @@ void aw::Insect::drop() {
 
     dphysics::RigidBody &droppedBody = m_carryItem->RigidBody;
 
-    ysVector position = droppedBody.GetWorldPosition();
-    ysQuaternion orientation = droppedBody.GetWorldOrientation();
-    m_carryPoint->RemoveChild(&droppedBody);
+    ysVector position = droppedBody.Transform.GetWorldPosition();
+    ysQuaternion orientation = droppedBody.Transform.GetWorldOrientation();
 
-    droppedBody.SetPosition(position);
-    droppedBody.SetOrientation(orientation);
+    droppedBody.Transform.SetPosition(position);
+    droppedBody.Transform.SetOrientation(orientation);
 
     m_carryItem->decrementReferenceCount();
     m_carryItem = nullptr;

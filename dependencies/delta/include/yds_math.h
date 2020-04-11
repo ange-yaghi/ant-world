@@ -220,9 +220,10 @@ namespace ysMath {
     ysVector Or(const ysVector &v1, const ysVector &v2);
 
     // Quaternion
-    ysQuaternion QuatInvert(const ysQuaternion &q, bool normalize = true);
+    ysQuaternion QuatInvert(const ysQuaternion &q);
     ysQuaternion QuatMultiply(const ysQuaternion &q1, const ysQuaternion &q2);
     ysQuaternion QuatTransform(const ysQuaternion &q, const ysVector &v);
+    ysQuaternion QuatTransformInverse(const ysQuaternion &q, const ysVector &v);
     ysQuaternion QuatAddScaled(const ysQuaternion &q, const ysVector &vec, float scale);
 
     // Matrices

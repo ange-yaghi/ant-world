@@ -47,7 +47,7 @@ namespace aw {
 
         Realm *getMainRealm() { return m_mainRealm; }
 
-        Player *getPlayer() const { return m_player; }
+        GameObject *getPlayer() const { return m_player; }
 
     protected:
         void updateRealms();
@@ -64,7 +64,7 @@ namespace aw {
 
         dbasic::Path m_assetPath;
 
-        Player *m_player;
+        GameObject *m_player;
     };
 
 } /* namespace aw */

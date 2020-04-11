@@ -33,7 +33,7 @@ void aw::MM::initialize() {
 }
 
 void aw::MM::render() {
-    m_world->getEngine().SetObjectTransform(RigidBody.GetTransform());
+    m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     m_world->getEngine().SetMultiplyColor(ysVector4(1.0f, 1.0f, 1.0f, 1.0f));
     m_world->getEngine().DrawImage(MMTexture->GetTexture(), (int)Layer::Items, 0.5f, 0.5f);
 }

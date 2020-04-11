@@ -42,8 +42,8 @@ void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::Asset
     loadAllTextures(assetPath, am);
     createAllMaterials(am);
 
-    am->CompileInterchangeFile(getPath("characters/ant/ant_rigged", assetPath).c_str(), 1.0f, true);
-    am->LoadSceneFile(getPath("characters/ant/ant_rigged", assetPath).c_str());
+    am->CompileInterchangeFile(getPath("characters/ant/ant_rigged_test", assetPath).c_str(), 1.0f, true);
+    am->LoadSceneFile(getPath("characters/ant/ant_rigged_test", assetPath).c_str());
 
     am->CompileInterchangeFile(getPath("terrain/terrain_block", assetPath).c_str(), 1.0f, true);
     am->LoadSceneFile(getPath("terrain/terrain_block", assetPath).c_str());
@@ -51,7 +51,7 @@ void aw::AssetLoader::loadAllAssets(const dbasic::Path &assetPath, dbasic::Asset
     am->CompileInterchangeFile(getPath("debug/wheel_debug", assetPath).c_str(), 1.0f, true);
     am->LoadSceneFile(getPath("debug/wheel_debug", assetPath).c_str());
 
-    am->LoadAnimationFile(getPath("characters/ant/ant_rigged.dimo", assetPath).c_str());
+    am->LoadAnimationFile(getPath("characters/ant/ant_rigged_test.dimo", assetPath).c_str());
 
     am->ResolveNodeHierarchy();
 
