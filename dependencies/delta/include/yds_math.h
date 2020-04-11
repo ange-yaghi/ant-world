@@ -151,6 +151,7 @@ namespace ysMath {
 
         YS_MATH_CONST ysVector Negate = { -1.0f, -1.0f, -1.0f, -1.0f };
         YS_MATH_CONST ysVector Negate3 = { -1.0f, -1.0f, -1.0f, 1.0f };
+        YS_MATH_CONST ysVector QuatInvert = { 1.0f, -1.0f, -1.0f, -1.0f };
         YS_MATH_CONST ysVector One = { 1.0f, 1.0f, 1.0f, 1.0f };
         YS_MATH_CONST ysVector Zero = { 0.0f, 0.0f, 0.0f, 0.0f };
         YS_MATH_CONST ysVector Zero3 = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -219,8 +220,9 @@ namespace ysMath {
     ysVector Or(const ysVector &v1, const ysVector &v2);
 
     // Quaternion
-    ysQuaternion QuatInvert(const ysQuaternion &q);
+    ysQuaternion QuatInvert(const ysQuaternion &q, bool normalize = true);
     ysQuaternion QuatMultiply(const ysQuaternion &q1, const ysQuaternion &q2);
+    ysQuaternion QuatTransform(const ysQuaternion &q, const ysVector &v);
     ysQuaternion QuatAddScaled(const ysQuaternion &q, const ysVector &vec, float scale);
 
     // Matrices

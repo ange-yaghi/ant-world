@@ -97,7 +97,7 @@ StyleCopReport.xml
 !dependencies/runtime/x64/*.dll
 !dependencies/runtime/x86/*.dll
 *.blend
-!art/*.blend
+!art/**/*.blend
 *.blend1
 
 # Chutzpah Test files
