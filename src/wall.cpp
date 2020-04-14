@@ -36,5 +36,5 @@ void aw::Wall::process() {
 void aw::Wall::render() {
     int color[] = { 0x0, 0x0, 0x0 };
     m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
-    m_world->getEngine().DrawBox(color, 10.0f, 10.0f, (int)Layer::Wall);
+    m_world->getEngine().DrawBox(color, m_width, m_height, (int)Layer::Wall);
 }

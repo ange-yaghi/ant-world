@@ -21,8 +21,14 @@ namespace aw {
         virtual void drop();
         virtual void eat();
 
-        virtual void enterHole();
+        virtual bool enterHole();
         virtual void exitHole();
+
+        virtual bool enterVehicle();
+        virtual void exitVehicle();
+
+        void enter();
+        void exit();
 
         void updateMotion();
         void updateAnimation();

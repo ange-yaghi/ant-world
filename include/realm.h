@@ -51,8 +51,8 @@ namespace aw {
 
         void respawn(GameObject *object);
 
-        void setExitPortal(Hole *portal) { m_exitPortal = portal; }
-        Hole *getExitPortal() const { return m_exitPortal; }
+        void setExitPortal(GameObject *portal) { m_exitPortal = portal; }
+        GameObject *getExitPortal() const { return m_exitPortal; }
 
         int getAliveObjectCount() const { return (int)m_gameObjects.size(); }
         int getDeadObjectCount() const { return (int)m_deadObjects.size(); }
@@ -71,7 +71,7 @@ namespace aw {
 
     protected:
         World *m_world;
-        Hole *m_exitPortal;
+        GameObject *m_exitPortal;
 
         int m_visibleObjectCount;
         bool m_indoor;

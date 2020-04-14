@@ -19,11 +19,14 @@ void aw::Insect::carry(GameObject *object) {
 
     object->RigidBody.Transform.SetPosition(
         m_carryPoint->WorldToLocalSpace(
-            ysMath::ExtendVector(object->RigidBody.Transform.GetWorldPosition())));
+            object->RigidBody.Transform.GetWorldPosition()));
     object->RigidBody.Transform.SetOrientation(
         ysMath::QuatMultiply(
             object->RigidBody.Transform.GetWorldOrientation(), 
             ysMath::QuatInvert(m_carryPoint->GetWorldOrientation())));
+    object->RigidBody.Transform.SetParent(m_carryPoint);
+    object->RigidBody.SetVelocity(ysMath::Constants::Zero);
+    RigidBody.AddChild(&object->RigidBody);
 
     object->incrementReferenceCount();
 }
@@ -38,8 +41,10 @@ void aw::Insect::drop() {
     ysVector position = droppedBody.Transform.GetWorldPosition();
     ysQuaternion orientation = droppedBody.Transform.GetWorldOrientation();
 
+    droppedBody.Transform.SetParent(nullptr);
     droppedBody.Transform.SetPosition(position);
     droppedBody.Transform.SetOrientation(orientation);
+    RigidBody.RemoveChild(&droppedBody);
 
     m_carryItem->decrementReferenceCount();
     m_carryItem = nullptr;

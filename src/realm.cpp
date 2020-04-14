@@ -131,7 +131,7 @@ void aw::Realm::updateRealms() {
                 newRealm->registerGameObject(object);
             }
 
-            Hole *lastPortal = object->getLastPortal();
+            GameObject *lastPortal = object->getLastPortal();
             object->setLastPortal(nullptr);
 
             if (lastPortal != nullptr) {

@@ -127,7 +127,7 @@ void aw::Player::eat() {
     drop();
 }
 
-void aw::Player::enterHole() {
+bool aw::Player::enterHole() {
     int collisions = RigidBody.GetCollisionCount();
     for (int i = 0; i < collisions; ++i) {
         dphysics::Collision* col = RigidBody.GetCollision(i);
@@ -146,18 +146,68 @@ void aw::Player::enterHole() {
 
             changeRealm(targetRealm);
             setLastPortal(hole);
+
+            return true;
         }
     }
+
+    return false;
 }
 
 void aw::Player::exitHole() {
     Realm *currentRealm = getRealm();
-    Hole *exitPortal = currentRealm->getExitPortal();
+    GameObject *exitPortal = currentRealm->getExitPortal();
     
     if (exitPortal == nullptr) return;
     
     changeRealm(exitPortal->getRealm());
     setLastPortal(exitPortal);
+}
+
+bool aw::Player::enterVehicle() {
+    int collisions = RigidBody.GetCollisionCount();
+    for (int i = 0; i < collisions; ++i) {
+        dphysics::Collision *col = RigidBody.GetCollision(i);
+        dphysics::RigidBody *body = col->m_body1 == &RigidBody
+            ? col->m_body2
+            : col->m_body1;
+
+        GameObject *object = (GameObject *)body->GetOwner();
+        if (object->hasTag(Tag::Beetle)) {
+            Realm *targetRealm = object->getTargetRealm();
+
+            if (targetRealm == nullptr) {
+                targetRealm = object->generateRealm();
+            }
+
+            changeRealm(targetRealm);
+            setLastPortal(object);
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void aw::Player::exitVehicle() {
+    Realm *currentRealm = getRealm();
+    GameObject *exitPortal = currentRealm->getExitPortal();
+
+    if (exitPortal == nullptr) return;
+
+    changeRealm(exitPortal->getRealm());
+    setLastPortal(exitPortal);
+}
+
+void aw::Player::enter() {
+    if (enterVehicle()) return;
+    if (enterHole()) return;
+}
+
+void aw::Player::exit() {
+    exitVehicle();
+    exitHole();
 }
 
 void aw::Player::updateMotion() {
@@ -199,7 +249,7 @@ void aw::Player::updateMotion() {
     }
 
     //ysVector vel = RigidBody.GetGlobalSpace(ysMath::Mul(ysMath::Constants::YAxis, velocity));
-    RigidBody.SetVelocity(ysMath::Mul(heading, velocity));
+    if (moving) RigidBody.SetVelocity(ysMath::Mul(heading, velocity));
 }
 
 void aw::Player::updateAnimation() {
@@ -468,11 +518,11 @@ void aw::Player::process() {
     }
 
     if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_I)) {
-        enterHole();
+        enter();
     }
 
     if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_O)) {
-        exitHole();
+        exit();
     }
 
     if (m_world->getEngine().ProcessKeyDown(ysKeyboard::KEY_E)) {

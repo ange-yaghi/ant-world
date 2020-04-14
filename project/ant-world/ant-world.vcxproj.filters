@@ -177,6 +177,9 @@
     <ClCompile Include="..\..\src\vehicle.cpp">
       <Filter>Source Files\game-objects\vehicles</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\beetle.cpp">
+      <Filter>Source Files\game-objects\vehicles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
@@ -267,6 +270,9 @@
       <Filter>Header Files\game-objects\vehicles</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\wheel.h">
+      <Filter>Header Files\game-objects\vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\beetle.h">
       <Filter>Header Files\game-objects\vehicles</Filter>
     </ClInclude>
   </ItemGroup>

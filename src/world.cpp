@@ -9,6 +9,7 @@
 #include "../include/food_spawner.h"
 #include "../include/container.h"
 #include "../include/vehicle.h"
+#include "../include/beetle.h"
 
 aw::World::World() {
     m_mainRealm = nullptr;
@@ -64,12 +65,15 @@ void aw::World::initialSpawn() {
     //Food *leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 2.0f, 0.0f, 0.0f));
 
-    //FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
-    //spawner->RigidBody.SetPosition(ysMath::Constants::Zero3);
-    //spawner->setAveragePeriod(2.0f);
-    //spawner->setLifespan(3600.0f);
-    //spawner->setType(FoodSpawner::Type::Cookie);
-    //spawner->setRadius(100.0f);
+    FoodSpawner *spawner = m_mainRealm->spawn<FoodSpawner>();
+    spawner->RigidBody.Transform.SetPosition(ysMath::Constants::Zero3);
+    spawner->setAveragePeriod(2.0f);
+    spawner->setLifespan(3600.0f);
+    spawner->setType(FoodSpawner::Type::Cookie);
+    spawner->setRadius(100.0f);
+
+    Beetle *beetle = m_mainRealm->spawn<Beetle>();
+    beetle->RigidBody.Transform.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0));
 
     //Hole *hole = m_mainRealm->spawn<Hole>();
     //hole->RigidBody.SetPosition(ysMath::LoadVector(0.0f, 5.0f, 0.0f, 1.0f));
@@ -167,7 +171,7 @@ void aw::World::render() {
     if (m_engine.IsKeyDown(ysKeyboard::KEY_V)) {
         m_engine.SetCameraAltitude(500.0f);
     }
-    else m_engine.SetCameraAltitude(15.0f); // 30.0f
+    else m_engine.SetCameraAltitude(30.0f); // 30.0f
 
     m_player->getRealm()->render();
 

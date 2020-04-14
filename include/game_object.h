@@ -41,6 +41,7 @@ namespace aw {
             Carryable,
             Edible,
             Container,
+            Beetle,
             Count
         };
 
@@ -87,8 +88,8 @@ namespace aw {
         void resetRealmChange() { m_changeRealm = false; m_newRealm = nullptr; }
         bool isChangingRealm() const { return m_changeRealm; }
 
-        Hole *getLastPortal() { return m_lastPortal; }
-        void setLastPortal(Hole *hole) { m_lastPortal = hole; }
+        GameObject *getLastPortal() { return m_lastPortal; }
+        void setLastPortal(GameObject *hole) { m_lastPortal = hole; }
 
         void clearPathfinderBounds() { m_pathfinderBounds.clear(); }
         void updatePathfinderBounds();
@@ -115,6 +116,12 @@ namespace aw {
         void setGraceMode(bool graceMode);
         bool inGraceMode() const { return m_graceMode; }
 
+        virtual void onEnter(GameObject *object) { /* void */ }
+        virtual void onExit(GameObject *object) { /* void */ }
+
+        virtual Realm *getTargetRealm() { return nullptr; }
+        virtual Realm *generateRealm() { return nullptr; }
+
     protected:
         std::vector<AABB> m_pathfinderBounds;
         AABB m_visualBounds;
@@ -127,7 +134,7 @@ namespace aw {
         Realm *m_realm;
         Realm *m_newRealm;
         bool m_changeRealm;
-        Hole *m_lastPortal;
+        GameObject *m_lastPortal;
 
     private:
         bool m_beingCarried;

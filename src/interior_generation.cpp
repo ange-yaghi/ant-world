@@ -92,3 +92,57 @@ void aw::InteriorGenerator::generateWalls(Realm *realm, const WallsParam &param)
         }
     }
 }
+
+void aw::InteriorGenerator::generateRectangle(Realm *realm, float width, float height) {
+    ysVector center = ysMath::Constants::Zero;
+    ysVector lw = ysMath::Add(center, ysMath::LoadVector(-width / 2.0f - 0.5f));
+    ysVector rw = ysMath::Add(center, ysMath::LoadVector(width / 2.0f + 0.5f));
+    ysVector tw = ysMath::Add(center, ysMath::LoadVector(0.0f, height / 2.0f + 0.5f));
+    ysVector bw = ysMath::Add(center, ysMath::LoadVector(0.0f, -height / 2.0f - 0.5f));
+
+    generateWall(realm, lw, 1.0f, height, 10.0f, true);
+    generateWall(realm, rw, 1.0f, height, 10.0f, true);
+    generateWall(realm, tw, 1.0f, width, 10.0f, false);
+    generateWall(realm, bw, 1.0f, width, 10.0f, false);
+
+    Flooring *newFloor = realm->spawn<Flooring>();
+    newFloor->setDimensions(width, height);
+    newFloor->RigidBody.Transform.SetPosition(center);
+}
+
+void aw::InteriorGenerator::generateWall(
+    Realm *realm, const ysVector &center, float thickness, float length, float unitSize, bool vertical) 
+{
+    ysVector delta = vertical
+        ? ysMath::LoadVector(0.0f, 1.0f, 0.0f)
+        : ysMath::LoadVector(1.0f, 0.0f, 0.0f);
+
+    ysVector start = vertical
+        ? ysMath::LoadVector(0.0f, -length / 2.0f, 0.0f)
+        : ysMath::LoadVector(-length / 2.0f, 0.0f, 0.0f);
+
+    start = ysMath::Add(center, start);
+
+    float currentLength = 0.0f;
+    int unitCount = 0;
+    while (currentLength < length) {
+        Wall *newWall = realm->spawn<Wall>();
+        float thisLength = min(unitSize, length - currentLength);
+        if (vertical) {
+            newWall->setDimensions(thickness, thisLength);
+        }
+        else {
+            newWall->setDimensions(thisLength, thickness);
+        }
+
+        currentLength += unitSize;
+
+        ysVector basePosition = ysMath::Add(start, ysMath::Mul(delta, ysMath::LoadScalar(unitCount * unitSize)));
+        ysVector offset = ysMath::Mul(ysMath::LoadScalar(thisLength / 2.0f), delta);
+
+        newWall->RigidBody.Transform.SetPosition(
+            ysMath::Add(basePosition, offset));
+
+        ++unitCount;
+    }
+}
