@@ -77,9 +77,9 @@ void aw::World::initialSpawn() {
     //Container *container = m_mainRealm->spawn<Container>();
     //container->RigidBody.SetPosition(ysMath::LoadVector(5.0f, 0.0f, 0.0f, 1.0f));
 
-    Vehicle *vehicle = m_mainRealm->spawn<Vehicle>();
-    vehicle->RigidBody.Transform.SetPosition(ysMath::LoadVector(-5.0f, 0.0f, 0.0f, 1.0f));
-    m_player = vehicle;
+    //Vehicle *vehicle = m_mainRealm->spawn<Vehicle>();
+    //vehicle->RigidBody.Transform.SetPosition(ysMath::LoadVector(-5.0f, 0.0f, 0.0f, 1.0f));
+    //m_player = vehicle;
     //leaf2 = m_mainRealm->spawn<Food>();
     //leaf2->RigidBody.SetPosition(ysMath::LoadVector(-1.0f, -5.0f, 0.0f, 0.0f));
 
@@ -110,7 +110,7 @@ void aw::World::initialSpawn() {
     //npc = m_mainRealm->spawn<NpcAnt>();
     //npc->RigidBody.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0f, 0.0f));
 
-    //m_player = m_mainRealm->spawn<Player>();
+    m_player = m_mainRealm->spawn<Player>();
 }
 
 void aw::World::run() {

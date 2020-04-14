@@ -37,7 +37,11 @@ namespace dphysics {
         void UpdateDerivedData(bool force = false);
         void CheckAwake();
 
+        void SetMaterial(int material) { m_material = material; }
+        int GetMaterial() const { return m_material; }
+
         void AddAngularVelocity(const ysVector &v) { m_angularVelocity = ysMath::Add(v, m_angularVelocity); }
+        void AddVelocity(const ysVector &v) { m_velocity = ysMath::Add(v, m_velocity); }
 
         void SetVelocity(const ysVector &v) { m_velocity = v; }
         ysVector GetVelocity() const { return m_velocity; }
@@ -117,9 +121,11 @@ namespace dphysics {
 
         void SetLinearDamping(float damping) { m_linearDamping = damping; }
 
+        void WriteInfo(std::fstream &target);
+
         template <typename T_ForceGenerator>
         T_ForceGenerator *NewForceGenerator() {
-            T_ForceGenerator *newForceGenerator = 
+            T_ForceGenerator *newForceGenerator =
                 m_forceGenerators.NewGeneric<T_ForceGenerator>();
             newForceGenerator->Initialize(this);
 
@@ -128,13 +134,18 @@ namespace dphysics {
 
         void GenerateForces(float dt);
 
+        void SetFixedPosition(bool fixed) { m_fixedPosition = fixed; }
+        bool GetFixedPosition() const { return m_fixedPosition; }
+
     protected:
         // Properties
         bool m_registered;
         bool m_awake;
         bool m_requestsInformation;
         bool m_alwaysAwake;
+        bool m_fixedPosition;
 
+        int m_material;
         float m_inverseMass;
         float m_linearDamping;
         float m_angularDamping;
