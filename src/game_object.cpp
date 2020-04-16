@@ -18,6 +18,7 @@ aw::GameObject::GameObject() {
     m_changeRealm = false;
     m_lastPortal = nullptr;
     m_graceMode = false;
+    m_real = false;
 
     m_referenceCount = 0;
 
@@ -114,12 +115,13 @@ void aw::GameObject::createVisualBounds() {
 }
 
 void aw::GameObject::setGraceMode(bool graceMode) {
-    m_graceMode = graceMode; 
+    m_graceMode = graceMode;
     RigidBody.SetGhost(graceMode);
 }
 
 void aw::GameObject::initialize() {
     RigidBody.SetOwner((void *)this);
+    m_real = true;
 }
 
 void aw::GameObject::render() {

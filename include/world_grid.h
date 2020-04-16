@@ -4,6 +4,7 @@
 #include "world_fragment.h"
 #include "biomes.h"
 #include "generation.h"
+#include "special_building_generator.h"
 
 #include <map>
 
@@ -29,6 +30,8 @@ namespace aw {
 
         WorldFragment *requestFragment(const FragmentCoord &coord);
 
+        float getPopulationDensity(const FragmentCoord &coord);
+
     protected:
         WorldFragment *newFragment(const FragmentCoord &coord);
         Biome::Type getBiomeType(const Biome::BiomeParameters &parameters) const;
@@ -44,6 +47,8 @@ namespace aw {
         PerlinNoiseGenerator m_elevation;
         PerlinNoiseGenerator m_population;
         PerlinNoiseGenerator m_microPopulation;
+
+        SpecialBuildingGenerator m_foodTradeCenter;
 
         double m_fragmentSize;
 

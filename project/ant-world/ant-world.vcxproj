@@ -42,7 +42,9 @@
     <ClCompile Include="..\..\src\ant_world.cpp" />
     <ClCompile Include="..\..\src\pathfinder.cpp" />
     <ClCompile Include="..\..\src\player.cpp" />
+    <ClCompile Include="..\..\src\probe.cpp" />
     <ClCompile Include="..\..\src\realm.cpp" />
+    <ClCompile Include="..\..\src\special_building_generator.cpp" />
     <ClCompile Include="..\..\src\vehicle.cpp" />
     <ClCompile Include="..\..\src\wall.cpp" />
     <ClCompile Include="..\..\src\wheel.cpp" />
@@ -75,7 +77,9 @@
     <ClInclude Include="..\..\include\ant_world.h" />
     <ClInclude Include="..\..\include\pathfinder.h" />
     <ClInclude Include="..\..\include\player.h" />
+    <ClInclude Include="..\..\include\probe.h" />
     <ClInclude Include="..\..\include\realm.h" />
+    <ClInclude Include="..\..\include\special_building_generator.h" />
     <ClInclude Include="..\..\include\vehicle.h" />
     <ClInclude Include="..\..\include\wall.h" />
     <ClInclude Include="..\..\include\wheel.h" />

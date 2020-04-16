@@ -44,6 +44,10 @@ void aw::WorldGrid::initialize(double fragmentSize) {
 
     m_microPopulation.setSeed(seed + 5);
     m_microPopulation.setScale(1 / 15.0f);
+
+    m_foodTradeCenter.setGridSize(20);
+    m_foodTradeCenter.setCollisionHasher(1, 0);
+    m_foodTradeCenter.setMinCutoff(0.85f);
 }
 
 void aw::WorldGrid::debugRender() {
@@ -80,8 +84,12 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
     newFragment->setWorld(m_world);
 
     double populationNoise = sampleMicroPopulationDensity(posx, posy);
-    if (populationNoise + param.PopulationDensity > 1.3f) {
+    bool hasHome = populationNoise + param.PopulationDensity > 1.3f;
+    bool hasCommunityCenter = m_foodTradeCenter.hasBuilding(coord.x, coord.y, this);
+
+    if (hasHome || hasCommunityCenter) {
         Hole *newHole = m_world->getMainRealm()->spawn<Hole>();
+        newHole->setHighlight(hasCommunityCenter);
 
         float holeOffsetX, holeOffsetY;
         holeOffsetX = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
@@ -133,4 +141,11 @@ aw::WorldFragment *aw::WorldGrid::requestFragment(const FragmentCoord &coord) {
         return m_fragments[hash] = newFragment(coord);
     }
     else return f->second;
+}
+
+float aw::WorldGrid::getPopulationDensity(const FragmentCoord &coord) {
+    double posx = coord.x * m_fragmentSize;
+    double posy = coord.y * m_fragmentSize;
+
+    return (sampleMicroPopulationDensity(posx, posy) + samplePopulationDensity(posx, posy)) / 2.0f;
 }

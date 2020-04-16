@@ -56,7 +56,7 @@ void aw::Realm::render() {
     if (isIndoor()) {
         m_world->getEngine().SetClearColor(0x0, 0x0, 0x0);
 
-        m_world->getEngine().SetAmbientLight(ysVector4(0.3, 0.3, 0.3, 1.0f));
+        m_world->getEngine().SetAmbientLight(ysVector4(0.3f, 0.3f, 0.3f, 1.0f));
         dbasic::Light holeLight;
         holeLight.Position = ysVector4(0.0f, 0.0f, 10.0f, 0.0f);
         holeLight.Direction = ysMath::GetVector4(ysMath::Normalize(ysMath::LoadVector(0.2f, 0.2f, -1.0f)));

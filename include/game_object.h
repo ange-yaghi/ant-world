@@ -42,6 +42,7 @@ namespace aw {
             Edible,
             Container,
             Beetle,
+            Probe,
             Count
         };
 
@@ -122,6 +123,9 @@ namespace aw {
         virtual Realm *getTargetRealm() { return nullptr; }
         virtual Realm *generateRealm() { return nullptr; }
 
+        // Get whether this object has been fully registered in its realm
+        bool isReal() const { return m_real; }
+
     protected:
         std::vector<AABB> m_pathfinderBounds;
         AABB m_visualBounds;
@@ -139,6 +143,7 @@ namespace aw {
     private:
         bool m_beingCarried;
         bool m_graceMode;
+        bool m_real;
 
     private:
         bool m_deletionFlag;

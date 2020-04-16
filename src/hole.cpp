@@ -28,7 +28,12 @@ void aw::Hole::initialize() {
 }
 
 void aw::Hole::render() {
-    int color[] = { 0xDE, 0xB8, 0x87 };
+    int brown[] = { 0xDE, 0xB8, 0x87 };
+    int red[] = { 0xFF, 0x0, 0x0 };
+    int *color = brown;
+
+    if (m_highlight) color = red;
+
     m_world->getEngine().SetObjectTransform(RigidBody.Transform.GetWorldTransform());
     m_world->getEngine().DrawBox(color, 5.0f, 5.0f, (int)Layer::Holes);
 }

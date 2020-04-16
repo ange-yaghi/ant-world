@@ -22,8 +22,12 @@ namespace aw {
         Realm *getTargetRealm() { return m_targetRealm; }
         virtual Realm *generateRealm();
 
+        void setHighlight(bool highlight) { m_highlight = highlight; }
+
     protected:
         Realm *m_targetRealm;
+        
+        bool m_highlight;
     };
 
 } /* namespace aw */

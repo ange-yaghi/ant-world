@@ -3,7 +3,11 @@
 
 #include "game_object.h"
 
+#include <queue>
+
 namespace aw {
+
+    class Probe;
 
     class FoodSpawner : public GameObject {
     public:
@@ -42,12 +46,14 @@ namespace aw {
         ysVector generateRandomLocation();
         ysQuaternion generateRandomOrientation() const;
 
-        bool checkLocation(const ysVector &vec) const;
-
         bool attemptSpawn();
-        GameObject *spawnObject();
+        Probe *newProbe(const ysVector &location, float radius);
+        GameObject *spawnReal();
+
+        std::queue<Probe *> m_spawnAttempts;
 
     protected:
+        float m_unitRadius;
         float m_radius;
         float m_averagePeriod;
         float m_lifespan;

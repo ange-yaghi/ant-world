@@ -70,7 +70,7 @@ void aw::World::initialSpawn() {
     spawner->setAveragePeriod(2.0f);
     spawner->setLifespan(3600.0f);
     spawner->setType(FoodSpawner::Type::Cookie);
-    spawner->setRadius(100.0f);
+    spawner->setRadius(10.0f);
 
     Beetle *beetle = m_mainRealm->spawn<Beetle>();
     beetle->RigidBody.Transform.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0));
@@ -184,8 +184,8 @@ void aw::World::process() {
     int px, py;
     px = ysMath::GetX(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
     py = ysMath::GetY(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
-    for (int i = -5; i < 5; ++i) {
-        for (int j = -5; j < 5; ++j) {
+    for (int i = -50; i < 50; ++i) {
+        for (int j = -50; j < 50; ++j) {
             m_worldGrid.requestFragment({ px + i, py + j });
         }
     }

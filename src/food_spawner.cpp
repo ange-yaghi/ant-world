@@ -3,6 +3,7 @@
 #include "../include/world.h"
 #include "../include/cookie.h"
 #include "../include/mm.h"
+#include "../include/probe.h"
 
 #include <algorithm>
 
@@ -14,6 +15,7 @@ aw::FoodSpawner::FoodSpawner() {
     m_type = Type::Undefined;
     m_timer = 0.0f;
     m_currentPeriod = 0.0f;
+    m_unitRadius = 0.0f;
 }
 
 aw::FoodSpawner::~FoodSpawner() {
@@ -21,7 +23,19 @@ aw::FoodSpawner::~FoodSpawner() {
 }
 
 void aw::FoodSpawner::initialize() {
+    GameObject::initialize();
+
     resetTimer();
+
+    // TEMP
+    switch (m_type) {
+    case Type::Cookie:
+        m_unitRadius = 2.0f;
+        break;
+    case Type::MM:
+        m_unitRadius = 1.0f;
+        break;
+    }
 }
 
 void aw::FoodSpawner::render() {
@@ -34,6 +48,23 @@ void aw::FoodSpawner::process() {
         bool attemptSuccessful = attemptSpawn();
         if (attemptSuccessful) {
             resetTimer();
+        }
+    }
+
+    while (!m_spawnAttempts.empty()) {
+        Probe *u = m_spawnAttempts.front();
+        if (!u->isReal()) break;
+
+        m_spawnAttempts.pop();
+        if (!u->isSafe()) {
+            u->setDeletionFlag();
+        }
+        else {
+            aw::GameObject *newSpawn = spawnReal();
+            ysQuaternion o = generateRandomOrientation();
+
+            newSpawn->RigidBody.Transform.SetPosition(u->RigidBody.Transform.GetWorldPosition());
+            newSpawn->RigidBody.Transform.SetOrientation(o);
         }
     }
 }
@@ -60,26 +91,26 @@ ysQuaternion aw::FoodSpawner::generateRandomOrientation() const {
     return ysMath::LoadQuaternion(r0, ysMath::Constants::ZAxis);
 }
 
-bool aw::FoodSpawner::checkLocation(const ysVector &vec) const {
-    return true;
-}
-
 bool aw::FoodSpawner::attemptSpawn() {
     ysVector p = generateRandomLocation();
-    if (!checkLocation(p)) return false;
-
-    ysQuaternion o = generateRandomOrientation();
     
-    aw::GameObject *newObject = spawnObject();
-    if (newObject == nullptr) return false;
+    aw::Probe *probe = newProbe(p, m_unitRadius);
+    if (probe == nullptr) return false;
 
-    newObject->RigidBody.Transform.SetPosition(p);
-    newObject->RigidBody.Transform.SetOrientation(o);
+    m_spawnAttempts.push(probe);
 
     return true;
 }
 
-aw::GameObject *aw::FoodSpawner::spawnObject() {
+aw::Probe *aw::FoodSpawner::newProbe(const ysVector &location, float radius) {
+    aw::Probe *probe = m_realm->spawn<aw::Probe>();
+    if (probe == nullptr) return nullptr;
+
+    probe->RigidBody.Transform.SetPosition(location);
+    probe->setRadius(radius);
+}
+
+aw::GameObject *aw::FoodSpawner::spawnReal() {
     if (m_type == Type::Cookie) {
         Cookie *newCookie = m_realm->spawn<Cookie>();
         if (newCookie == nullptr) return nullptr;

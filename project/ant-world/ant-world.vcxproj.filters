@@ -180,6 +180,12 @@
     <ClCompile Include="..\..\src\beetle.cpp">
       <Filter>Source Files\game-objects\vehicles</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\probe.cpp">
+      <Filter>Source Files\game-objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\special_building_generator.cpp">
+      <Filter>Source Files\game-objects\world-generation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
@@ -274,6 +280,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\beetle.h">
       <Filter>Header Files\game-objects\vehicles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\probe.h">
+      <Filter>Header Files\game-objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\special_building_generator.h">
+      <Filter>Header Files\game-objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
