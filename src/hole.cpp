@@ -1,11 +1,17 @@
 #include "../include/hole.h"
 
 #include "../include/world.h"
-#include "../include/interior_generation.h"
+
+aw::InteriorGenerator *aw::Hole::m_generator = nullptr;
 
 aw::Hole::Hole() {
+    if (m_generator == nullptr) {
+        m_generator = new aw::InteriorGenerator();
+    }
+
     m_realm = nullptr;
     m_targetRealm = nullptr;
+    m_highlight = false;
 }
 
 aw::Hole::~Hole() {
@@ -58,7 +64,7 @@ aw::Realm *aw::Hole::generateRealm() {
     param.GridSize = 10.0f;
     param.MaxCells = 10;
     param.MinCells = 5;
-    InteriorGenerator::generateWalls(m_targetRealm, param);
+    m_generator->generateWalls(m_targetRealm, param);
     m_targetRealm->setIndoor(true);
 
     return m_targetRealm;

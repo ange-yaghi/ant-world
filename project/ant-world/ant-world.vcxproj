@@ -45,6 +45,7 @@
     <ClCompile Include="..\..\src\probe.cpp" />
     <ClCompile Include="..\..\src\realm.cpp" />
     <ClCompile Include="..\..\src\special_building_generator.cpp" />
+    <ClCompile Include="..\..\src\trading_post.cpp" />
     <ClCompile Include="..\..\src\vehicle.cpp" />
     <ClCompile Include="..\..\src\wall.cpp" />
     <ClCompile Include="..\..\src\wheel.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="..\..\include\probe.h" />
     <ClInclude Include="..\..\include\realm.h" />
     <ClInclude Include="..\..\include\special_building_generator.h" />
+    <ClInclude Include="..\..\include\trading_post.h" />
     <ClInclude Include="..\..\include\vehicle.h" />
     <ClInclude Include="..\..\include\wall.h" />
     <ClInclude Include="..\..\include\wheel.h" />

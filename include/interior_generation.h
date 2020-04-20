@@ -3,6 +3,8 @@
 
 #include "delta.h"
 
+#include <random>
+
 namespace aw {
 
     class Realm;
@@ -19,9 +21,12 @@ namespace aw {
         InteriorGenerator();
         ~InteriorGenerator();
 
-        static void generateWalls(Realm *realm, const WallsParam &param);
+        void generateWalls(Realm *realm, const WallsParam &param);
         static void generateRectangle(Realm *realm, float width, float height);
         static void generateWall(Realm *realm, const ysVector &center, float thickness, float length, float unitSize, bool vertical);
+
+    protected:
+        std::default_random_engine m_generator;
     };
 
 } /* namespace aw */

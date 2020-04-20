@@ -3,7 +3,8 @@
 #include "../include/world_grid.h"
 
 aw::SpecialBuildingGenerator::SpecialBuildingGenerator() {
-    m_minCutoff = 0.0f;
+    m_minAveragePopulation = 0.0f;
+    m_maxAveragePopulation = 1.0f;
     m_gridSize = 1;
     m_modulus = 1;
     m_spacingPeriod = 1;
@@ -21,8 +22,12 @@ bool aw::SpecialBuildingGenerator::hasBuilding(int x, int y, WorldGrid *world) {
         ? (y / m_gridSize)
         : ((y - m_gridSize) / m_gridSize);
 
-    int gridOriginX = gridX * m_gridSize;
-    int gridOriginY = gridY * m_gridSize;
+    int gridOriginX = x >= 0
+        ? gridX * m_gridSize
+        : gridX * m_gridSize + 1;
+    int gridOriginY = y >= 0
+        ? gridY * m_gridSize
+        : gridY * m_gridSize + 1;
 
     int dx = x - gridOriginX;
     int dy = y - gridOriginY;
@@ -34,8 +39,23 @@ bool aw::SpecialBuildingGenerator::hasBuilding(int x, int y, WorldGrid *world) {
         return cached.buildingX == dx && cached.buildingY == dy;
     }
 
-    float maxScore = m_minCutoff;
+    float maxScore = 0.0f;
     int bestX = -1, bestY = -1;
+
+    float averagePopulation = 0.0f;
+    for (int i = 0; i < m_gridSize; ++i) {
+        for (int j = 0; j < m_gridSize; ++j) {
+            averagePopulation += world->getPopulationDensity({ i + gridOriginX, j + gridOriginY });
+        }
+    }
+
+    averagePopulation /= (m_gridSize * m_gridSize);
+    if (averagePopulation <= m_minAveragePopulation ||
+        averagePopulation >= m_maxAveragePopulation)
+    {
+        m_cache[hash] = { -1, -1 };
+        return false;
+    }
 
     for (int i = 0; i < m_gridSize; ++i) {
         for (int j = 0; j < m_gridSize; ++j) {

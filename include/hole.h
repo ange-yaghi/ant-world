@@ -3,6 +3,8 @@
 
 #include "game_object.h"
 
+#include "interior_generation.h"
+
 namespace aw {
 
     class Realm;
@@ -19,12 +21,13 @@ namespace aw {
         virtual void onEnter(GameObject *object);
         virtual void onExit(GameObject *object);
 
-        Realm *getTargetRealm() { return m_targetRealm; }
         virtual Realm *generateRealm();
+        Realm *getTargetRealm() { return m_targetRealm; }
 
         void setHighlight(bool highlight) { m_highlight = highlight; }
 
     protected:
+        static InteriorGenerator *m_generator;
         Realm *m_targetRealm;
         
         bool m_highlight;

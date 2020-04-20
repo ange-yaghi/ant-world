@@ -28,6 +28,7 @@ namespace aw {
         void setWorld(World *world);
         World *getWorld() const { return m_world; }
 
+        WorldFragment *getFragment(double x, double y);
         WorldFragment *requestFragment(const FragmentCoord &coord);
 
         float getPopulationDensity(const FragmentCoord &coord);

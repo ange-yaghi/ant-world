@@ -56,11 +56,12 @@ void aw::Realm::render() {
     if (isIndoor()) {
         m_world->getEngine().SetClearColor(0x0, 0x0, 0x0);
 
+        constexpr float intensity = 50.0f;
+
         m_world->getEngine().SetAmbientLight(ysVector4(0.3f, 0.3f, 0.3f, 1.0f));
         dbasic::Light holeLight;
         holeLight.Position = ysVector4(0.0f, 0.0f, 10.0f, 0.0f);
         holeLight.Direction = ysMath::GetVector4(ysMath::Normalize(ysMath::LoadVector(0.2f, 0.2f, -1.0f)));
-        float intensity = 50.0f;
         holeLight.Color = ysVector4(0.5f * intensity, 0.5f * intensity, 1.0f * intensity, 0.0f);
         holeLight.FalloffEnabled = 1;
         holeLight.Attenuation0 = 0.99;
@@ -69,13 +70,15 @@ void aw::Realm::render() {
     }
     else {
         m_world->getEngine().SetClearColor(0xf4, 0xa4, 0x60);
+        m_world->getEngine().SetAmbientLight(ysVector4(0.1f, 0.1f, 0.1f, 1.0f));
 
-        m_world->getEngine().SetAmbientLight(ysVector4(0.1, 0.1, 0.1, 1.0f));
+        ysVector playerPosition = m_world->getPlayer()->RigidBody.Transform.GetLocalPosition();
+        ysVector4 sunPosition = ysMath::GetVector4(playerPosition);
+        sunPosition.z = 1000.0f;
 
         dbasic::Light sun;
-        sun.Position = ysVector4(0.0f, 0.0f, 1000.0f, 0.0f);
+        sun.Position = sunPosition;
         sun.Color = ysVector4(0.95f, 0.9f, 1.0f, 0.0f);
-        //sun.Color = ysVector4(7 / 255.0f, 11 / 255.0f, 52 / 255.0f);
         sun.FalloffEnabled = 0;
         m_world->getEngine().AddLight(sun);
     }

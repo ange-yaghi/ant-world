@@ -27,8 +27,11 @@ namespace aw {
         int getModulus() const { return m_modulus; }
         int getSpacingPeriod() const { return m_spacingPeriod; }
 
-        void setMinCutoff(float cutoff) { m_minCutoff = cutoff; }
-        float getMinCutoff() const { return m_minCutoff; }
+        void setMinAveragePopulation(float cutoff) { m_minAveragePopulation = cutoff; }
+        float getMinAveragePopulation() const { return m_minAveragePopulation; }
+
+        void setMaxAveragePopulation(float cutoff) { m_maxAveragePopulation = cutoff; }
+        float getMaxAveragePopulation() const { return m_maxAveragePopulation; }
 
         float scoreFunction(float populationDensity, int dx, int dy);
 
@@ -37,7 +40,8 @@ namespace aw {
     protected:
         std::map<unsigned __int64, Result> m_cache;
 
-        float m_minCutoff;
+        float m_minAveragePopulation;
+        float m_maxAveragePopulation;
 
         int m_spacingPeriod;
         int m_modulus;

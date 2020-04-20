@@ -88,6 +88,12 @@
     <Filter Include="Source Files\game-objects\vehicles">
       <UniqueIdentifier>{723c1866-c690-4793-a7ae-1d9e9dd11b78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\game-objects\buildings">
+      <UniqueIdentifier>{0ff43db1-4454-418b-9db1-6e7daa5e7cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game-objects\buildings">
+      <UniqueIdentifier>{41538778-3704-483f-be6a-6960b6168ccb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -106,9 +112,6 @@
       <Filter>Source Files\game-objects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\insect.cpp">
-      <Filter>Source Files\game-objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\hole.cpp">
       <Filter>Source Files\game-objects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\realm.cpp">
@@ -186,6 +189,12 @@
     <ClCompile Include="..\..\src\special_building_generator.cpp">
       <Filter>Source Files\game-objects\world-generation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\hole.cpp">
+      <Filter>Source Files\game-objects\buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\trading_post.cpp">
+      <Filter>Source Files\game-objects\buildings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\delta.h">
@@ -204,9 +213,6 @@
       <Filter>Header Files\game-objects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\insect.h">
-      <Filter>Header Files\game-objects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\hole.h">
       <Filter>Header Files\game-objects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\realm.h">
@@ -285,7 +291,13 @@
       <Filter>Header Files\game-objects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\special_building_generator.h">
-      <Filter>Header Files\game-objects</Filter>
+      <Filter>Header Files\game-objects\world-generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\hole.h">
+      <Filter>Header Files\game-objects\buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\trading_post.h">
+      <Filter>Header Files\game-objects\buildings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

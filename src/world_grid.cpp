@@ -3,6 +3,7 @@
 #include "../include/world_fragment.h"
 #include "../include/hole.h"
 #include "../include/world.h"
+#include "../include/trading_post.h"
 
 #include <assert.h>
 
@@ -47,7 +48,8 @@ void aw::WorldGrid::initialize(double fragmentSize) {
 
     m_foodTradeCenter.setGridSize(20);
     m_foodTradeCenter.setCollisionHasher(1, 0);
-    m_foodTradeCenter.setMinCutoff(0.85f);
+    m_foodTradeCenter.setMaxAveragePopulation(1.0f);
+    m_foodTradeCenter.setMinAveragePopulation(0.5f);
 }
 
 void aw::WorldGrid::debugRender() {
@@ -87,9 +89,17 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
     bool hasHome = populationNoise + param.PopulationDensity > 1.3f;
     bool hasCommunityCenter = m_foodTradeCenter.hasBuilding(coord.x, coord.y, this);
 
-    if (hasHome || hasCommunityCenter) {
+    if (hasCommunityCenter) {
+        TradingPost *newTradingPost = m_world->getMainRealm()->spawn<TradingPost>();
+
+        float holeOffsetX, holeOffsetY;
+        holeOffsetX = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
+        holeOffsetY = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
+        newTradingPost->RigidBody.Transform.SetPosition(ysMath::LoadVector(
+            posx + holeOffsetX, posy + holeOffsetY, 0.0f, 1.0f));
+    }
+    else if (hasHome) {
         Hole *newHole = m_world->getMainRealm()->spawn<Hole>();
-        newHole->setHighlight(hasCommunityCenter);
 
         float holeOffsetX, holeOffsetY;
         holeOffsetX = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
@@ -131,6 +141,18 @@ double aw::WorldGrid::sampleMicroPopulationDensity(double posx, double posy) {
     noiseFunction = (noiseFunction + 1) / 2.0f;
 
     return noiseFunction;
+}
+
+aw::WorldFragment *aw::WorldGrid::getFragment(double x, double y) {
+    FragmentCoord coord;
+    coord.x = (x >= 0)
+        ? x / m_fragmentSize
+        : (x - m_fragmentSize) / m_fragmentSize;
+    coord.y = (y >= 0)
+        ? y / m_fragmentSize
+        : (y - m_fragmentSize) / m_fragmentSize;
+
+    return requestFragment(coord);
 }
 
 aw::WorldFragment *aw::WorldGrid::requestFragment(const FragmentCoord &coord) {

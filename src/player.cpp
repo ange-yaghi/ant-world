@@ -39,7 +39,7 @@ void aw::Player::initialize() {
 
     RigidBody.SetHint(dphysics::RigidBody::RigidBodyHint::Dynamic);
     RigidBody.SetInverseMass(1.0f);
-    RigidBody.Transform.SetPosition(ysMath::LoadVector(2.0f, 0.0f, 0.0f));
+    RigidBody.Transform.SetPosition(ysMath::LoadVector(-490.0f, 276.0, 0.0f));
     RigidBody.SetAlwaysAwake(true);
     RigidBody.SetRequestsInformation(true);
     //RigidBody.SetInverseInertiaTensor(ysMath::LoadIdentity());
@@ -216,6 +216,10 @@ void aw::Player::updateMotion() {
 
     if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_SHIFT)) {
         velocity = ysMath::LoadScalar(2.5f);
+    }
+
+    if (m_world->getEngine().IsKeyDown(ysKeyboard::KEY_CONTROL)) {
+        velocity = ysMath::LoadScalar(50.0f);
     }
 
     if (isCarryingItem()) {
