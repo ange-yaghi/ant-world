@@ -115,6 +115,15 @@ void aw::World::initialSpawn() {
     //npc->RigidBody.SetPosition(ysMath::LoadVector(10.0f, 0.0f, 0.0f, 0.0f));
 
     m_player = m_mainRealm->spawn<Player>();
+
+    int px, py;
+    px = ysMath::GetX(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
+    py = ysMath::GetY(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
+    for (int i = -50; i < 50; ++i) {
+        for (int j = -50; j < 50; ++j) {
+            m_worldGrid.requestFragment({ px + i, py + j });
+        }
+    }
 }
 
 void aw::World::run() {
@@ -184,8 +193,8 @@ void aw::World::process() {
     int px, py;
     px = ysMath::GetX(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
     py = ysMath::GetY(m_player->RigidBody.Transform.GetWorldPosition()) / 10.0f;
-    for (int i = -50; i < 50; ++i) {
-        for (int j = -50; j < 50; ++j) {
+    for (int i = -5; i < 5; ++i) {
+        for (int j = -5; j < 5; ++j) {
             m_worldGrid.requestFragment({ px + i, py + j });
         }
     }

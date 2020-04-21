@@ -32,7 +32,7 @@ void aw::InteriorGenerator::generateWalls(Realm *realm, const WallsParam &param)
     std::uniform_int_distribution<int> earlyExitSelector(0, 9);
 
     while (cells.size() < param.MaxCells) {
-        int cellCount = cells.size();
+        int cellCount = (int)cells.size();
         int cell = cellSelector(m_generator);
         if (cell >= cellCount) continue;
 

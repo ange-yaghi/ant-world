@@ -8,6 +8,7 @@
 aw::Realm::Realm() {
     m_exitPortal = nullptr;
     m_world = nullptr;
+    m_indoor = false;
 
     m_visibleObjectCount = 0;
 }
@@ -64,8 +65,8 @@ void aw::Realm::render() {
         holeLight.Direction = ysMath::GetVector4(ysMath::Normalize(ysMath::LoadVector(0.2f, 0.2f, -1.0f)));
         holeLight.Color = ysVector4(0.5f * intensity, 0.5f * intensity, 1.0f * intensity, 0.0f);
         holeLight.FalloffEnabled = 1;
-        holeLight.Attenuation0 = 0.99;
-        holeLight.Attenuation1 = 0.8;
+        holeLight.Attenuation0 = 0.99f;
+        holeLight.Attenuation1 = 0.8f;
         m_world->getEngine().AddLight(holeLight);
     }
     else {
@@ -152,6 +153,10 @@ void aw::Realm::updateRealms() {
     }
 }
 
+void aw::Realm::unload(GameObject *object) {
+    m_unloadQueue.push(object);
+}
+
 void aw::Realm::respawn(GameObject *object) {
     m_respawnQueue.push(object);
 }
@@ -181,9 +186,12 @@ void aw::Realm::cleanObjectList() {
 
             --i; --N_dead;
         }
-        else {
-            int a = 0;
-        }
+    }
+
+    int N_unloaded = (int)m_unloadQueue.size();
+    for (int i = 0; i < N_unloaded; ++i) {
+        GameObject *u = m_unloadQueue.front(); m_unloadQueue.pop();
+        unregisterGameObject(u);
     }
 }
 

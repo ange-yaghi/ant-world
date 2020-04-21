@@ -5,6 +5,9 @@
 
 #include "biome.h"
 #include "aabb.h"
+#include "game_object.h"
+
+#include <vector>
 
 namespace aw {
 
@@ -16,6 +19,8 @@ namespace aw {
         ~WorldFragment();
 
         void initialize(int x, int y, float width, float height, Biome::Type biome, const Biome::BiomeParameters &params);
+
+        ysVector2 getPosition() const;
 
         void debugRender();
 
@@ -31,6 +36,12 @@ namespace aw {
         static void configureAssets(dbasic::AssetManager *am);
 
         AABB getBounds() const;
+
+        bool isLoaded() const { return m_loaded; }
+        void unload();
+        void load();
+
+        void addFixture(GameObject *fixture);
 
     protected:
         int m_x;
@@ -49,6 +60,10 @@ namespace aw {
     protected:
         static dbasic::ModelAsset *m_terrainBlock;
         static dbasic::TextureAsset *m_terrainTexture;
+
+    protected:
+        bool m_loaded;
+        std::vector<GameObject *> m_fixtures;
     };
 
 } /* namespace aw */

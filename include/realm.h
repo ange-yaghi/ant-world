@@ -49,6 +49,7 @@ namespace aw {
             return newObject;
         }
 
+        void unload(GameObject *object);
         void respawn(GameObject *object);
 
         void setExitPortal(GameObject *portal) { m_exitPortal = portal; }
@@ -64,6 +65,7 @@ namespace aw {
         void destroyObject(GameObject *object);
 
     protected:
+        std::queue<GameObject *> m_unloadQueue;
         std::queue<GameObject *> m_spawnQueue;
         std::queue<GameObject *> m_respawnQueue;
         std::vector<GameObject *> m_gameObjects;

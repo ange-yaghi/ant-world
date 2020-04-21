@@ -15,6 +15,7 @@ aw::WorldFragment::WorldFragment() {
     m_world = nullptr;
     m_blockAngle = 0.0f;
     m_blockScale = 1.0f;
+    m_loaded = true;
 }
 
 aw::WorldFragment::~WorldFragment() {
@@ -31,6 +32,10 @@ void aw::WorldFragment::initialize(int x, int y, float width, float height, Biom
 
     m_blockAngle = ysMath::UniformRandom() * ysMath::Constants::TWO_PI;
     m_blockScale = ysMath::UniformRandom() + 1;
+}
+
+ysVector2 aw::WorldFragment::getPosition() const {
+    return ysVector2(m_x * m_width, m_y * m_height);
 }
 
 void aw::WorldFragment::debugRender() {
@@ -94,4 +99,28 @@ aw::AABB aw::WorldFragment::getBounds() const {
     result.maxPoint = ysMath::Add(position, ysMath::LoadVector(m_width * 2.0f, m_height * 2.0f));
 
     return result;
+}
+
+void aw::WorldFragment::unload() {
+    if (!isLoaded()) return;
+
+    for (GameObject *fixture : m_fixtures) {
+        fixture->getRealm()->unload(fixture);
+    }
+
+    m_loaded = false;
+}
+
+void aw::WorldFragment::load() {
+    if (isLoaded()) return;
+
+    for (GameObject *fixture : m_fixtures) {
+        fixture->getRealm()->respawn(fixture);
+    }
+
+    m_loaded = true;
+}
+
+void aw::WorldFragment::addFixture(GameObject *fixture) {
+    m_fixtures.push_back(fixture);
 }

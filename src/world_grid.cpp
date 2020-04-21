@@ -4,6 +4,7 @@
 #include "../include/hole.h"
 #include "../include/world.h"
 #include "../include/trading_post.h"
+#include "../include/math.h"
 
 #include <assert.h>
 
@@ -54,10 +55,20 @@ void aw::WorldGrid::initialize(double fragmentSize) {
 
 void aw::WorldGrid::debugRender() {
     AABB cameraExtents = m_world->getCameraExtents();
+    ysVector playerPosition = m_world->getPlayer()->RigidBody.Transform.GetWorldPosition();
 
-    for (auto fragment : m_fragments) {
-        if (fragment.second->getBounds().intersects2d(cameraExtents)) {
-            fragment.second->debugRender();
+    for (auto i_fragment : m_fragments) {
+        WorldFragment *fragment = i_fragment.second;
+
+        ysVector2 fragmentPosition = fragment->getPosition();
+        ysVector worldPosition = ysMath::LoadVector(fragmentPosition.x, fragmentPosition.y);
+        
+        float length = distance(worldPosition, playerPosition);
+        if (length < 50.0f) fragment->load();
+        else fragment->unload();
+
+        if (fragment->getBounds().intersects2d(cameraExtents)) {
+            fragment->debugRender();
         }
     }
 }
@@ -91,6 +102,7 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
 
     if (hasCommunityCenter) {
         TradingPost *newTradingPost = m_world->getMainRealm()->spawn<TradingPost>();
+        newFragment->addFixture(newTradingPost);
 
         float holeOffsetX, holeOffsetY;
         holeOffsetX = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
@@ -100,6 +112,7 @@ aw::WorldFragment *aw::WorldGrid::newFragment(const FragmentCoord &coord) {
     }
     else if (hasHome) {
         Hole *newHole = m_world->getMainRealm()->spawn<Hole>();
+        newFragment->addFixture(newHole);
 
         float holeOffsetX, holeOffsetY;
         holeOffsetX = (ysMath::UniformRandom() - 0.5f) * m_fragmentSize * 0.75f;
